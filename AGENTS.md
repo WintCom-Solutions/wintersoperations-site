@@ -104,14 +104,29 @@ Status: <ready|rework|escalated>
 2. **Stick to the requested scope.** Implement exactly what the issue asks.
    No extra features, refactors, or "while I was here" changes unless a
    review finding requires them.
-3. **High-risk work waits for Karl.** Merges to main, force-pushes, secret
-   handling, production actions, destructive operations, or unclear scope:
-   apply `needs:karl` and stop.
-4. **Evidence in the PR.** State what you validated (tests run, commands,
+3. **High-risk work waits for Karl.** Force-pushes, secret handling,
+   production actions, destructive operations, or unclear scope: apply
+   `needs:karl` and stop.
+4. **Never push directly to a repo's default branch.** Not for scaffolding,
+   not for "just setup," not because a task felt small, not because no PR
+   existed yet to attach to. Every change, in every opted-in repo, goes:
+   branch → commit → PR → independent review → Karl merges. This applies to
+   every agent identity and every opted-in repo (root `.ai-task-force.toml`),
+   not just the coordinator repo. If you're about to push new commits of
+   your own to whatever the repo's default branch is called (e.g. running
+   `git push origin main`): stop.
+5. **Never merge anything without Karl's explicit, per-item permission.**
+   Not a PR, not a branch, not your own work, not another agent's.
+   `stage:ready` means "independently approved and waiting on Karl," not
+   "cleared to merge." Reaching `stage:ready` is not permission. An
+   approving review is not permission. Green CI is not permission. Silence
+   is not permission. Only Karl merging it himself, or Karl explicitly
+   saying "merge this" on that specific issue/PR, is permission.
+6. **Evidence in the PR.** State what you validated (tests run, commands,
    output) in the PR body or a comment. If validation failed, say so plainly.
-5. **One writer per branch.** Don't push to a branch another agent is
+7. **One writer per branch.** Don't push to a branch another agent is
    actively working unless the labels hand it to you.
-6. **Headers and labels are routing controls.** If the comment header,
+8. **Headers and labels are routing controls.** If the comment header,
    `ai-task`, `stage:*`, `agent:*`, `reviewer:*`, `type:*`, or `round:*`
    labels are wrong, fix those first. Work that cannot be routed correctly
    should be `blocked` + `needs:karl`, not improvised.
@@ -149,11 +164,13 @@ work with one click from Karl.
 ## Executing a build task
 
 1. Read the issue. The issue is the whole scope.
-2. Branch: `taskforce/issue-<N>`.
+2. Branch: `taskforce/issue-<N>`. Never push to the default branch itself
+   — see hard rule 4.
 3. Implement, validate (run the test suite if one exists).
 4. Open a PR: body contains `Closes #<N>` plus validation evidence.
    Apply labels `ai-task`, `stage:review`, `agent:<your-name>`.
-5. Do not merge. Do not review or approve your own PR.
+5. Do not merge. Do not review or approve your own PR. Reaching
+   `stage:ready` is not permission to merge — see hard rule 5.
 
 ## Executing a review task
 
@@ -162,6 +179,8 @@ work with one click from Karl.
    Is it correct? Is there validation evidence?
 3. Submit a **real GitHub review**: approve, or request changes with
    concrete, actionable findings. Comments alone don't advance the pipeline.
+   An approval is a verdict on the diff, not permission to merge it — only
+   Karl merges (hard rule 5).
 4. Flag scope creep as a finding even if the extra code is good.
 
 ## Handoff notes
