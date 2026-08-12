@@ -13,7 +13,7 @@ export default function Home() {
             </span>
           </div>
           <nav className="hidden sm:flex items-center gap-8 text-sm text-slate-400">
-            <a href="#services" className="hover:text-cyan-400 transition">
+            <a href="/services" className="hover:text-cyan-400 transition">
               Services
             </a>
             <a href="#about" className="hover:text-cyan-400 transition">
@@ -52,7 +52,7 @@ export default function Home() {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="#services"
+                href="/services"
                 className="px-6 py-3 rounded-lg bg-cyan-500 text-navy-950 font-semibold hover:bg-cyan-400 transition"
               >
                 See Services
@@ -159,6 +159,12 @@ export default function Home() {
                     workflows
                   </li>
                 </ul>
+                <a
+                  href="/services"
+                  className="mt-6 inline-flex text-sm font-semibold text-cyan-400 hover:text-cyan-300"
+                >
+                  View service details →
+                </a>
               </div>
             </div>
           </div>
