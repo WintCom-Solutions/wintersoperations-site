@@ -1,0 +1,97 @@
+name: Task Force Sweep
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - ".github/workflows/task-force-sweep-hourly-monitor.yml"
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.TASKFORCE_PAT || secrets.GITHUB_TOKEN }}
+      REPO: ${{ github.repository }}
+      STALE_HOURS: "4"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Heal unlabeled agent PRs
+        run: |
+          set -euo pipefail
+          gh pr list --repo "$REPO" --state open --json number,body,labels \
+            --jq '.[] | select([.labels[].name] | index("ai-task") | not) | {number, body}' |
+          jq -c '.' | while read -r pr; do
+            NUM=$(echo "$pr" | jq -r '.number')
+            REF=$(echo "$pr" | jq -r '.body // ""' \
+              | grep -oiE '(close[sd]?|fix(e[sd])?|resolve[sd]?) #[0-9]+' \
+              | head -n1 | grep -oE '[0-9]+' || true)
+            [ -z "$REF" ] && continue
+            IL=$(gh issue view "$REF" --repo "$REPO" --json labels --jq '[.labels[].name]' 2>/dev/null || echo '[]')
+            echo "$IL" | jq -e 'index("ai-task")' > /dev/null || continue
+            AGENT=$(echo "$IL" | jq -r 'map(select(startswith("agent:")))[0] // "" | ltrimstr("agent:")')
+            echo "Healing PR #$NUM (closes #$REF, agent=$AGENT)"
+            gh pr edit "$NUM" --repo "$REPO" \
+              --add-label "ai-task" --add-label "stage:review" \
+              ${AGENT:+--add-label "agent:$AGENT"} || true
+          done
+
+      - name: Normalize auto-maintenance labels
+        run: |
+          set -euo pipefail
+          for KIND in issue pr; do
+            gh "$KIND" list --repo "$REPO" --state open --label "ai-task" --label "type:auto-maintenance" \
+              --json number,labels |
+            jq -r '.[] | select([.labels[].name] | map(startswith("round:")) | any | not) | .number' |
+            while read -r NUM; do
+              [ -z "$NUM" ] && continue
+              echo "Adding missing round:1 to auto-maintenance $KIND #$NUM"
+              gh "$KIND" edit "$NUM" --repo "$REPO" --add-label "round:1" || true
+            done
+          done
+
+      - name: Flag stalled items
+        run: |
+          set -euo pipefail
+          CUTOFF=$(date -u -d "-${STALE_HOURS} hours" +%Y-%m-%dT%H:%M:%SZ)
+          for KIND in issue pr; do
+            gh "$KIND" list --repo "$REPO" --state open --label "ai-task" \
+              --json number,title,labels,updatedAt |
+            jq -r --arg cutoff "$CUTOFF" \
+              '.[] | select(.updatedAt < $cutoff)
+                   | select([.labels[].name] | (index("blocked") or index("needs:karl") or index("stage:ready") or index("stage:plan")) | not)
+                   | select([.labels[].name] | (index("stage:build") or index("stage:review")))
+                   | .number' |
+            while read -r NUM; do
+              [ -z "$NUM" ] && continue
+              echo "Stalled $KIND #$NUM"
+              gh "$KIND" edit "$NUM" --repo "$REPO" --add-label "blocked" || true
+              cat > /tmp/taskforce-sweep-comment.md <<EOF
+          ## AI Task Force Handoff
+          Owner: @karlwint
+          Round: n/a
+          Type: stalled
+          Status: escalated
+
+          ### Task
+          No visible progress for ${STALE_HOURS}h on this $KIND.
+
+          ### Scope
+          Do not auto-retry until Karl or a maintainer removes `blocked`.
+
+          ### Acceptance
+          Karl decides whether to retry, reassign, close, or re-scope.
+
+          ### Escalate If
+          Already escalated. @karlwint
+          EOF
+              sed -i 's/^[[:space:]]*//' /tmp/taskforce-sweep-comment.md
+              gh "$KIND" comment "$NUM" --repo "$REPO" --body-file /tmp/taskforce-sweep-comment.md
+            done
+          done

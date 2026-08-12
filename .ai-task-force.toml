@@ -1,0 +1,25 @@
+[repository]
+name = "karlwint/wintersoperations-site"
+main_branch = "main"
+
+[workflow]
+design = "stage:plan"
+engineering = "stage:plan"
+approved = "stage:build"
+building = "stage:build"
+review = "stage:review"
+ready_testing = "stage:ready"
+blocked = "blocked"
+
+[client]
+# Read these on every sync, not just onboarding.
+instructions = [
+  "AGENTS.md",
+]
+instructions_policy = "every-sync"
+
+[provider]
+# Configure a provider command before using --dispatch. It receives the packet
+# path through {packet}; the coordinator itself remains provider-neutral.
+name = "any"
+command = ""

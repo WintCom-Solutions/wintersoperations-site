@@ -1,0 +1,68 @@
+name: Ninja Jump
+
+# Task Force Ninja posts presence when work starts.
+# Fires on ai-task items entering stage:build or stage:review.
+
+on:
+  issues:
+    types: [labeled]
+  pull_request:
+    types: [labeled]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  jump:
+    runs-on: ubuntu-latest
+    if: >-
+      github.event.label.name == 'stage:build' ||
+      github.event.label.name == 'stage:review'
+    steps:
+      - name: Post ninja presence
+        env:
+          GH_TOKEN: ${{ secrets.TASKFORCE_PAT || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          LABEL: ${{ github.event.label.name }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          set -euo pipefail
+
+          if [ "$EVENT_NAME" = "issues" ]; then
+            KIND=issue
+            NUMBER="$ISSUE_NUMBER"
+          else
+            KIND=pr
+            NUMBER="$PR_NUMBER"
+          fi
+
+          # Only comment if this item is also labeled ai-task
+          LABELS=$(gh "$KIND" view "$NUMBER" --repo "$REPO" --json labels --jq '.labels[].name')
+          echo "$LABELS" | grep -qx 'ai-task' || {
+            echo "Not an ai-task item — ninja stays home."
+            exit 0
+          }
+
+          # Avoid duplicate presence spam (check recent comments)
+          if gh "$KIND" view "$NUMBER" --repo "$REPO" --comments --json comments \
+            --jq '.comments[-15:] | .[].body' 2>/dev/null | grep -q 'Task Force Ninja.*jumped into'; then
+            echo "Ninja already present — skip."
+            exit 0
+          fi
+
+          BODY=$(cat <<EOF
+          > 🥷 **Task Force Ninja** jumped into \`$REPO\`
+          >
+          > Stage: \`$LABEL\` · Standing by. Scope = this item. Rules = AGENTS.md.
+          > Katana sharp. Packets optional.
+          EOF
+          )
+
+          # strip leading spaces from heredoc indent
+          BODY=$(printf '%s\n' "$BODY" | sed 's/^[[:space:]]*//')
+
+          gh "$KIND" comment "$NUMBER" --repo "$REPO" --body "$BODY"
+          echo "Ninja jumped into $REPO #$NUMBER ($LABEL)"

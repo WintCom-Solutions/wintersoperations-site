@@ -1,0 +1,37 @@
+{
+  "comment": "AI Task Force agent registry. The dispatcher picks the first enabled agent with the needed capability, skipping the PR's author. Order = priority. Adding a provider = adding an entry (and an invoke job in dispatch.yml if it needs a new mode). login_hints are matched against GitHub logins to detect self-approval. IMPORTANT: only list 'review' as a capability for agents that can post a binding GitHub review (approve/request-changes) via our own gh pr review call. GitHub's own Copilot code review and ChatGPT/Codex review bots are comment-only by design (confirmed via GitHub/OpenAI docs) and can never satisfy this pipeline's stage:ready gate — do not re-add 'review' to them without wiring a real gh pr review call under our own credentials, the same way invoke-grok does.",
+  "agents": [
+    {
+      "name": "claude-code",
+      "mode": "claude-action",
+      "capabilities": ["build", "review"],
+      "enabled": true,
+      "login_hints": ["claude"]
+    },
+    {
+      "name": "copilot",
+      "mode": "copilot-native",
+      "capabilities": ["build"],
+      "enabled": true,
+      "login_hints": ["copilot"],
+      "comment": "Copilot coding agent can build. Copilot code review is comment-only (GitHub docs) and can never post approve/request-changes, so it is not listed as a 'review' capability here — it would be picked and then stall the pipeline forever, as PR #73 did."
+    },
+    {
+      "name": "grok",
+      "mode": "grok-api",
+      "capabilities": ["review"],
+      "enabled": true,
+      "login_hints": ["grok"],
+      "comment": "Binding reviewer: dispatch.yml's invoke-grok job sends the diff to the xAI API (grok_review.py) and posts the verdict itself via gh pr review, using TASKFORCE_REVIEWER_PAT so the identity differs from whichever identity opened the PR. Requires the XAI_API_KEY secret (console.x.ai). No build capability yet — that needs a full agentic loop (Grok Build), which currently requires a SuperGrok Heavy subscription and doesn't run headless the way this pipeline needs."
+    },
+    {
+      "name": "codex",
+      "mode": "codex-cli",
+      "capabilities": ["review"],
+      "enabled": true,
+      "launch_url": "https://chatgpt.com/codex",
+      "login_hints": ["chatgpt", "codex", "openai"],
+      "comment": "Binding reviewer: dispatch.yml's invoke-codex job runs the real Codex CLI with ChatGPT-managed auth from CODEX_AUTH_JSON and posts the verdict itself via gh pr review, using TASKFORCE_REVIEWER_PAT so the identity differs from whichever identity opened the PR. Requires private/trusted CI, a global codex-auth concurrency lock, and periodic reseeding if auth refresh cannot be persisted."
+    }
+  ]
+}

@@ -1,0 +1,331 @@
+name: Task Force Dispatch
+
+# The coordinator. GitHub events in, agent invocations out. State lives only
+# in labels — see AGENTS.md for the model and .github/taskforce/agents.json
+# for the roster.
+
+on:
+  issues:
+    types: [labeled]
+  pull_request:
+    types: [labeled, opened, ready_for_review]
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: dispatch-${{ github.event.issue.number || github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  route:
+    runs-on: ubuntu-latest
+    outputs:
+      action: ${{ steps.decide.outputs.action }}
+      agent: ${{ steps.decide.outputs.agent }}
+      mode: ${{ steps.decide.outputs.mode }}
+      number: ${{ steps.decide.outputs.number }}
+      executor: ${{ steps.decide.outputs.executor }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: decide
+        env:
+          GH_TOKEN: ${{ secrets.TASKFORCE_PAT || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          EVENT: ${{ github.event_name }}
+          GH_ACTION: ${{ github.event.action }}
+          LABEL: ${{ github.event.label.name }}
+          REVIEW_STATE: ${{ github.event.review.state }}
+          REVIEW_AUTHOR: ${{ github.event.review.user.login }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_DRAFT: ${{ github.event.pull_request.draft }}
+        run: bash .github/taskforce/route.sh
+
+  mark-ready:
+    needs: route
+    if: needs.route.outputs.action == 'ready'
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ secrets.TASKFORCE_PAT || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ needs.route.outputs.number }}
+        run: |
+          gh pr edit "$NUMBER" --repo "$REPO" --remove-label "stage:review" --add-label "stage:ready" || true
+          gh pr comment "$NUMBER" --repo "$REPO" --body \
+            "@karlwint independent review approved this PR — it is \`stage:ready\` and waiting on your merge."
+
+  invoke-claude:
+    needs: route
+    if: >-
+      needs.route.outputs.agent == 'claude-code' &&
+      contains(fromJSON('["build","review","rework"]'), needs.route.outputs.action)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: prompt
+        env:
+          ACTION: ${{ needs.route.outputs.action }}
+          NUMBER: ${{ needs.route.outputs.number }}
+        run: |
+          case "$ACTION" in
+            build)
+              PROMPT="You are agent 'claude-code' in the AI Task Force. Read AGENTS.md at the repo root and follow it exactly. Your task: implement issue #$NUMBER — exactly the scope in the issue, nothing extra. Create branch taskforce/issue-$NUMBER, implement, run the test suite if one exists, then open a PR whose body contains 'Closes #$NUMBER' plus your validation evidence, with labels ai-task, stage:review, agent:claude-code. Do not merge and do not review or approve your own PR."
+              ;;
+            review)
+              PROMPT="You are agent 'claude-code' in the AI Task Force, acting as INDEPENDENT REVIEWER for PR #$NUMBER, which you did not author. Read AGENTS.md at the repo root. Read the linked issue, then review the PR diff for correctness, validation evidence, and scope discipline (flag anything beyond the issue scope, even if the code is good). Finish by submitting a real GitHub review: 'gh pr review $NUMBER --approve --body <findings>' or 'gh pr review $NUMBER --request-changes --body <concrete actionable findings>'. Comments alone do not advance the pipeline. Never approve work you authored."
+              ;;
+            rework)
+              PROMPT="You are agent 'claude-code' in the AI Task Force. Read AGENTS.md at the repo root. A reviewer requested changes on PR #$NUMBER, which you authored. Read the review findings, address exactly those findings on the PR branch (no unrelated changes), push, summarize what changed in a comment, then move the PR label from stage:build back to stage:review."
+              ;;
+          esac
+          {
+            echo "text<<TASKFORCE_EOF"
+            echo "$PROMPT"
+            echo "TASKFORCE_EOF"
+          } >> "$GITHUB_OUTPUT"
+      - id: token
+        env:
+          ACTION: ${{ needs.route.outputs.action }}
+          BUILD_TOKEN: ${{ secrets.TASKFORCE_PAT || secrets.GITHUB_TOKEN }}
+          REVIEW_TOKEN: ${{ secrets.TASKFORCE_REVIEWER_PAT || secrets.GITHUB_TOKEN }}
+        run: |
+          # Build/rework open or push to a PR; review posts an approve/request-changes
+          # verdict on one. GitHub rejects a review whose author matches the PR's
+          # author (422 "Can not approve your own pull request"), so these two
+          # actions must run under different identities whenever both secrets are
+          # set — reusing one token for both would make every review a self-review.
+          if [ "$ACTION" = "review" ]; then
+            echo "text=$REVIEW_TOKEN" >> "$GITHUB_OUTPUT"
+          else
+            echo "text=$BUILD_TOKEN" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: anthropics/claude-code-action@v1
+        with:
+          prompt: ${{ steps.prompt.outputs.text }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ steps.token.outputs.text }}
+          claude_args: "--allowedTools Bash,Read,Write,Edit,Glob,Grep --max-turns 60"
+
+  invoke-copilot:
+    needs: route
+    if: >-
+      needs.route.outputs.agent == 'copilot' &&
+      contains(fromJSON('["build","rework"]'), needs.route.outputs.action)
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ secrets.TASKFORCE_PAT || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ needs.route.outputs.number }}
+        run: |
+          set -euo pipefail
+          OWNER="${REPO%%/*}"; NAME="${REPO##*/}"
+          # Assign the Copilot coding agent to the issue (build/rework). Copilot
+          # has no 'review' capability in agents.json — its code review feature
+          # is comment-only and can never post approve/request-changes, so
+          # pick_agent never routes review actions here.
+          BOT_ID=$(gh api graphql \
+            -f query='query($owner:String!,$name:String!){repository(owner:$owner,name:$name){suggestedActors(capabilities:[CAN_BE_ASSIGNED],first:100){nodes{login __typename ... on Bot{id}}}}}' \
+            -f owner="$OWNER" -f name="$NAME" \
+            --jq '.data.repository.suggestedActors.nodes[] | select(.login=="copilot-swe-agent") | .id')
+          ITEM_ID=$(gh api graphql \
+            -f query='query($owner:String!,$name:String!,$number:Int!){repository(owner:$owner,name:$name){issue(number:$number){id}}}' \
+            -f owner="$OWNER" -f name="$NAME" -F number="$NUMBER" \
+            --jq '.data.repository.issue.id')
+          gh api graphql -f query="mutation { replaceActorsForAssignable(input:{assignableId:\"$ITEM_ID\", actorIds:[\"$BOT_ID\"]}) { assignable { ... on Issue { number } } } }"
+          gh issue comment "$NUMBER" --repo "$REPO" --body \
+            "Dispatcher assigned the Copilot coding agent to this issue."
+
+  invoke-grok:
+    needs: route
+    if: >-
+      needs.route.outputs.agent == 'grok' &&
+      needs.route.outputs.action == 'review'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Gather PR context
+        env:
+          GH_TOKEN: ${{ secrets.TASKFORCE_PAT || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ needs.route.outputs.number }}
+        run: |
+          set -euo pipefail
+          gh pr diff "$NUMBER" --repo "$REPO" > /tmp/pr.diff
+          BODY=$(gh pr view "$NUMBER" --repo "$REPO" --json body --jq '.body')
+          REF=$(printf '%s' "$BODY" \
+            | grep -oiE '(close[sd]?|fix(e[sd])?|resolve[sd]?) #[0-9]+' \
+            | head -n1 | grep -oE '[0-9]+' || true)
+          if [ -n "$REF" ]; then
+            gh issue view "$REF" --repo "$REPO" --json title,body \
+              --jq '"# " + .title + "\n\n" + .body' > /tmp/issue.md
+          else
+            echo "(no linked issue found)" > /tmp/issue.md
+          fi
+      - name: Ask Grok for a verdict
+        env:
+          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+        run: |
+          set -euo pipefail
+          python3 .github/taskforce/grok_review.py \
+            --diff /tmp/pr.diff --issue /tmp/issue.md --agents-md AGENTS.md \
+            --out /tmp/verdict.json
+      - name: Post the review
+        env:
+          GH_TOKEN: ${{ secrets.TASKFORCE_REVIEWER_PAT || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ needs.route.outputs.number }}
+        run: |
+          set -euo pipefail
+          STATE=$(jq -r '.state' /tmp/verdict.json)
+          BODY=$(jq -r '.body' /tmp/verdict.json)
+          if [ "$STATE" = "approve" ]; then
+            gh pr review "$NUMBER" --repo "$REPO" --approve --body "$BODY"
+          else
+            gh pr review "$NUMBER" --repo "$REPO" --request-changes --body "$BODY"
+          fi
+
+
+  invoke-codex:
+    needs: route
+    if: >-
+      needs.route.outputs.agent == 'codex' &&
+      needs.route.outputs.action == 'review'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    concurrency:
+      group: codex-auth
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: prompt
+        env:
+          NUMBER: ${{ needs.route.outputs.number }}
+        run: |
+          PROMPT="You are agent 'codex' in the AI Task Force, acting as INDEPENDENT REVIEWER for PR #$NUMBER, which you did not author. Read AGENTS.md at the repo root. Read the linked issue, then review the PR diff for correctness, validation evidence, and scope discipline (flag anything beyond the issue scope, even if the code is good). Do not edit files or push commits. Your first line must be exactly 'VERDICT: approve' or 'VERDICT: request-changes'. After that, write concise concrete findings for the GitHub review body."
+          {
+            echo "text<<TASKFORCE_EOF"
+            echo "$PROMPT"
+            echo "TASKFORCE_EOF"
+          } >> "$GITHUB_OUTPUT"
+      - name: Prepare Codex auth
+        env:
+          CODEX_AUTH_JSON: ${{ secrets.CODEX_AUTH_JSON }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CODEX_AUTH_JSON:-}" ]; then
+            echo "CODEX_AUTH_JSON is not configured." >&2
+            exit 1
+          fi
+          mkdir -p "$HOME/.codex"
+          chmod 700 "$HOME/.codex"
+          printf '%s' "$CODEX_AUTH_JSON" > "$HOME/.codex/auth.json"
+          chmod 600 "$HOME/.codex/auth.json"
+          jq -e '.auth_mode == "chatgpt" and ((.tokens.refresh_token // "") != "")' "$HOME/.codex/auth.json" >/dev/null
+      - name: Install Codex CLI
+        run: npm install -g @openai/codex
+      - name: Run Codex review
+        env:
+          GH_TOKEN: ${{ secrets.TASKFORCE_REVIEWER_PAT || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ needs.route.outputs.number }}
+        run: |
+          set -euo pipefail
+          gh pr diff "$NUMBER" --repo "$REPO" > /tmp/pr.diff
+          codex exec --sandbox read-only --json --output-last-message /tmp/codex-review.md "${{ steps.prompt.outputs.text }}"
+      - name: Post the review
+        env:
+          GH_TOKEN: ${{ secrets.TASKFORCE_REVIEWER_PAT || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ needs.route.outputs.number }}
+        run: |
+          set -euo pipefail
+          BODY="$(cat /tmp/codex-review.md)"
+          FIRST_LINE="$(printf '%s\n' "$BODY" | head -n1 | tr '[:upper:]' '[:lower:]')"
+          if printf '%s' "$FIRST_LINE" | grep -q 'verdict: approve'; then
+            gh pr review "$NUMBER" --repo "$REPO" --approve --body "$BODY"
+          else
+            gh pr review "$NUMBER" --repo "$REPO" --request-changes --body "$BODY"
+          fi
+
+  chat-relay:
+    needs: route
+    if: >-
+      needs.route.outputs.mode == 'chat' &&
+      contains(fromJSON('["build","review","rework"]'), needs.route.outputs.action)
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ secrets.TASKFORCE_PAT || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          ACTION: ${{ needs.route.outputs.action }}
+          AGENT: ${{ needs.route.outputs.agent }}
+          NUMBER: ${{ needs.route.outputs.number }}
+        run: |
+          KIND=issue; [ "$ACTION" != "build" ] && KIND=pr
+          gh "$KIND" comment "$NUMBER" --repo "$REPO" --body \
+            "Ready for pickup by chat agent \`$AGENT\` ($ACTION). @karlwint relay this item to that chat: paste the item URL and ask it to follow AGENTS.md."
+
+  no-agent:
+    needs: route
+    if: >-
+      needs.route.outputs.agent == '' &&
+      contains(fromJSON('["build","review","rework"]'), needs.route.outputs.action)
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ secrets.TASKFORCE_PAT || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          ACTION: ${{ needs.route.outputs.action }}
+          NUMBER: ${{ needs.route.outputs.number }}
+        run: |
+          KIND=issue; [ "$ACTION" != "build" ] && KIND=pr
+          gh "$KIND" edit "$NUMBER" --repo "$REPO" --add-label "needs:karl" || true
+          gh "$KIND" comment "$NUMBER" --repo "$REPO" --body \
+            "No eligible independent agent is available for '$ACTION' (single-agent mode or all candidates excluded). @karlwint this one falls to you."
+
+  on-invoke-failure:
+    needs: [route, invoke-claude, invoke-copilot, invoke-grok, invoke-codex]
+    if: >-
+      always() && needs.route.outputs.agent != '' &&
+      (needs.invoke-claude.result == 'failure' || needs.invoke-copilot.result == 'failure' ||
+       needs.invoke-grok.result == 'failure' || needs.invoke-codex.result == 'failure')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ secrets.TASKFORCE_PAT || secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          ACTION: ${{ needs.route.outputs.action }}
+          AGENT: ${{ needs.route.outputs.agent }}
+          NUMBER: ${{ needs.route.outputs.number }}
+        run: |
+          set -euo pipefail
+          CAP=build; [ "$ACTION" = "review" ] && CAP=review
+          NEXT=$(jq -r --arg cap "$CAP" --arg ex "$AGENT" \
+            '.agents[] | select(.enabled and (.capabilities | index($cap)) and .name != $ex) | .name' \
+            .github/taskforce/agents.json | head -n1)
+          KIND=issue; [ "$ACTION" != "build" ] && KIND=pr
+          if [ -n "$NEXT" ] && [ "$ACTION" = "build" ]; then
+            gh issue edit "$NUMBER" --repo "$REPO" --remove-label "agent:$AGENT" --add-label "agent:$NEXT" || true
+            gh issue comment "$NUMBER" --repo "$REPO" --body \
+              "Invocation of \`$AGENT\` failed — failing over to \`$NEXT\`. Re-apply \`stage:build\` to retry now, or the sweep will pick it up."
+          else
+            gh "$KIND" edit "$NUMBER" --repo "$REPO" --add-label "blocked" || true
+            gh "$KIND" comment "$NUMBER" --repo "$REPO" --body \
+              "Invocation of \`$AGENT\` failed for '$ACTION' and no other capable agent is enabled. Marked \`blocked\` for @karlwint."
+          fi
