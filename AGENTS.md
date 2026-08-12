@@ -164,7 +164,7 @@ work with one click from Karl.
 ## Executing a build task
 
 1. Read the issue. The issue is the whole scope.
-2. Branch: `taskforce/issue-<N>`. Never commit to the default branch itself
+2. Branch: `taskforce/issue-<N>`. Never push to the default branch itself
    — see hard rule 4.
 3. Implement, validate (run the test suite if one exists).
 4. Open a PR: body contains `Closes #<N>` plus validation evidence.
