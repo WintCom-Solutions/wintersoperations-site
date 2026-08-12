@@ -12,7 +12,7 @@
       "name": "copilot",
       "mode": "copilot-native",
       "capabilities": ["build"],
-      "enabled": true,
+      "enabled": false,
       "login_hints": ["copilot"],
       "comment": "Copilot coding agent can build. Copilot code review is comment-only (GitHub docs) and can never post approve/request-changes, so it is not listed as a 'review' capability here — it would be picked and then stall the pipeline forever, as PR #73 did."
     },
