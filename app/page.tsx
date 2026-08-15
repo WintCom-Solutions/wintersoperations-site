@@ -193,14 +193,11 @@ export default function Home() {
               better? Reach out — we’ll respond promptly.
             </p>
             <a
-              href="mailto:hello@wintersoperations.com"
+              href="mailto:solutions@wintersoperations.com"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-cyan-500 text-navy-950 font-semibold hover:bg-cyan-400 transition"
             >
-              hello@wintersoperations.com
+              solutions@wintersoperations.com
             </a>
-            <p className="mt-4 text-sm text-slate-500">
-              (Placeholder address — final contact details coming soon)
-            </p>
           </div>
         </section>
       </main>
