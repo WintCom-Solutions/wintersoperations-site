@@ -16,6 +16,9 @@ export default function Home() {
             <a href="/services" className="hover:text-cyan-400 transition">
               Services
             </a>
+            <a href="#demo" className="hover:text-cyan-400 transition">
+              Demo
+            </a>
             <a href="#about" className="hover:text-cyan-400 transition">
               About
             </a>
@@ -52,10 +55,10 @@ export default function Home() {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="/services"
+                href="#demo"
                 className="px-6 py-3 rounded-lg bg-cyan-500 text-navy-950 font-semibold hover:bg-cyan-400 transition"
               >
-                See Services
+                Watch Demo
               </a>
               <a
                 href="#contact"
@@ -64,6 +67,40 @@ export default function Home() {
                 Get in Touch
               </a>
             </div>
+          </div>
+        </section>
+
+        {/* Flagship Demo Video */}
+        <section id="demo" className="py-20 border-t border-navy-800">
+          <div className="max-w-5xl mx-auto px-6">
+            <div className="text-center mb-10">
+              <p className="text-cyan-400 font-medium tracking-wide text-sm uppercase mb-3">
+                Flagship Demo
+              </p>
+              <h2 className="text-3xl font-bold text-white">
+                See the approach in action
+              </h2>
+              <p className="mt-3 text-slate-400 max-w-2xl mx-auto">
+                A short look at how Winters Operations approaches real operational
+                and automation work.
+              </p>
+            </div>
+
+            <div className="relative w-full overflow-hidden rounded-2xl border border-navy-700 bg-navy-900/60 shadow-2xl shadow-cyan-950/20">
+              <div className="relative aspect-video w-full">
+                <iframe
+                  src="https://drive.google.com/file/d/1mtuu7ksOZ4uiXFW4ou4pw5L9M0r3mEha/preview"
+                  title="Winters Operations Flagship Demo"
+                  className="absolute inset-0 h-full w-full"
+                  allow="autoplay"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+
+            <p className="mt-4 text-center text-xs text-slate-500">
+              Hosted temporarily via Google Drive. Self-hosted asset planned for production.
+            </p>
           </div>
         </section>
 
