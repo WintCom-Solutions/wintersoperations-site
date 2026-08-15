@@ -3,10 +3,22 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Winters Operations offers operations consulting and practical AI automation for IT, network, and operations teams.",
+    "Winters Operations builds websites and practical Python automation for small businesses, backed by enterprise network engineering experience.",
 };
 
 const serviceGroups = [
+  {
+    title: "Web Design",
+    eyebrow: "A site that actually works",
+    description:
+      "Clean, fast, modern websites built for small businesses — no bloated templates, no unnecessary complexity.",
+    items: [
+      "Custom site design and build",
+      "Fast, mobile-first performance",
+      "Basic SEO and analytics setup",
+      "Ongoing updates and support",
+    ],
+  },
   {
     title: "Network & Infrastructure",
     eyebrow: "Build it right the first time",
@@ -77,18 +89,18 @@ export default function ServicesPage() {
               Services
             </p>
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white max-w-3xl leading-tight">
-              Focused consulting for operations, IT, and automation work.
+              Websites, automation, and network work — done right.
             </h1>
             <p className="mt-6 text-lg text-slate-400 max-w-2xl leading-relaxed">
-              Winters Operations helps teams reduce manual effort, clarify how
-              work moves, and build practical automation around real tools and
-              real operational constraints.
+              Winters Operations builds clean websites and practical Python
+              automation for small businesses, backed by 20+ years of
+              enterprise network and infrastructure experience.
             </p>
           </div>
         </section>
 
         <section className="py-20">
-          <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8">
+          <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8">
             {serviceGroups.map((group) => (
               <article
                 key={group.title}

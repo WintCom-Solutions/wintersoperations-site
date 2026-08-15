@@ -35,20 +35,19 @@ export default function Home() {
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-900/20 via-navy-950 to-navy-950" />
           <div className="relative max-w-6xl mx-auto px-6 pt-24 pb-28 text-center">
             <p className="text-cyan-400 font-medium tracking-wide text-sm uppercase mb-4">
-              Operations & AI Automation Consulting
+              Web Design & Python Automation
             </p>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white max-w-4xl mx-auto leading-[1.15]">
-              From operational friction
+              A website that works,
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-cyan-200">
-                to command.
+                automation that saves you time.
               </span>
             </h1>
             <p className="mt-6 text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-              Winters Operations helps teams run cleaner, faster, and with less
-              manual toil. We combine deep operations experience with practical
-              AI and automation — especially around the tools network and IT
-              teams already live in.
+              Winters Operations builds clean, fast websites and practical
+              Python automation for small businesses — backed by 20+ years of
+              enterprise network and infrastructure experience.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <a
@@ -71,14 +70,54 @@ export default function Home() {
         <section id="services" className="py-24 border-t border-navy-800">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold text-white">Two clear service lines</h2>
+              <h2 className="text-3xl font-bold text-white">Three clear service lines</h2>
               <p className="mt-3 text-slate-400 max-w-xl mx-auto">
-                Whether you need stronger day-to-day operations or targeted
-                automation that actually sticks, we meet you where you are.
+                Whether you need a website, automation that saves you time, or
+                enterprise network work, we meet you where you are.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-3 gap-8">
+              {/* Web Design */}
+              <div className="rounded-2xl border border-navy-700 bg-navy-900/50 p-8 hover:border-cyan-500/30 transition">
+                <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-6">
+                  <svg
+                    className="w-6 h-6 text-cyan-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  Web Design
+                </h3>
+                <p className="text-slate-400 leading-relaxed mb-6">
+                  Clean, fast, modern websites built for small businesses —
+                  no bloated templates, no unnecessary complexity.
+                </p>
+                <ul className="space-y-2 text-sm text-slate-300">
+                  <li className="flex gap-2">
+                    <span className="text-cyan-400">→</span> Custom site
+                    design & build
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-cyan-400">→</span> Fast, mobile-first
+                    performance
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-cyan-400">→</span> Ongoing updates &
+                    support
+                  </li>
+                </ul>
+              </div>
+
               {/* Ops Consulting */}
               <div className="rounded-2xl border border-navy-700 bg-navy-900/50 p-8 hover:border-cyan-500/30 transition">
                 <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-6">
