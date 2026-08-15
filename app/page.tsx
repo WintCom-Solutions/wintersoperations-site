@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
@@ -5,9 +7,13 @@ export default function Home() {
       <header className="border-b border-navy-700/60 bg-navy-950/80 backdrop-blur sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center font-bold text-navy-950 text-sm">
-              W
-            </div>
+            <Image
+              src="/logo.png"
+              alt="Winters Operations"
+              width={32}
+              height={32}
+              className="rounded-lg"
+            />
             <span className="font-semibold tracking-tight text-lg">
               Winters Operations
             </span>
