@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import "./globals.css";
 import { siteUrl } from "@/lib/site";
 
@@ -61,12 +60,8 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
-        <link rel="stylesheet" href="/taskforce-ninja.css" />
       </head>
-      <body className="font-sans">
-        {children}
-        <Script src="/taskforce-ninja.js" strategy="afterInteractive" />
-      </body>
+      <body className="font-sans">{children}</body>
     </html>
   );
 }
