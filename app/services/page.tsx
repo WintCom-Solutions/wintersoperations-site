@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import CopyEmailButton from "@/components/CopyEmailButton";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -176,6 +177,9 @@ export default function ServicesPage() {
             >
               solutions@wintersoperations.com
             </a>
+            <div>
+              <CopyEmailButton email="solutions@wintersoperations.com" />
+            </div>
           </div>
         </section>
       </main>
