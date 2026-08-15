@@ -1,8 +1,7 @@
 import type { MetadataRoute } from "next";
+import { siteUrl } from "@/lib/site";
 
 export const dynamic = "force-static";
-
-const siteUrl = "https://example.com";
 
 export default function robots(): MetadataRoute.Robots {
   return {

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
+import { siteUrl } from "@/lib/site";
 
-const siteUrl = "https://example.com";
 const siteTitle = "Winters Operations | Ops & AI Automation Consulting";
 const siteDescription =
   "Winters Operations helps IT and operations teams reduce friction with practical consulting, Python automation, and focused AI workflows for tools like Cisco Meraki, SolarWinds, and ServiceNow.";
