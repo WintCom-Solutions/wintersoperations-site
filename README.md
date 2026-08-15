@@ -13,7 +13,7 @@ Two service lines:
 
 ## Tech Stack
 
-- Next.js 14 (App Router)
+- Next.js 16 (App Router)
 - TypeScript
 - Tailwind CSS
 - Static export (`output: 'export'`) — easy to host on Vercel, Netlify, GitHub Pages, or any static host
