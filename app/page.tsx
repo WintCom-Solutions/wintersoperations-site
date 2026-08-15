@@ -6,7 +6,7 @@ export default function Home() {
       {/* Nav */}
       <header className="border-b border-navy-700/60 bg-navy-950/80 backdrop-blur sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <a href="/" className="flex items-center gap-3">
             <Image
               src="/logo.png"
               alt="Winters Operations"
@@ -17,10 +17,13 @@ export default function Home() {
             <span className="font-semibold tracking-tight text-lg">
               Winters Operations
             </span>
-          </div>
+          </a>
           <nav className="hidden sm:flex items-center gap-8 text-sm text-slate-400">
             <a href="/services" className="hover:text-cyan-400 transition">
               Services
+            </a>
+            <a href="/demo" className="hover:text-cyan-400 transition">
+              Demo
             </a>
             <a href="#about" className="hover:text-cyan-400 transition">
               About
@@ -63,16 +66,16 @@ export default function Home() {
                 See Services
               </a>
               <a
-                href="#contact"
+                href="/demo"
                 className="px-6 py-3 rounded-lg border border-slate-600 text-slate-200 hover:border-cyan-500/50 hover:text-cyan-300 transition"
               >
-                Get in Touch
+                Watch Demo
               </a>
             </div>
           </div>
         </section>
 
-        {/* Services */}
+        {/* Services summary */}
         <section id="services" className="py-24 border-t border-navy-800">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-16">
@@ -84,7 +87,6 @@ export default function Home() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              {/* Web Design */}
               <div className="rounded-2xl border border-navy-700 bg-navy-900/50 p-8 hover:border-cyan-500/30 transition">
                 <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-6">
                   <svg
@@ -101,17 +103,15 @@ export default function Home() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-3">
-                  Web Design
-                </h3>
+                <h3 className="text-xl font-semibold text-white mb-3">Web Design</h3>
                 <p className="text-slate-400 leading-relaxed mb-6">
-                  Clean, fast, modern websites built for small businesses —
-                  no bloated templates, no unnecessary complexity.
+                  Clean, fast, modern websites built for small businesses — no
+                  bloated templates, no unnecessary complexity.
                 </p>
                 <ul className="space-y-2 text-sm text-slate-300">
                   <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> Custom site
-                    design & build
+                    <span className="text-cyan-400">→</span> Custom site design &
+                    build
                   </li>
                   <li className="flex gap-2">
                     <span className="text-cyan-400">→</span> Fast, mobile-first
@@ -124,7 +124,6 @@ export default function Home() {
                 </ul>
               </div>
 
-              {/* Ops Consulting */}
               <div className="rounded-2xl border border-navy-700 bg-navy-900/50 p-8 hover:border-cyan-500/30 transition">
                 <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-6">
                   <svg
@@ -145,9 +144,8 @@ export default function Home() {
                   Network & Infrastructure
                 </h3>
                 <p className="text-slate-400 leading-relaxed mb-6">
-                  Enterprise network design and deployment, from new
-                  construction to SD-WAN across hundreds of sites. 20+ years
-                  building infrastructure that stays connected.
+                  Enterprise network design and deployment, from new construction
+                  to SD-WAN across hundreds of sites.
                 </p>
                 <ul className="space-y-2 text-sm text-slate-300">
                   <li className="flex gap-2">
@@ -155,17 +153,16 @@ export default function Home() {
                     deployment
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> New construction
-                    & structured cabling
+                    <span className="text-cyan-400">→</span> New construction &
+                    structured cabling
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> Network
-                    assessments & remediation
+                    <span className="text-cyan-400">→</span> Network assessments &
+                    remediation
                   </li>
                 </ul>
               </div>
 
-              {/* AI / Automation */}
               <div className="rounded-2xl border border-navy-700 bg-navy-900/50 p-8 hover:border-cyan-500/30 transition">
                 <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-6">
                   <svg
@@ -183,25 +180,23 @@ export default function Home() {
                   </svg>
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-3">
-                  AI & Automation Consulting
+                  AI & Automation
                 </h3>
                 <p className="text-slate-400 leading-relaxed mb-6">
                   Practical Python automation built from running a large-scale
-                  Meraki SD-WAN environment day to day — turning hours of
-                  manual network work into minutes.
+                  Meraki SD-WAN environment day to day.
                 </p>
                 <ul className="space-y-2 text-sm text-slate-300">
                   <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> Cisco Meraki
-                    automation
+                    <span className="text-cyan-400">→</span> Cisco Meraki automation
                   </li>
                   <li className="flex gap-2">
                     <span className="text-cyan-400">→</span> Device config &
-                    credential auditing tools
+                    credential auditing
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> Monitoring &
-                    reporting automation
+                    <span className="text-cyan-400">→</span> Monitoring & reporting
+                    automation
                   </li>
                 </ul>
                 <a
@@ -229,8 +224,8 @@ export default function Home() {
             </p>
             <p className="mt-4 text-slate-400 leading-relaxed text-lg">
               Consulting engagements bring that same experience to teams that
-              need enterprise-level network expertise without the full-time
-              cost — network assessments, SD-WAN and Starlink deployments,
+              need enterprise-level network expertise without the full-time cost
+              — network assessments, SD-WAN and Starlink deployments,
               new-construction structured cabling and MDF/IDF buildouts, IP
               camera systems, and voice infrastructure.
             </p>
@@ -242,8 +237,8 @@ export default function Home() {
           <div className="max-w-xl mx-auto px-6 text-center">
             <h2 className="text-3xl font-bold text-white mb-4">Get in touch</h2>
             <p className="text-slate-400 mb-8">
-              Ready to talk about how your operations or automation could run
-              better? Reach out — we’ll respond promptly.
+              Ready to talk about a website, automation, or network work? Reach
+              out — we’ll respond promptly.
             </p>
             <a
               href="mailto:solutions@wintersoperations.com"
@@ -255,13 +250,10 @@ export default function Home() {
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-navy-800 py-8">
         <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
           <div>© {new Date().getFullYear()} Winters Operations</div>
-          <div className="text-slate-600">
-            Site scaffolded by Grok · AI Task Force #108
-          </div>
+          <div className="text-slate-600">Ops, web & automation consulting</div>
         </div>
       </footer>
     </div>
