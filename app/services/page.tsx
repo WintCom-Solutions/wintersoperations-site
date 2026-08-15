@@ -8,35 +8,35 @@ export const metadata: Metadata = {
 
 const serviceGroups = [
   {
-    title: "Operations Consulting",
-    eyebrow: "Run the work cleaner",
+    title: "Network & Infrastructure",
+    eyebrow: "Build it right the first time",
     description:
-      "Structured help for teams that need clearer process, cleaner handoffs, and better operating rhythm without adding more overhead.",
+      "Enterprise-grade network design and deployment, from new-construction cabling to SD-WAN across hundreds of sites.",
     items: [
-      "Process mapping and friction review",
-      "Operating cadence and visibility design",
-      "Documentation and handoff cleanup",
-      "Fractional operations support for focused initiatives",
+      "Network assessments — LAN, WAN, WLAN, and security posture review with a remediation roadmap",
+      "SD-WAN design and deployment, including Starlink as primary or backup WAN",
+      "New construction: structured cabling and MDF/IDF buildouts",
+      "IP camera systems and voice (VoIP) infrastructure",
     ],
   },
   {
     title: "AI & Automation Consulting",
     eyebrow: "Automate the right work",
     description:
-      "Practical automation that connects to the tools your team already uses, with an emphasis on maintainable Python workflows and human-readable outputs.",
+      "Practical Python automation that connects to the tools your team already uses, built from experience running a large-scale Meraki SD-WAN environment.",
     items: [
-      "Python automation for repeatable IT tasks",
+      "Python tooling for device configuration, credential auditing, and reporting",
       "Cisco Meraki workflow and reporting automation",
-      "SolarWinds and ServiceNow integration planning",
+      "Monitoring and alerting that cuts manual checks to minutes",
       "AI-assisted triage and reporting workflows",
     ],
   },
 ];
 
 const deliverables = [
-  "Current-state review with practical recommendations",
-  "Workflow diagrams and implementation plan",
-  "Automation scripts or small internal tools using placeholder-safe configuration",
+  "Network assessment report with a practical remediation roadmap",
+  "SD-WAN or new-construction design and implementation plan",
+  "Automation scripts or small internal tools tailored to your environment",
   "Operator-facing documentation and handoff notes",
 ];
 

@@ -97,25 +97,25 @@ export default function Home() {
                   </svg>
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-3">
-                  Operations Consulting
+                  Network & Infrastructure
                 </h3>
                 <p className="text-slate-400 leading-relaxed mb-6">
-                  Process improvement, fractional ops leadership, and practical
-                  systems that reduce friction. We help teams see the work more
-                  clearly and run it more deliberately.
+                  Enterprise network design and deployment, from new
+                  construction to SD-WAN across hundreds of sites. 20+ years
+                  building infrastructure that stays connected.
                 </p>
                 <ul className="space-y-2 text-sm text-slate-300">
                   <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> Process design &
-                    improvement
+                    <span className="text-cyan-400">→</span> SD-WAN & Starlink
+                    deployment
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> Fractional ops
-                    leadership
+                    <span className="text-cyan-400">→</span> New construction
+                    & structured cabling
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> Operating cadence
-                    & visibility
+                    <span className="text-cyan-400">→</span> Network
+                    assessments & remediation
                   </li>
                 </ul>
               </div>
@@ -141,9 +141,9 @@ export default function Home() {
                   AI & Automation Consulting
                 </h3>
                 <p className="text-slate-400 leading-relaxed mb-6">
-                  Practical Python automation that integrates the tools your
-                  teams already use. Specialty focus on network and IT
-                  operations platforms.
+                  Practical Python automation built from running a large-scale
+                  Meraki SD-WAN environment day to day — turning hours of
+                  manual network work into minutes.
                 </p>
                 <ul className="space-y-2 text-sm text-slate-300">
                   <li className="flex gap-2">
@@ -151,12 +151,12 @@ export default function Home() {
                     automation
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> SolarWinds
-                    integration
+                    <span className="text-cyan-400">→</span> Device config &
+                    credential auditing tools
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> ServiceNow
-                    workflows
+                    <span className="text-cyan-400">→</span> Monitoring &
+                    reporting automation
                   </li>
                 </ul>
                 <a
@@ -175,11 +175,19 @@ export default function Home() {
           <div className="max-w-3xl mx-auto px-6 text-center">
             <h2 className="text-3xl font-bold text-white mb-6">About</h2>
             <p className="text-slate-400 leading-relaxed text-lg">
-              Winters Operations is a focused consulting practice built around a
-              simple idea: most operational pain is solvable once you can see it
-              clearly and have the right automation in the right places. We work
-              with network, IT, and operations teams that want less firefighting
-              and more deliberate control.
+              Winters Operations is led by Karl Winters, a network engineer with
+              20+ years building and fixing enterprise infrastructure. Day to
+              day, that means managing a large-scale Cisco Meraki SD-WAN
+              environment spanning hundreds of spoke sites tied together through
+              datacenter hubs and AWS, and writing the Python automation that
+              turns hours of manual network work into minutes.
+            </p>
+            <p className="mt-4 text-slate-400 leading-relaxed text-lg">
+              Consulting engagements bring that same experience to teams that
+              need enterprise-level network expertise without the full-time
+              cost — network assessments, SD-WAN and Starlink deployments,
+              new-construction structured cabling and MDF/IDF buildouts, IP
+              camera systems, and voice infrastructure.
             </p>
           </div>
         </section>
