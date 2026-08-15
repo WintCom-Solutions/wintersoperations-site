@@ -4,40 +4,52 @@ import Image from "next/image";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Winters Operations offers operations consulting and practical AI automation for IT, network, and operations teams.",
+    "Winters Operations builds websites and practical Python automation for small businesses, backed by enterprise network engineering experience.",
 };
 
 const serviceGroups = [
   {
-    title: "Operations Consulting",
-    eyebrow: "Run the work cleaner",
+    title: "Web Design",
+    eyebrow: "A site that actually works",
     description:
-      "Structured help for teams that need clearer process, cleaner handoffs, and better operating rhythm without adding more overhead.",
+      "Clean, fast, modern websites built for small businesses — no bloated templates, no unnecessary complexity.",
     items: [
-      "Process mapping and friction review",
-      "Operating cadence and visibility design",
-      "Documentation and handoff cleanup",
-      "Fractional operations support for focused initiatives",
+      "Custom site design and build",
+      "Fast, mobile-first performance",
+      "Basic SEO and analytics setup",
+      "Ongoing updates and support",
+    ],
+  },
+  {
+    title: "Network & Infrastructure",
+    eyebrow: "Build it right the first time",
+    description:
+      "Enterprise-grade network design and deployment, from new-construction cabling to SD-WAN across hundreds of sites.",
+    items: [
+      "Network assessments — LAN, WAN, WLAN, and security posture review with a remediation roadmap",
+      "SD-WAN design and deployment, including Starlink as primary or backup WAN",
+      "New construction: structured cabling and MDF/IDF buildouts",
+      "IP camera systems and voice (VoIP) infrastructure",
     ],
   },
   {
     title: "AI & Automation Consulting",
     eyebrow: "Automate the right work",
     description:
-      "Practical automation that connects to the tools your team already uses, with an emphasis on maintainable Python workflows and human-readable outputs.",
+      "Practical Python automation that connects to the tools your team already uses, built from experience running a large-scale Meraki SD-WAN environment.",
     items: [
-      "Python automation for repeatable IT tasks",
+      "Python tooling for device configuration, credential auditing, and reporting",
       "Cisco Meraki workflow and reporting automation",
-      "SolarWinds and ServiceNow integration planning",
+      "Monitoring and alerting that cuts manual checks to minutes",
       "AI-assisted triage and reporting workflows",
     ],
   },
 ];
 
 const deliverables = [
-  "Current-state review with practical recommendations",
-  "Workflow diagrams and implementation plan",
-  "Automation scripts or small internal tools using placeholder-safe configuration",
+  "Network assessment report with a practical remediation roadmap",
+  "SD-WAN or new-construction design and implementation plan",
+  "Automation scripts or small internal tools tailored to your environment",
   "Operator-facing documentation and handoff notes",
 ];
 
@@ -82,18 +94,18 @@ export default function ServicesPage() {
               Services
             </p>
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white max-w-3xl leading-tight">
-              Focused consulting for operations, IT, and automation work.
+              Websites, automation, and network work — done right.
             </h1>
             <p className="mt-6 text-lg text-slate-400 max-w-2xl leading-relaxed">
-              Winters Operations helps teams reduce manual effort, clarify how
-              work moves, and build practical automation around real tools and
-              real operational constraints.
+              Winters Operations builds clean websites and practical Python
+              automation for small businesses, backed by 20+ years of
+              enterprise network and infrastructure experience.
             </p>
           </div>
         </section>
 
         <section className="py-20">
-          <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8">
+          <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8">
             {serviceGroups.map((group) => (
               <article
                 key={group.title}
