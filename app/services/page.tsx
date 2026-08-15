@@ -74,6 +74,9 @@ export default function ServicesPage() {
             <a href="/services" className="text-cyan-400">
               Services
             </a>
+            <a href="/demo" className="hover:text-cyan-400 transition">
+              Demo
+            </a>
             <a href="/#about" className="hover:text-cyan-400 transition">
               About
             </a>
@@ -98,8 +101,8 @@ export default function ServicesPage() {
             </h1>
             <p className="mt-6 text-lg text-slate-400 max-w-2xl leading-relaxed">
               Winters Operations builds clean websites and practical Python
-              automation for small businesses, backed by 20+ years of
-              enterprise network and infrastructure experience.
+              automation for small businesses, backed by 20+ years of enterprise
+              network and infrastructure experience.
             </p>
           </div>
         </section>
@@ -143,9 +146,9 @@ export default function ServicesPage() {
                 Concrete outputs, not vague strategy theater.
               </h2>
               <p className="mt-4 text-slate-400 leading-relaxed">
-                Every engagement should leave the team with something usable:
-                a decision, a workflow, a script, a handoff, or a cleaner way
-                to operate.
+                Every engagement should leave the team with something usable: a
+                decision, a workflow, a script, a handoff, or a cleaner way to
+                operate.
               </p>
             </div>
             <div className="rounded-2xl border border-navy-700 bg-navy-950/70 p-6">
