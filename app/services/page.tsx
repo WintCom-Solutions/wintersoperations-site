@@ -150,14 +150,14 @@ export default function ServicesPage() {
               Start with the problem in front of you.
             </h2>
             <p className="text-slate-400 mb-8">
-              Use the current placeholder contact path while final contact and
-              lead intake details are being planned.
+              Ready to talk about how your operations or automation could run
+              better? Reach out — we'll respond promptly.
             </p>
             <a
-              href="mailto:hello@wintersoperations.com"
+              href="mailto:solutions@wintersoperations.com"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-cyan-500 text-navy-950 font-semibold hover:bg-cyan-400 transition"
             >
-              hello@wintersoperations.com
+              solutions@wintersoperations.com
             </a>
           </div>
         </section>
