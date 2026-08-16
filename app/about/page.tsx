@@ -4,7 +4,7 @@ import Image from "next/image";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Winters Operations is led by Karl Winters — 20+ years of enterprise network engineering, Meraki SD-WAN, and practical Python automation.",
+    "Karl Winters — Senior Network Engineer with 20+ years of enterprise infrastructure experience. SD-WAN, Meraki, Starlink, new construction, and Python automation. Available for consulting.",
 };
 
 export default function AboutPage() {
@@ -51,70 +51,104 @@ export default function AboutPage() {
               About
             </p>
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white leading-tight">
-              Enterprise experience, practical delivery.
+              I design, build, and fix enterprise networks.
             </h1>
             <p className="mt-6 text-lg text-slate-400 leading-relaxed">
-              Winters Operations is a focused consulting practice for websites,
-              automation, and network infrastructure — built from real
-              day-to-day operations work, not theory.
+              From new-construction structured cabling to large-scale SD-WAN
+              across hundreds of sites — 20+ years solving the problems that
+              keep businesses connected.
+            </p>
+            <p className="mt-3 text-sm text-slate-500">
+              Memphis Metropolitan Area · Available for consulting
             </p>
           </div>
         </section>
 
         <section className="py-16 sm:py-20">
-          <div className="max-w-3xl mx-auto px-6 space-y-8">
+          <div className="max-w-3xl mx-auto px-6 space-y-12">
             <div>
               <h2 className="text-2xl font-semibold text-white tracking-tight mb-4">
-                Karl Winters
+                Day job, real scale
               </h2>
               <p className="text-slate-400 leading-relaxed text-lg">
-                Winters Operations is led by Karl Winters, a network engineer
-                with 20+ years building and fixing enterprise infrastructure.
-                Day to day, that means managing a large-scale Cisco Meraki
-                SD-WAN environment spanning hundreds of spoke sites tied
-                together through datacenter hubs and AWS, and writing the
-                Python automation that turns hours of manual network work into
-                minutes.
+                Day to day means managing a large-scale Cisco Meraki SD-WAN
+                environment — hundreds of spoke sites tied together through
+                datacenter hubs and AWS cloud infrastructure. Alongside that
+                comes the Python automation that turns hours of manual network
+                management into minutes: device configuration, credential
+                auditing, monitoring, and reporting.
               </p>
             </div>
 
             <div>
               <h2 className="text-2xl font-semibold text-white tracking-tight mb-4">
-                How we work with teams
+                Why Winters Operations exists
               </h2>
               <p className="text-slate-400 leading-relaxed text-lg">
-                Consulting engagements bring that same experience to teams that
-                need enterprise-level network expertise without the full-time
-                cost — network assessments, SD-WAN and Starlink deployments,
-                new-construction structured cabling and MDF/IDF buildouts, IP
-                camera systems, and voice infrastructure.
+                A lot of companies need enterprise-level network expertise
+                without a full-time senior engineer on payroll. Winters
+                Operations is that option — focused consulting for assessments,
+                SD-WAN and Starlink, new construction, cameras, voice, and the
+                automation that keeps it all runnable.
               </p>
               <p className="mt-4 text-slate-400 leading-relaxed text-lg">
-                The same mindset shows up in web design and automation work:
-                clear scope, maintainable systems, and outputs you can actually
-                run — not slide decks that sit on a shelf.
+                The same practical approach applies to websites and small-business
+                automation: clear scope, systems you can maintain, and work that
+                ships — not strategy theater.
               </p>
             </div>
 
             <div className="rounded-2xl border border-navy-700 bg-navy-900/50 p-8">
-              <h3 className="text-lg font-semibold text-white mb-4">
-                Focus areas
+              <h3 className="text-lg font-semibold text-white mb-5">
+                What shows up in engagements
               </h3>
-              <ul className="space-y-3 text-slate-300">
+              <ul className="space-y-3.5 text-slate-300">
                 <li className="flex gap-3">
-                  <span className="text-cyan-400">→</span>
-                  Websites for small businesses — clean, fast, no bloat
+                  <span className="text-cyan-400 shrink-0">→</span>
+                  <span>
+                    <strong className="text-slate-200">Network assessments</strong>
+                    — LAN, WAN, WLAN, and security posture with a report and
+                    remediation roadmap
+                  </span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-cyan-400">→</span>
-                  Python automation for Meraki and IT operations
+                  <span className="text-cyan-400 shrink-0">→</span>
+                  <span>
+                    <strong className="text-slate-200">SD-WAN & Starlink</strong>
+                    — design and deploy, including Starlink as primary or backup
+                    WAN for remote sites
+                  </span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-cyan-400">→</span>
-                  SD-WAN, Starlink, structured cabling, and network assessments
+                  <span className="text-cyan-400 shrink-0">→</span>
+                  <span>
+                    <strong className="text-slate-200">New construction</strong>
+                    — structured cabling, MDF/IDF buildouts, complete network
+                    design for new builds and renovations
+                  </span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-cyan-400 shrink-0">→</span>
+                  <span>
+                    <strong className="text-slate-200">Python automation</strong>
+                    — custom tools for config, auditing, monitoring, and reporting
+                  </span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-cyan-400 shrink-0">→</span>
+                  <span>
+                    <strong className="text-slate-200">Cameras & voice</strong>
+                    — IP surveillance and enterprise VoIP design, install, and
+                    support
+                  </span>
                 </li>
               </ul>
             </div>
+
+            <p className="text-slate-400 leading-relaxed text-lg">
+              If your network is holding the business back — or you just have a
+              feeling it could run better — let’s talk.
+            </p>
           </div>
         </section>
 
@@ -124,8 +158,8 @@ export default function AboutPage() {
               Ready to talk?
             </h2>
             <p className="text-slate-400 mb-8">
-              Whether it’s a site, automation, or network work — reach out and
-              we’ll respond promptly.
+              Website, automation, or network work — reach out and we’ll respond
+              promptly.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a
