@@ -20,6 +20,16 @@ const config: Config = {
           500: "#06B6D4",
           600: "#0891B2",
         },
+        teal: {
+          300: "#5EEAD4",
+          400: "#2DD4BF",
+          500: "#14B8A6",
+        },
+        slate: {
+          950: "#020617",
+          900: "#0F172A",
+          800: "#1E293B",
+        },
       },
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
