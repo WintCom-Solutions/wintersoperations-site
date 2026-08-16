@@ -1,30 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Demo",
   description:
-    "Watch Winters Operations demos — flagship full cut and silent highlight.",
+    "Interactive IT Ops troubleshooting console — see Winters Operations in action.",
 };
-
-const demos = [
-  {
-    id: "full-cut",
-    title: "Flagship Demo — Full Cut",
-    description:
-      "Two-minute look at how Winters Operations approaches real operational and automation work.",
-    fileId: "1mtuu7ksOZ4uiXFW4ou4pw5L9M0r3mEha",
-    duration: "2:00",
-  },
-  {
-    id: "silent-highlight",
-    title: "Silent Highlight",
-    description:
-      "Short silent cut for quick scanning — same visual story, no audio track.",
-    fileId: "1WR2_rSumAli3xvET1xrJXUoFABcG0JMB",
-    duration: "Highlight",
-  },
-];
 
 export default function DemoPage() {
   return (
@@ -84,47 +66,70 @@ export default function DemoPage() {
         </section>
 
         <section className="py-16 sm:py-20">
-          <div className="max-w-5xl mx-auto px-6 space-y-16">
-            {demos.map((demo) => (
-              <article key={demo.id} id={demo.id} className="scroll-mt-24">
-                <div className="mb-5 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
-                  <div>
-                    <h2 className="text-2xl font-semibold text-white tracking-tight">
-                      {demo.title}
-                    </h2>
-                    <p className="mt-2 text-slate-400 max-w-2xl">
-                      {demo.description}
-                    </p>
-                  </div>
-                  <span className="text-xs uppercase tracking-wider text-slate-500">
-                    {demo.duration}
-                  </span>
-                </div>
+          <div className="max-w-4xl mx-auto px-6">
+            <article className="scroll-mt-24">
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-white tracking-tight mb-3">
+                  IT Ops Troubleshooting Console
+                </h2>
+                <p className="text-slate-400 max-w-2xl text-lg">
+                  See how Winters Operations approaches real operational work. This interactive demo shows network diagnostics, platform integration, and automated optimization across Meraki, SolarWinds, and ServiceNow.
+                </p>
+              </div>
 
-                <div className="relative w-full overflow-hidden rounded-2xl border border-navy-700 bg-navy-900/60 shadow-lg">
-                  <div className="relative aspect-video w-full">
-                    <iframe
-                      src={`https://drive.google.com/file/d/${demo.fileId}/preview`}
-                      title={demo.title}
-                      className="absolute inset-0 h-full w-full"
-                      allow="autoplay"
-                      allowFullScreen
-                    />
+              <div className="relative w-full overflow-hidden rounded-2xl border border-navy-700 bg-navy-900/60 shadow-lg mb-8">
+                <div className="aspect-video w-full bg-navy-950 flex items-center justify-center">
+                  <div className="text-center">
+                    <p className="text-cyan-400 text-lg font-semibold mb-4">
+                      🚀 Interactive Console
+                    </p>
+                    <p className="text-slate-400 mb-6">
+                      Click below to launch the live troubleshooting demo
+                    </p>
+                    <Link
+                      href="/itops-console"
+                      className="inline-flex px-6 py-3 rounded-lg bg-cyan-500 text-navy-950 font-semibold hover:bg-cyan-400 transition"
+                    >
+                      Launch Console →
+                    </Link>
                   </div>
                 </div>
-              </article>
-            ))}
+              </div>
+
+              <div className="bg-navy-900/40 border border-cyan-500/20 rounded-xl p-6">
+                <h3 className="text-lg font-semibold text-white mb-4">
+                  What the console demonstrates:
+                </h3>
+                <ul className="space-y-3 text-slate-300">
+                  <li className="flex gap-3">
+                    <span className="text-cyan-400 flex-shrink-0">✓</span>
+                    <span><strong>Network Diagnostics</strong> — Real-time connectivity checks, latency monitoring, and platform API performance</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="text-cyan-400 flex-shrink-0">✓</span>
+                    <span><strong>Multi-Platform Integration</strong> — Cisco Meraki, SolarWinds, and ServiceNow working together</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="text-cyan-400 flex-shrink-0">✓</span>
+                    <span><strong>Automated Optimization</strong> — Configuration updates and workflow automation to improve efficiency</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="text-cyan-400 flex-shrink-0">✓</span>
+                    <span><strong>Alert Management</strong> — Real-time issue detection, tracking, and resolution workflows</span>
+                  </li>
+                </ul>
+              </div>
+            </article>
           </div>
         </section>
 
         <section className="py-16 border-t border-navy-800">
           <div className="max-w-lg mx-auto px-6 text-center">
             <h2 className="text-2xl font-bold text-white mb-3">
-              Want this for your team?
+              Ready to reduce operational friction?
             </h2>
             <p className="text-slate-400 mb-8">
-              Tell us what you’re trying to fix — website, automation, or
-              network — and we’ll respond promptly.
+              Winters Operations builds the infrastructure, automation, and web presence your team needs. Let’s talk about what you’re trying to fix.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a
