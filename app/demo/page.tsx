@@ -32,9 +32,6 @@ export default function DemoPage() {
             <a href="/demo" className="text-cyan-400">
               Demo
             </a>
-            <a href="/itops-console" className="hover:text-cyan-400 transition">
-              IT Ops Console
-            </a>
             <a href="/about" className="hover:text-cyan-400 transition">
               About
             </a>

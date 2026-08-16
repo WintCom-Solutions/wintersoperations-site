@@ -25,9 +25,6 @@ export default function Home() {
             <a href="/demo" className="hover:text-cyan-400 transition">
               Demo
             </a>
-            <a href="/itops-console" className="hover:text-cyan-400 transition">
-              IT Ops Console
-            </a>
             <a href="/about" className="hover:text-cyan-400 transition">
               About
             </a>
