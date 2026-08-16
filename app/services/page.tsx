@@ -4,15 +4,40 @@ import Image from "next/image";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Winters Operations builds websites and practical Python automation for small businesses, backed by enterprise network engineering experience.",
+    "Network assessments, SD-WAN and Starlink, new construction cabling, IP cameras, VoIP, Python automation, and web design — Winters Operations consulting.",
 };
 
 const serviceGroups = [
   {
+    title: "Network & Infrastructure",
+    eyebrow: "Build it right the first time",
+    description:
+      "Enterprise-grade network design and deployment — from assessments and remediation through new construction and multi-site SD-WAN.",
+    items: [
+      "Network assessments — full evaluation of LAN, WAN, WLAN, and security posture with a professional report and remediation roadmap",
+      "SD-WAN design and deployment, including Starlink as primary or secondary WAN for remote and underserved locations",
+      "New construction — structured cabling, MDF/IDF buildouts, and complete network design for new builds and renovations",
+      "IP surveillance — camera system design, installation, and support across platforms",
+      "VoIP & voice — enterprise voice infrastructure design and troubleshooting",
+    ],
+  },
+  {
+    title: "AI & Automation",
+    eyebrow: "Turn hours into minutes",
+    description:
+      "Practical Python automation built from running a large-scale Meraki SD-WAN environment day to day — tools your team can actually keep using.",
+    items: [
+      "Custom tools for device configuration, credential auditing, monitoring, and reporting",
+      "Cisco Meraki workflow and reporting automation",
+      "Monitoring and alerting that cuts manual checks to minutes",
+      "AI-assisted triage and reporting workflows where they fit real operations",
+    ],
+  },
+  {
     title: "Web Design",
     eyebrow: "A site that actually works",
     description:
-      "Clean, fast, modern websites built for small businesses — no bloated templates, no unnecessary complexity.",
+      "Clean, fast, modern websites for small businesses — no bloated templates, no unnecessary complexity.",
     items: [
       "Custom site design and build",
       "Fast, mobile-first performance",
@@ -20,35 +45,12 @@ const serviceGroups = [
       "Ongoing updates and support",
     ],
   },
-  {
-    title: "Network & Infrastructure",
-    eyebrow: "Build it right the first time",
-    description:
-      "Enterprise-grade network design and deployment, from new-construction cabling to SD-WAN across hundreds of sites.",
-    items: [
-      "Network assessments — LAN, WAN, WLAN, and security posture review with a remediation roadmap",
-      "SD-WAN design and deployment, including Starlink as primary or backup WAN",
-      "New construction: structured cabling and MDF/IDF buildouts",
-      "IP camera systems and voice (VoIP) infrastructure",
-    ],
-  },
-  {
-    title: "AI & Automation Consulting",
-    eyebrow: "Automate the right work",
-    description:
-      "Practical Python automation that connects to the tools your team already uses, built from experience running a large-scale Meraki SD-WAN environment.",
-    items: [
-      "Python tooling for device configuration, credential auditing, and reporting",
-      "Cisco Meraki workflow and reporting automation",
-      "Monitoring and alerting that cuts manual checks to minutes",
-      "AI-assisted triage and reporting workflows",
-    ],
-  },
 ];
 
 const deliverables = [
   "Network assessment report with a practical remediation roadmap",
   "SD-WAN or new-construction design and implementation plan",
+  "Starlink integration as primary or backup WAN",
   "Automation scripts or small internal tools tailored to your environment",
   "Operator-facing documentation and handoff notes",
 ];
@@ -97,36 +99,36 @@ export default function ServicesPage() {
               Services
             </p>
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white max-w-3xl leading-tight">
-              Websites, automation, and network work — done right.
+              Enterprise network expertise without the full-time cost.
             </h1>
             <p className="mt-6 text-lg text-slate-400 max-w-2xl leading-relaxed">
-              Winters Operations builds clean websites and practical Python
-              automation for small businesses, backed by 20+ years of enterprise
-              network and infrastructure experience.
+              Assessments, SD-WAN and Starlink, new construction, cameras,
+              voice, Python automation, and websites — scoped to what your team
+              actually needs to get connected and stay that way.
             </p>
           </div>
         </section>
 
         <section className="py-20">
-          <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8">
+          <div className="max-w-6xl mx-auto px-6 space-y-8">
             {serviceGroups.map((group) => (
               <article
                 key={group.title}
-                className="rounded-2xl border border-navy-700 bg-navy-900/50 p-8"
+                className="rounded-2xl border border-navy-700 bg-navy-900/50 p-8 md:p-10"
               >
                 <p className="text-sm font-medium uppercase tracking-wide text-cyan-400 mb-3">
                   {group.eyebrow}
                 </p>
-                <h2 className="text-2xl font-semibold text-white mb-4">
+                <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
                   {group.title}
                 </h2>
-                <p className="text-slate-400 leading-relaxed mb-6">
+                <p className="text-slate-400 leading-relaxed mb-6 max-w-3xl">
                   {group.description}
                 </p>
-                <ul className="space-y-3 text-sm text-slate-300">
+                <ul className="space-y-3 text-sm sm:text-base text-slate-300 max-w-3xl">
                   {group.items.map((item) => (
                     <li key={item} className="flex gap-3">
-                      <span className="text-cyan-400">→</span>
+                      <span className="text-cyan-400 shrink-0">→</span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -147,7 +149,7 @@ export default function ServicesPage() {
               </h2>
               <p className="mt-4 text-slate-400 leading-relaxed">
                 Every engagement should leave the team with something usable: a
-                decision, a workflow, a script, a handoff, or a cleaner way to
+                decision, a design, a script, a handoff, or a cleaner way to
                 operate.
               </p>
             </div>
@@ -155,7 +157,7 @@ export default function ServicesPage() {
               <ul className="space-y-4 text-slate-300">
                 {deliverables.map((item) => (
                   <li key={item} className="flex gap-3">
-                    <span className="mt-1 h-2 w-2 rounded-full bg-cyan-400" />
+                    <span className="mt-1.5 h-2 w-2 rounded-full bg-cyan-400 shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -167,11 +169,11 @@ export default function ServicesPage() {
         <section className="py-20 border-t border-navy-800">
           <div className="max-w-3xl mx-auto px-6 text-center">
             <h2 className="text-3xl font-bold text-white mb-4">
-              Start with the problem in front of you.
+              If the network is holding the business back — let’s talk.
             </h2>
             <p className="text-slate-400 mb-8">
-              Ready to talk about how your operations or automation could run
-              better? Reach out — we'll respond promptly.
+              Or if you just have a feeling it could run better. Reach out —
+              we’ll respond promptly.
             </p>
             <a
               href="mailto:solutions@wintersoperations.com"
