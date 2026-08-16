@@ -1,4 +1,5 @@
 import Image from "next/image";
+import CopyEmailButton from "@/components/CopyEmailButton";
 
 export default function Home() {
   return (
@@ -251,6 +252,9 @@ export default function Home() {
             >
               solutions@wintersoperations.com
             </a>
+            <div>
+              <CopyEmailButton email="solutions@wintersoperations.com" />
+            </div>
           </div>
         </section>
       </main>
