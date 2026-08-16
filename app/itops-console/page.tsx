@@ -38,7 +38,7 @@ export default function ITOpsConsole() {
     {
       id: '0',
       type: 'status',
-      text: 'Device Inventory System — Ready',
+      text: '[DEMO] Device Inventory System — Initialized with simulated data',
       timestamp: new Date().toLocaleTimeString(),
     },
   ]);
@@ -318,13 +318,20 @@ export default function ITOpsConsole() {
       </header>
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-8">
+        {/* Demo Banner */}
+        <div className="mb-8 bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+          <p className="text-sm text-amber-200">
+            <span className="font-semibold">📌 Demo Only</span> — This is a simulated IT Ops console with completely fake data. No real systems, APIs, or infrastructure are connected. This demonstrates how Winters Operations approaches network diagnostics and automation workflows.
+          </p>
+        </div>
+
         {/* Device Search Section */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">
-            Device Inventory Search
+            Device Inventory Search (Demo)
           </h1>
           <p className="text-slate-400 mb-6">
-            Find any device by IP, Hostname, MAC address, Site name, Site address, Serial number — or any other identifier
+            Try searching for: <code className="bg-slate-800 px-2 py-1 rounded text-teal-300">switch-sf-01</code> or any of its attributes (IP, MAC, etc.)
           </p>
 
           {/* Search Input */}
@@ -395,9 +402,9 @@ export default function ITOpsConsole() {
               {/* Console Header */}
               <div className="bg-slate-800/80 border-b border-teal-500/10 px-4 py-3 flex items-center justify-between flex-shrink-0">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-teal-400 animate-pulse"></div>
-                  <span className="text-xs font-mono text-teal-400 uppercase tracking-wider">
-                    Live Console
+                  <div className="w-3 h-3 rounded-full bg-amber-400 animate-pulse"></div>
+                  <span className="text-xs font-mono text-amber-400 uppercase tracking-wider">
+                    Demo Console (Simulated)
                   </span>
                 </div>
                 <span className="text-xs text-slate-500">
