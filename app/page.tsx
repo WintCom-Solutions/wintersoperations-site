@@ -5,16 +5,16 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b border-navy-700/60 bg-navy-950/80 backdrop-blur sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-3">
+        <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-3.5">
             <Image
               src="/logo.png"
               alt="Winters Operations"
-              width={32}
-              height={32}
+              width={48}
+              height={48}
               className="rounded-lg"
             />
-            <span className="font-semibold tracking-tight text-lg">
+            <span className="font-semibold tracking-tight text-2xl">
               Winters Operations
             </span>
           </a>
@@ -24,6 +24,9 @@ export default function Home() {
             </a>
             <a href="/demo" className="hover:text-cyan-400 transition">
               Demo
+            </a>
+            <a href="/itops-console" className="hover:text-cyan-400 transition">
+              IT Ops Console
             </a>
             <a href="/about" className="hover:text-cyan-400 transition">
               About
@@ -141,6 +144,37 @@ export default function Home() {
                   View service details →
                 </a>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* IT Ops Console Interactive Demo */}
+        <section className="py-20 border-t border-navy-800">
+          <div className="max-w-4xl mx-auto px-6">
+            <div className="rounded-2xl border border-cyan-500/30 bg-gradient-to-br from-cyan-500/5 to-cyan-500/0 p-8 sm:p-12">
+              <div className="flex items-start gap-4 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
+                  <span className="text-xl">⚙️</span>
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-white mb-2">
+                    Interactive IT Ops Troubleshooting
+                  </h2>
+                  <p className="text-slate-400">
+                    See how Winters Operations diagnoses and optimizes network infrastructure
+                  </p>
+                </div>
+              </div>
+              <p className="text-slate-300 mb-6">
+                Our console demonstrates real operational work: network diagnostics across Meraki, SolarWinds, and ServiceNow,
+                automatic issue detection, and optimization workflows that reduce manual overhead.
+              </p>
+              <a
+                href="/itops-console"
+                className="inline-flex items-center px-6 py-3 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30 hover:border-cyan-400/60 font-medium transition"
+              >
+                Launch Console →
+              </a>
             </div>
           </div>
         </section>
