@@ -5,16 +5,16 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b border-navy-700/60 bg-navy-950/80 backdrop-blur sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-3">
+        <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-3.5">
             <Image
               src="/logo.png"
               alt="Winters Operations"
-              width={32}
-              height={32}
+              width={48}
+              height={48}
               className="rounded-lg"
             />
-            <span className="font-semibold tracking-tight text-lg">
+            <span className="font-semibold tracking-tight text-2xl">
               Winters Operations
             </span>
           </a>

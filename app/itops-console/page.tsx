@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 interface ConsoleOutput {
   id: string;
-  type: 'command' | 'output' | 'status' | 'error' | 'success';
+  type: 'command' | 'output' | 'status' | 'error' | 'success' | 'warning';
   text: string;
   timestamp: string;
 }
@@ -213,16 +213,16 @@ export default function ITOpsConsole() {
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-navy-950 via-navy-900 to-navy-950 text-slate-100">
       {/* Header */}
       <header className="border-b border-cyan-500/20 bg-navy-950/80 backdrop-blur sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-3">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-3.5">
             <Image
               src="/logo.png"
               alt="Winters Operations"
-              width={32}
-              height={32}
+              width={48}
+              height={48}
               className="rounded-lg"
             />
-            <span className="font-semibold tracking-tight text-lg">
+            <span className="font-semibold tracking-tight text-2xl">
               IT Ops Console
             </span>
           </a>
@@ -292,9 +292,7 @@ export default function ITOpsConsole() {
                               ? 'text-green-400'
                               : output.type === 'warning'
                                 ? 'text-yellow-400'
-                                : output.type === 'status'
-                                  ? 'text-cyan-300'
-                                  : 'text-slate-300'
+                                : 'text-cyan-300'
                       }`}
                     >
                       {output.type === 'command' ? '$ ' : '> '}
