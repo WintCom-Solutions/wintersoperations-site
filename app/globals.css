@@ -10,6 +10,19 @@ body {
   @apply bg-navy-950 text-slate-100 antialiased;
 }
 
+/* Keyboard focus — visible cyan ring, no mouse focus ring */
+:focus-visible {
+  outline: 2px solid theme("colors.cyan.400");
+  outline-offset: 2px;
+}
+
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible) {
+  outline: none;
+}
+
 @layer components {
   .surface {
     @apply rounded-2xl border border-navy-700/80 bg-navy-900/40;
