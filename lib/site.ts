@@ -12,7 +12,7 @@ export const nav = [
 ] as const;
 
 export const stats = [
-  { value: 20, suffix: "+", label: "Years network engineering" },
+  { value: 20, suffix: "+", label: "Years network ops" },
   { value: 300, suffix: "+", label: "Sites under management" },
   { value: 100, suffix: "%", label: "Hands-on delivery" },
 ] as const;

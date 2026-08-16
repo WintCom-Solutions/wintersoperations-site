@@ -56,8 +56,8 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-16 border-t border-navy-800">
-          <div className="max-w-6xl mx-auto px-6">
+        <section className="border-t border-navy-800">
+          <div className="max-w-6xl mx-auto px-6 py-8 sm:py-10">
             <StatsBand />
           </div>
         </section>
