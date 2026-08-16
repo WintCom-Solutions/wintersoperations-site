@@ -16,7 +16,7 @@ function CountUp({ value, suffix }: { value: number; suffix: string }) {
         if (!entry.isIntersecting) return;
         observer.disconnect();
 
-        const duration = 1200;
+        const duration = 1000;
         const start = performance.now();
 
         function tick(now: number) {
@@ -35,7 +35,7 @@ function CountUp({ value, suffix }: { value: number; suffix: string }) {
   }, [value]);
 
   return (
-    <span ref={ref} className="font-mono">
+    <span ref={ref} className="tabular-nums">
       {count}
       {suffix}
     </span>
@@ -44,15 +44,22 @@ function CountUp({ value, suffix }: { value: number; suffix: string }) {
 
 export default function StatsBand() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
-      {stats.map((stat) => (
-        <div key={stat.label} className="surface p-6 text-center">
-          <div className="text-3xl sm:text-4xl font-bold text-white">
-            <CountUp value={stat.value} suffix={stat.suffix} />
+    <div className="border border-navy-700/70 bg-navy-950/80">
+      <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-navy-700/70">
+        {stats.map((stat) => (
+          <div
+            key={stat.label}
+            className="flex flex-col items-center justify-center gap-1.5 px-6 py-6 sm:py-7"
+          >
+            <div className="font-mono text-3xl sm:text-4xl font-semibold tracking-tight text-cyan-300">
+              <CountUp value={stat.value} suffix={stat.suffix} />
+            </div>
+            <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-slate-500">
+              {stat.label}
+            </div>
           </div>
-          <div className="mt-2 text-sm text-slate-400">{stat.label}</div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

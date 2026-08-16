@@ -47,13 +47,13 @@ app/
   services/page.tsx    # Service detail
   work/page.tsx        # Case studies
   about/page.tsx       # About
-  demo/page.tsx        # Video demos
+  demo/page.tsx        # Interactive demos (console + topology)
   globals.css          # Tailwind + design-system primitives
 components/
   SiteHeader.tsx       # Sticky nav incl. mobile sheet
   SiteFooter.tsx
   NetworkTopology.tsx  # Animated hub-and-spoke hero SVG
-  StatsBand.tsx        # Count-up proof band
+  StatsBand.tsx        # Telemetry proof strip
   ContactSection.tsx   # Contact block used on every page
   ContactForm.tsx      # Google Form / Formspree / mailto
   Reveal.tsx           # Scroll-reveal wrapper

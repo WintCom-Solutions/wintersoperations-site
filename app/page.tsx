@@ -36,15 +36,15 @@ export default function Home() {
               </h1>
               <p className="mt-6 text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                 Winters Operations builds clean, fast websites and practical
-                Python automation for small businesses — backed by 20+ years of
-                enterprise network and infrastructure experience.
+                Python automation for small businesses — backed by 30+ years of
+                enterprise IT experience.
               </p>
               <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <a href="/services" className="btn-primary">
                   See Services
                 </a>
                 <a href="/demo" className="btn-ghost">
-                  Watch Demo
+                  See Demos
                 </a>
               </div>
             </div>
@@ -56,8 +56,8 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-16 border-t border-navy-800">
-          <div className="max-w-6xl mx-auto px-6">
+        <section className="border-t border-navy-800">
+          <div className="max-w-6xl mx-auto px-6 py-8 sm:py-10">
             <StatsBand />
           </div>
         </section>
@@ -67,7 +67,7 @@ export default function Home() {
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold text-white">Three clear service lines</h2>
               <p className="mt-3 text-slate-400 max-w-xl mx-auto">
-                Whether you need network solutions, a website or automation that saves you time, we meet you where you are.
+                Whether you need network solutions, a website, or automation that saves you time, we meet you where you are.
               </p>
             </div>
 
@@ -102,7 +102,7 @@ export default function Home() {
           <div className="max-w-2xl mx-auto px-6 text-center">
             <h2 className="text-3xl font-bold text-white mb-4">About</h2>
             <p className="text-slate-400 leading-relaxed text-lg mb-8">
-              Led by Karl Winters — 20+ years of enterprise network engineering,
+              Led by Karl Winters — 30+ years of enterprise IT experience,
               large-scale Meraki SD-WAN, and practical Python automation for
               teams that need results without the full-time overhead.
             </p>
