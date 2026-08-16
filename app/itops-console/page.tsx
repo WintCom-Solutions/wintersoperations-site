@@ -388,12 +388,12 @@ export default function ITOpsConsole() {
           )}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-h-[600px]">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[500px]">
           {/* Left: Console Output */}
           <div className="lg:col-span-2 flex flex-col min-h-0">
-            <div className="flex-1 bg-slate-900/60 border border-teal-500/20 rounded-lg overflow-hidden flex flex-col min-h-0">
+            <div className="bg-slate-900/60 border border-teal-500/20 rounded-lg overflow-hidden flex flex-col h-full">
               {/* Console Header */}
-              <div className="bg-slate-800/80 border-b border-teal-500/10 px-4 py-3 flex items-center justify-between">
+              <div className="bg-slate-800/80 border-b border-teal-500/10 px-4 py-3 flex items-center justify-between flex-shrink-0">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-teal-400 animate-pulse"></div>
                   <span className="text-xs font-mono text-teal-400 uppercase tracking-wider">
@@ -408,7 +408,7 @@ export default function ITOpsConsole() {
               {/* Console Content */}
               <div
                 id="console-output"
-                className="flex-1 overflow-y-auto p-4 space-y-1 font-mono text-sm"
+                className="flex-1 overflow-y-auto p-4 space-y-1 font-mono text-sm min-h-0"
               >
                 {outputs.map((output) => (
                   <div key={output.id} className="flex gap-2">
@@ -456,9 +456,9 @@ export default function ITOpsConsole() {
           </div>
 
           {/* Right: Alert Panel */}
-          <div className="flex flex-col gap-4 min-h-0">
+          <div className="flex flex-col gap-4 min-h-0 h-full">
             {/* Active Alerts Section */}
-            <div className="bg-slate-900/60 border border-red-500/20 rounded-lg overflow-hidden flex flex-col min-h-0">
+            <div className="bg-slate-900/60 border border-red-500/20 rounded-lg overflow-hidden flex flex-col flex-1 min-h-0">
               <div className="bg-red-500/10 border-b border-red-500/20 px-4 py-3">
                 <h3 className="text-sm font-semibold text-red-300 uppercase tracking-wider">
                   ⚠ Active Alerts
@@ -506,7 +506,7 @@ export default function ITOpsConsole() {
             </div>
 
             {/* Resolved Section */}
-            <div className="bg-slate-900/60 border border-green-500/20 rounded-lg overflow-hidden flex flex-col min-h-0">
+            <div className="bg-slate-900/60 border border-green-500/20 rounded-lg overflow-hidden flex flex-col flex-1 min-h-0">
               <div className="bg-green-500/10 border-b border-green-500/20 px-4 py-3">
                 <h3 className="text-sm font-semibold text-green-300 uppercase tracking-wider">
                   ✓ Resolved ({alerts.filter((a) => a.resolved).length})
