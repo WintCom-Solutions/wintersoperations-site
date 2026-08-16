@@ -7,6 +7,7 @@ export default function ContactForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<"idle" | "submitting" | "sent" | "error">("idle");
 
   const usingGoogleForm = Boolean(googleForm.formId);
@@ -34,6 +35,7 @@ export default function ContactForm() {
         body.set(googleForm.entryName, name);
         body.set(googleForm.entryEmail, email);
         body.set(googleForm.entryMessage, message);
+        body.set(googleForm.entryConsent, googleForm.consentValue);
       } else {
         body.set("name", name);
         body.set("email", email);
@@ -51,6 +53,7 @@ export default function ContactForm() {
       setName("");
       setEmail("");
       setMessage("");
+      setConsent(false);
     } catch {
       setStatus("error");
     }
@@ -111,6 +114,18 @@ export default function ContactForm() {
           className="field resize-none"
         />
       </div>
+
+      <label className="flex items-start gap-3 text-sm leading-relaxed text-slate-400">
+        <input
+          name="consent"
+          type="checkbox"
+          required
+          checked={consent}
+          onChange={(e) => setConsent(e.target.checked)}
+          className="mt-1 h-4 w-4 shrink-0 rounded border-navy-700 bg-navy-900 text-cyan-500 focus:ring-cyan-500/30"
+        />
+        <span>{googleForm.consentValue}</span>
+      </label>
 
       <button type="submit" disabled={status === "submitting"} className="btn-primary w-full disabled:opacity-60">
         {status === "submitting" ? "Sending…" : "Send message"}

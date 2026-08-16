@@ -1,6 +1,5 @@
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-import { contactEmail } from "@/lib/site";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata = createPageMetadata({
@@ -97,8 +96,8 @@ export default function AboutPage() {
               and we&apos;ll respond promptly.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a href={`mailto:${contactEmail}`} className="btn-primary">
-                {contactEmail}
+              <a href="/#contact-form" className="btn-primary">
+                Send a message
               </a>
               <a href="/services" className="btn-ghost">
                 View services
