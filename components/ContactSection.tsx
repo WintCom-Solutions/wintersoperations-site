@@ -12,18 +12,16 @@ export default function ContactSection() {
             Ready to talk about a website, automation, or network work? Reach
             out — we&apos;ll respond promptly.
           </p>
-          <a
-            href={`mailto:${contactEmail}`}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-cyan-500 text-navy-950 font-semibold hover:bg-cyan-400 transition"
-          >
-            {contactEmail}
+          <p className="font-medium text-slate-200">{contactEmail}</p>
+          <a href="#contact-form" className="btn-primary mt-4">
+            Send a message
           </a>
           <div>
             <CopyEmailButton email={contactEmail} />
           </div>
         </div>
 
-        <div className="surface p-6">
+        <div id="contact-form" className="surface scroll-mt-24 p-6">
           <ContactForm />
         </div>
       </div>

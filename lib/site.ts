@@ -22,8 +22,11 @@ export const contactEndpoint = "";
 
 /** Google Form entry IDs if using Google Forms (see docs/contact-form-setup.md) */
 export const googleForm = {
-  formId: "",
-  entryName: "",
-  entryEmail: "",
-  entryMessage: "",
+  formId: "1F-UnMFVIwKRv62kjokde8oQeLzqqtndG3BohIBp0jNE",
+  entryName: "entry.676780392",
+  entryEmail: "entry.552233917",
+  entryMessage: "entry.1265653575",
+  entryConsent: "entry.427645027",
+  consentValue:
+    "I consent to Winters Operations using this information to respond to my inquiry.",
 } as const;

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "verify:contact": "node scripts/verify-contact.mjs",
     "verify:metadata": "node scripts/verify-metadata.mjs",
     "start": "next start",
     "lint": "next lint"

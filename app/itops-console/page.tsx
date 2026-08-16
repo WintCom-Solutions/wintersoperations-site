@@ -575,7 +575,7 @@ export default function ITOpsConsole() {
             reducing toil and improving visibility.
           </p>
           <a
-            href="mailto:solutions@wintersoperations.com"
+            href="/#contact-form"
             className="inline-flex px-6 py-3 rounded-lg bg-teal-500 text-slate-950 font-semibold hover:bg-teal-400 transition"
           >
             Get in Touch
