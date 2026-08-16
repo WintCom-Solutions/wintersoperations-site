@@ -20,6 +20,14 @@ const config: Config = {
           500: "#06B6D4",
           600: "#0891B2",
         },
+        electric: {
+          400: "#60A5FA",
+          500: "#3B82F6",
+        },
+        signal: {
+          400: "#4ADE80",
+          500: "#22C55E",
+        },
         teal: {
           300: "#5EEAD4",
           400: "#2DD4BF",
@@ -33,6 +41,11 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
+        mono: ["JetBrains Mono", "ui-monospace", "monospace"],
+      },
+      boxShadow: {
+        soft: "0 4px 24px -4px rgba(0, 0, 0, 0.4)",
+        glow: "0 0 24px -4px rgba(6, 182, 212, 0.25)",
       },
     },
   },
