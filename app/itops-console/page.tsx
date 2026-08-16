@@ -284,9 +284,9 @@ export default function ITOpsConsole() {
   }, [outputs]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-navy-950 via-navy-900 to-navy-950 text-slate-100">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100">
       {/* Header */}
-      <header className="border-b border-cyan-500/20 bg-navy-950/80 backdrop-blur sticky top-0 z-50">
+      <header className="border-b border-teal-500/20 bg-slate-950/80 backdrop-blur sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <a href="/" className="flex items-center gap-3.5">
             <Image
@@ -301,16 +301,16 @@ export default function ITOpsConsole() {
             </span>
           </a>
           <nav className="hidden sm:flex items-center gap-8 text-sm text-slate-400">
-            <a href="/" className="hover:text-cyan-400 transition">
+            <a href="/" className="hover:text-teal-400 transition">
               Home
             </a>
-            <a href="/services" className="hover:text-cyan-400 transition">
+            <a href="/services" className="hover:text-teal-400 transition">
               Services
             </a>
-            <a href="/demo" className="hover:text-cyan-400 transition">
+            <a href="/demo" className="hover:text-teal-400 transition">
               Demos
             </a>
-            <a href="/about" className="hover:text-cyan-400 transition">
+            <a href="/about" className="hover:text-teal-400 transition">
               About
             </a>
           </nav>
@@ -336,12 +336,12 @@ export default function ITOpsConsole() {
               onKeyPress={(e) => e.key === 'Enter' && searchDevice(searchQuery)}
               placeholder="e.g., switch-sf-01, 192.168.1.10, 00:1a:2b:3c:4d:5e, Q2QN-ABC4-DEFG..."
               disabled={isSearching}
-              className="flex-1 px-4 py-3 rounded-lg bg-navy-800/60 border border-cyan-500/40 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:bg-navy-800 disabled:opacity-50 disabled:cursor-not-allowed transition"
+              className="flex-1 px-4 py-3 rounded-lg bg-slate-800/60 border border-teal-500/40 text-white placeholder-slate-500 focus:outline-none focus:border-teal-400 focus:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition"
             />
             <button
               onClick={() => searchDevice(searchQuery)}
               disabled={isSearching || !searchQuery.trim()}
-              className="px-6 py-3 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30 hover:border-cyan-400/60 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition"
+              className="px-6 py-3 rounded-lg bg-teal-500/20 text-teal-300 border border-teal-500/40 hover:bg-teal-500/30 hover:border-teal-400/60 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition"
             >
               {isSearching ? 'Searching...' : 'Search'}
             </button>
@@ -349,34 +349,34 @@ export default function ITOpsConsole() {
 
           {/* Device Result Card */}
           {deviceResult && (
-            <div className="bg-navy-900/60 border border-cyan-500/30 rounded-xl p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-slate-900/60 border border-teal-500/30 rounded-lg p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
                 <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">Hostname</p>
-                <p className="text-lg font-semibold text-cyan-300">{deviceResult.hostname}</p>
+                <p className="text-lg font-semibold text-teal-300">{deviceResult.hostname}</p>
               </div>
               <div>
                 <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">IP Address</p>
-                <p className="text-lg font-semibold text-cyan-300">{deviceResult.ip}</p>
+                <p className="text-lg font-semibold text-teal-300">{deviceResult.ip}</p>
               </div>
               <div>
                 <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">MAC Address</p>
-                <p className="text-sm font-mono text-cyan-300">{deviceResult.mac}</p>
+                <p className="text-sm font-mono text-teal-300">{deviceResult.mac}</p>
               </div>
               <div>
                 <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">Model</p>
-                <p className="text-sm font-semibold text-cyan-300">{deviceResult.model}</p>
+                <p className="text-sm font-semibold text-teal-300">{deviceResult.model}</p>
               </div>
               <div>
                 <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">Site</p>
-                <p className="text-sm font-semibold text-cyan-300">{deviceResult.site}</p>
+                <p className="text-sm font-semibold text-teal-300">{deviceResult.site}</p>
               </div>
               <div>
                 <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">Site Address</p>
-                <p className="text-sm text-cyan-300">{deviceResult.siteAddress}</p>
+                <p className="text-sm text-teal-300">{deviceResult.siteAddress}</p>
               </div>
               <div>
                 <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">Serial Number</p>
-                <p className="text-sm font-mono text-cyan-300">{deviceResult.serialNumber}</p>
+                <p className="text-sm font-mono text-teal-300">{deviceResult.serialNumber}</p>
               </div>
               <div>
                 <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">Status</p>
@@ -391,12 +391,12 @@ export default function ITOpsConsole() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-h-[600px]">
           {/* Left: Console Output */}
           <div className="lg:col-span-2 flex flex-col min-h-0">
-            <div className="flex-1 bg-navy-900/60 border border-cyan-500/20 rounded-xl overflow-hidden flex flex-col min-h-0">
+            <div className="flex-1 bg-slate-900/60 border border-teal-500/20 rounded-lg overflow-hidden flex flex-col min-h-0">
               {/* Console Header */}
-              <div className="bg-navy-800/80 border-b border-cyan-500/10 px-4 py-3 flex items-center justify-between">
+              <div className="bg-slate-800/80 border-b border-teal-500/10 px-4 py-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-cyan-400 animate-pulse"></div>
-                  <span className="text-xs font-mono text-cyan-400 uppercase tracking-wider">
+                  <div className="w-3 h-3 rounded-full bg-teal-400 animate-pulse"></div>
+                  <span className="text-xs font-mono text-teal-400 uppercase tracking-wider">
                     Live Console
                   </span>
                 </div>
@@ -418,14 +418,14 @@ export default function ITOpsConsole() {
                     <span
                       className={`flex-1 ${
                         output.type === 'command'
-                          ? 'text-cyan-400'
+                          ? 'text-teal-400'
                           : output.type === 'error'
                             ? 'text-red-400'
                             : output.type === 'success'
                               ? 'text-green-400'
                               : output.type === 'warning'
                                 ? 'text-yellow-400'
-                                : 'text-cyan-300'
+                                : 'text-teal-300'
                       }`}
                     >
                       {output.type === 'command' ? '$ ' : '> '}
@@ -441,7 +441,7 @@ export default function ITOpsConsole() {
               <button
                 onClick={runDiagnostics}
                 disabled={isRunning}
-                className="flex-1 px-4 py-3 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30 hover:border-cyan-400/60 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition"
+                className="flex-1 px-4 py-3 rounded-lg bg-teal-500/20 text-teal-300 border border-teal-500/40 hover:bg-teal-500/30 hover:border-teal-400/60 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition"
               >
                 {isRunning ? 'Running Diagnostics...' : 'Run Diagnostics'}
               </button>
@@ -458,7 +458,7 @@ export default function ITOpsConsole() {
           {/* Right: Alert Panel */}
           <div className="flex flex-col gap-4 min-h-0">
             {/* Active Alerts Section */}
-            <div className="bg-navy-900/60 border border-red-500/20 rounded-xl overflow-hidden flex flex-col min-h-0">
+            <div className="bg-slate-900/60 border border-red-500/20 rounded-lg overflow-hidden flex flex-col min-h-0">
               <div className="bg-red-500/10 border-b border-red-500/20 px-4 py-3">
                 <h3 className="text-sm font-semibold text-red-300 uppercase tracking-wider">
                   ⚠ Active Alerts
@@ -506,7 +506,7 @@ export default function ITOpsConsole() {
             </div>
 
             {/* Resolved Section */}
-            <div className="bg-navy-900/60 border border-green-500/20 rounded-xl overflow-hidden flex flex-col min-h-0">
+            <div className="bg-slate-900/60 border border-green-500/20 rounded-lg overflow-hidden flex flex-col min-h-0">
               <div className="bg-green-500/10 border-b border-green-500/20 px-4 py-3">
                 <h3 className="text-sm font-semibold text-green-300 uppercase tracking-wider">
                   ✓ Resolved ({alerts.filter((a) => a.resolved).length})
@@ -529,27 +529,27 @@ export default function ITOpsConsole() {
         </div>
 
         {/* Info Section */}
-        <div className="mt-8 bg-navy-900/40 border border-cyan-500/20 rounded-xl p-6">
+        <div className="mt-8 bg-slate-900/40 border border-teal-500/20 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-white mb-3">
             What You're Seeing
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-slate-300">
             <div>
-              <p className="text-cyan-400 font-semibold mb-2">📊 Diagnostics</p>
+              <p className="text-teal-400 font-semibold mb-2">📊 Diagnostics</p>
               <p>
                 Real-time network performance checks across Meraki, SolarWinds,
                 and ServiceNow platforms.
               </p>
             </div>
             <div>
-              <p className="text-cyan-400 font-semibold mb-2">🔧 Optimization</p>
+              <p className="text-teal-400 font-semibold mb-2">🔧 Optimization</p>
               <p>
                 Automated configuration updates and workflow automation to
                 improve network efficiency.
               </p>
             </div>
             <div>
-              <p className="text-cyan-400 font-semibold mb-2">🎯 Integration</p>
+              <p className="text-teal-400 font-semibold mb-2">🎯 Integration</p>
               <p>
                 Multi-platform alerting and remediation across your entire
                 operations stack.
@@ -559,7 +559,7 @@ export default function ITOpsConsole() {
         </div>
 
         {/* CTA Section */}
-        <div className="mt-8 bg-gradient-to-r from-cyan-500/10 to-cyan-500/5 border border-cyan-500/30 rounded-xl p-6 text-center">
+        <div className="mt-8 bg-gradient-to-r from-teal-500/10 to-teal-500/5 border border-teal-500/30 rounded-lg p-6 text-center">
           <h3 className="text-xl font-semibold text-white mb-2">
             Ready to streamline your operations?
           </h3>
@@ -569,14 +569,14 @@ export default function ITOpsConsole() {
           </p>
           <a
             href="mailto:solutions@wintersoperations.com"
-            className="inline-flex px-6 py-3 rounded-lg bg-cyan-500 text-navy-950 font-semibold hover:bg-cyan-400 transition"
+            className="inline-flex px-6 py-3 rounded-lg bg-teal-500 text-slate-950 font-semibold hover:bg-teal-400 transition"
           >
             Get in Touch
           </a>
         </div>
       </main>
 
-      <footer className="border-t border-navy-700 py-8 mt-12">
+      <footer className="border-t border-slate-700 py-8 mt-12">
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
           <div>© {new Date().getFullYear()} Winters Operations</div>
           <div className="text-slate-600">Ops, web & automation consulting</div>
