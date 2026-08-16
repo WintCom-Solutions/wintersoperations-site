@@ -3,7 +3,6 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Nav */}
       <header className="border-b border-navy-700/60 bg-navy-950/80 backdrop-blur sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <a href="/" className="flex items-center gap-3">
@@ -25,7 +24,7 @@ export default function Home() {
             <a href="/demo" className="hover:text-cyan-400 transition">
               Demo
             </a>
-            <a href="#about" className="hover:text-cyan-400 transition">
+            <a href="/about" className="hover:text-cyan-400 transition">
               About
             </a>
             <a
@@ -39,7 +38,6 @@ export default function Home() {
       </header>
 
       <main className="flex-1">
-        {/* Hero */}
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-900/20 via-navy-950 to-navy-950" />
           <div className="relative max-w-6xl mx-auto px-6 pt-24 pb-28 text-center">
@@ -75,7 +73,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Services summary */}
         <section id="services" className="py-24 border-t border-navy-800">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-16">
@@ -89,18 +86,8 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-8">
               <div className="rounded-2xl border border-navy-700 bg-navy-900/50 p-8 hover:border-cyan-500/30 transition">
                 <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-6">
-                  <svg
-                    className="w-6 h-6 text-cyan-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                    />
+                  <svg className="w-6 h-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-3">Web Design</h3>
@@ -109,100 +96,47 @@ export default function Home() {
                   bloated templates, no unnecessary complexity.
                 </p>
                 <ul className="space-y-2 text-sm text-slate-300">
-                  <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> Custom site design &
-                    build
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> Fast, mobile-first
-                    performance
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> Ongoing updates &
-                    support
-                  </li>
+                  <li className="flex gap-2"><span className="text-cyan-400">→</span> Custom site design & build</li>
+                  <li className="flex gap-2"><span className="text-cyan-400">→</span> Fast, mobile-first performance</li>
+                  <li className="flex gap-2"><span className="text-cyan-400">→</span> Ongoing updates & support</li>
                 </ul>
               </div>
 
               <div className="rounded-2xl border border-navy-700 bg-navy-900/50 p-8 hover:border-cyan-500/30 transition">
                 <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-6">
-                  <svg
-                    className="w-6 h-6 text-cyan-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                    />
+                  <svg className="w-6 h-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-3">
-                  Network & Infrastructure
-                </h3>
+                <h3 className="text-xl font-semibold text-white mb-3">Network & Infrastructure</h3>
                 <p className="text-slate-400 leading-relaxed mb-6">
                   Enterprise network design and deployment, from new construction
                   to SD-WAN across hundreds of sites.
                 </p>
                 <ul className="space-y-2 text-sm text-slate-300">
-                  <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> SD-WAN & Starlink
-                    deployment
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> New construction &
-                    structured cabling
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> Network assessments &
-                    remediation
-                  </li>
+                  <li className="flex gap-2"><span className="text-cyan-400">→</span> SD-WAN & Starlink deployment</li>
+                  <li className="flex gap-2"><span className="text-cyan-400">→</span> New construction & structured cabling</li>
+                  <li className="flex gap-2"><span className="text-cyan-400">→</span> Network assessments & remediation</li>
                 </ul>
               </div>
 
               <div className="rounded-2xl border border-navy-700 bg-navy-900/50 p-8 hover:border-cyan-500/30 transition">
                 <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-6">
-                  <svg
-                    className="w-6 h-6 text-cyan-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-                    />
+                  <svg className="w-6 h-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-3">
-                  AI & Automation
-                </h3>
+                <h3 className="text-xl font-semibold text-white mb-3">AI & Automation</h3>
                 <p className="text-slate-400 leading-relaxed mb-6">
                   Practical Python automation built from running a large-scale
                   Meraki SD-WAN environment day to day.
                 </p>
                 <ul className="space-y-2 text-sm text-slate-300">
-                  <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> Cisco Meraki automation
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> Device config &
-                    credential auditing
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-cyan-400">→</span> Monitoring & reporting
-                    automation
-                  </li>
+                  <li className="flex gap-2"><span className="text-cyan-400">→</span> Cisco Meraki automation</li>
+                  <li className="flex gap-2"><span className="text-cyan-400">→</span> Device config & credential auditing</li>
+                  <li className="flex gap-2"><span className="text-cyan-400">→</span> Monitoring & reporting automation</li>
                 </ul>
-                <a
-                  href="/services"
-                  className="mt-6 inline-flex text-sm font-semibold text-cyan-400 hover:text-cyan-300"
-                >
+                <a href="/services" className="mt-6 inline-flex text-sm font-semibold text-cyan-400 hover:text-cyan-300">
                   View service details →
                 </a>
               </div>
@@ -210,29 +144,24 @@ export default function Home() {
           </div>
         </section>
 
-        {/* About */}
-        <section id="about" className="py-24 border-t border-navy-800 bg-navy-900/30">
-          <div className="max-w-3xl mx-auto px-6 text-center">
-            <h2 className="text-3xl font-bold text-white mb-6">About</h2>
-            <p className="text-slate-400 leading-relaxed text-lg">
-              Winters Operations is led by Karl Winters, a network engineer with
-              20+ years building and fixing enterprise infrastructure. Day to
-              day, that means managing a large-scale Cisco Meraki SD-WAN
-              environment spanning hundreds of spoke sites tied together through
-              datacenter hubs and AWS, and writing the Python automation that
-              turns hours of manual network work into minutes.
+        {/* About teaser — full story on /about */}
+        <section className="py-20 border-t border-navy-800 bg-navy-900/30">
+          <div className="max-w-2xl mx-auto px-6 text-center">
+            <h2 className="text-3xl font-bold text-white mb-4">About</h2>
+            <p className="text-slate-400 leading-relaxed text-lg mb-8">
+              Led by Karl Winters — 20+ years of enterprise network engineering,
+              large-scale Meraki SD-WAN, and practical Python automation for
+              teams that need results without the full-time overhead.
             </p>
-            <p className="mt-4 text-slate-400 leading-relaxed text-lg">
-              Consulting engagements bring that same experience to teams that
-              need enterprise-level network expertise without the full-time cost
-              — network assessments, SD-WAN and Starlink deployments,
-              new-construction structured cabling and MDF/IDF buildouts, IP
-              camera systems, and voice infrastructure.
-            </p>
+            <a
+              href="/about"
+              className="inline-flex text-sm font-semibold text-cyan-400 hover:text-cyan-300"
+            >
+              Read more about the practice →
+            </a>
           </div>
         </section>
 
-        {/* Contact */}
         <section id="contact" className="py-24 border-t border-navy-800">
           <div className="max-w-xl mx-auto px-6 text-center">
             <h2 className="text-3xl font-bold text-white mb-4">Get in touch</h2>
