@@ -17,13 +17,28 @@ interface Alert {
   resolved: boolean;
 }
 
+interface DeviceResult {
+  hostname: string;
+  ip: string;
+  mac: string;
+  model: string;
+  site: string;
+  siteAddress: string;
+  serialNumber: string;
+  status: 'online' | 'offline';
+  lastSeen: string;
+}
+
 export default function ITOpsConsole() {
   const [isRunning, setIsRunning] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [deviceResult, setDeviceResult] = useState<DeviceResult | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
   const [outputs, setOutputs] = useState<ConsoleOutput[]>([
     {
       id: '0',
       type: 'status',
-      text: 'IT Ops Troubleshooting Console — Ready',
+      text: 'Device Inventory System — Ready',
       timestamp: new Date().toLocaleTimeString(),
     },
   ]);
@@ -47,6 +62,65 @@ export default function ITOpsConsole() {
       resolved: true,
     },
   ]);
+
+  // Mock device database
+  const deviceDatabase: Record<string, DeviceResult> = {
+    'switch-sf-01': {
+      hostname: 'switch-sf-01',
+      ip: '192.168.1.10',
+      mac: '00:1a:2b:3c:4d:5e',
+      model: 'Cisco Meraki MS425-32',
+      site: 'San Francisco Regional',
+      siteAddress: '123 Market St, San Francisco, CA 94105',
+      serialNumber: 'Q2QN-ABC4-DEFG',
+      status: 'online',
+      lastSeen: '2 seconds ago',
+    },
+  };
+
+  const searchDevice = async (query: string) => {
+    if (!query.trim()) return;
+
+    setIsSearching(true);
+    addOutput(`$ search --device "${query}"`, 'command');
+
+    // Simulate search delay
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
+    const normalizedQuery = query.toLowerCase().trim();
+    const device = deviceDatabase['switch-sf-01'];
+
+    // Check if query matches any field
+    const isMatch =
+      device.hostname.includes(normalizedQuery) ||
+      device.ip.includes(normalizedQuery) ||
+      device.mac.includes(normalizedQuery) ||
+      device.model.toLowerCase().includes(normalizedQuery) ||
+      device.site.toLowerCase().includes(normalizedQuery) ||
+      device.siteAddress.toLowerCase().includes(normalizedQuery) ||
+      device.serialNumber.includes(normalizedQuery);
+
+    if (isMatch) {
+      addOutput('[INFO] Searching inventory...', 'status');
+      await new Promise((resolve) => setTimeout(resolve, 600));
+      addOutput('Device found in Meraki dashboard', 'output');
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      addOutput(`Hostname: ${device.hostname}`, 'output');
+      addOutput(`IP Address: ${device.ip}`, 'output');
+      addOutput(`MAC Address: ${device.mac}`, 'output');
+      addOutput(`Model: ${device.model}`, 'output');
+      addOutput(`Site: ${device.site}`, 'output');
+      addOutput(`Serial: ${device.serialNumber}`, 'output');
+      addOutput(`Status: ${device.status === 'online' ? '✓ Online' : '✗ Offline'}`, 'success');
+      setDeviceResult(device);
+    } else {
+      addOutput('[INFO] Searching inventory...', 'status');
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      addOutput('No device found matching: ' + query, 'warning');
+    }
+
+    setIsSearching(false);
+  };
 
   const addOutput = (text: string, type: ConsoleOutput['type'] = 'output') => {
     setOutputs((prev) => [
@@ -223,7 +297,7 @@ export default function ITOpsConsole() {
               className="rounded-lg"
             />
             <span className="font-semibold tracking-tight text-2xl">
-              IT Ops Console
+              Winters Operations
             </span>
           </a>
           <nav className="hidden sm:flex items-center gap-8 text-sm text-slate-400">
@@ -244,15 +318,74 @@ export default function ITOpsConsole() {
       </header>
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-8">
-        {/* Title Section */}
+        {/* Device Search Section */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">
-            Network Troubleshooting Console
+            Device Inventory Search
           </h1>
-          <p className="text-slate-400">
-            Live demonstration of Winters Operations operational diagnostics and
-            optimization
+          <p className="text-slate-400 mb-6">
+            Find any device by IP, Hostname, MAC address, Site name, Site address, Serial number — or any other identifier
           </p>
+
+          {/* Search Input */}
+          <div className="flex gap-3 mb-6">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && searchDevice(searchQuery)}
+              placeholder="e.g., switch-sf-01, 192.168.1.10, 00:1a:2b:3c:4d:5e, Q2QN-ABC4-DEFG..."
+              disabled={isSearching}
+              className="flex-1 px-4 py-3 rounded-lg bg-navy-800/60 border border-cyan-500/40 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:bg-navy-800 disabled:opacity-50 disabled:cursor-not-allowed transition"
+            />
+            <button
+              onClick={() => searchDevice(searchQuery)}
+              disabled={isSearching || !searchQuery.trim()}
+              className="px-6 py-3 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30 hover:border-cyan-400/60 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition"
+            >
+              {isSearching ? 'Searching...' : 'Search'}
+            </button>
+          </div>
+
+          {/* Device Result Card */}
+          {deviceResult && (
+            <div className="bg-navy-900/60 border border-cyan-500/30 rounded-xl p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div>
+                <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">Hostname</p>
+                <p className="text-lg font-semibold text-cyan-300">{deviceResult.hostname}</p>
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">IP Address</p>
+                <p className="text-lg font-semibold text-cyan-300">{deviceResult.ip}</p>
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">MAC Address</p>
+                <p className="text-sm font-mono text-cyan-300">{deviceResult.mac}</p>
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">Model</p>
+                <p className="text-sm font-semibold text-cyan-300">{deviceResult.model}</p>
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">Site</p>
+                <p className="text-sm font-semibold text-cyan-300">{deviceResult.site}</p>
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">Site Address</p>
+                <p className="text-sm text-cyan-300">{deviceResult.siteAddress}</p>
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">Serial Number</p>
+                <p className="text-sm font-mono text-cyan-300">{deviceResult.serialNumber}</p>
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-wider text-slate-500 mb-1">Status</p>
+                <p className={`text-sm font-semibold ${deviceResult.status === 'online' ? 'text-green-400' : 'text-red-400'}`}>
+                  {deviceResult.status === 'online' ? '✓ Online' : '✗ Offline'}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-h-[600px]">
