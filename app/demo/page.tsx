@@ -50,7 +50,7 @@ export default function DemoPage() {
             <a href="/demo" className="text-cyan-400">
               Demo
             </a>
-            <a href="/#about" className="hover:text-cyan-400 transition">
+            <a href="/about" className="hover:text-cyan-400 transition">
               About
             </a>
             <a
