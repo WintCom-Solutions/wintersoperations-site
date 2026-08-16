@@ -7,7 +7,7 @@ export const metadata = createPageMetadata({
   path: "/about",
   title: "About",
   description:
-    "Winters Operations is led by Karl Winters — 20+ years of enterprise network engineering, Meraki SD-WAN, and practical Python automation.",
+    "Winters Operations is led by Karl Winters — 30+ years of enterprise IT experience, Meraki SD-WAN, and practical Python automation.",
 });
 
 export default function AboutPage() {
@@ -37,12 +37,12 @@ export default function AboutPage() {
                 Karl Winters
               </h2>
               <p className="text-slate-400 leading-relaxed text-lg">
-                Winters Operations is led by Karl Winters, a network engineer
-                with 20+ years building and fixing enterprise infrastructure.
-                Day to day, that means managing a large-scale Cisco Meraki
-                SD-WAN environment spanning hundreds of spoke sites tied
-                together through datacenter hubs and AWS, and writing the
-                Python automation that turns hours of manual network work into
+                Winters Operations is led by Karl Winters, with 30+ years
+                building and fixing enterprise IT infrastructure. Day to day,
+                that means managing a large-scale Cisco Meraki SD-WAN
+                environment spanning hundreds of spoke sites tied together
+                through datacenter hubs and AWS, and writing the Python
+                automation that turns hours of manual network work into
                 minutes.
               </p>
             </div>

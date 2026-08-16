@@ -10,7 +10,7 @@ export const metadata = createPageMetadata({
   path: "/services",
   title: "Services",
   description:
-    "Winters Operations builds websites and practical Python automation for small businesses, backed by enterprise network engineering experience.",
+    "Winters Operations builds websites and practical Python automation for small businesses, backed by 30+ years of enterprise IT experience.",
 });
 
 const deliverables = [
@@ -34,8 +34,8 @@ export default function ServicesPage() {
             </h1>
             <p className="mt-6 text-lg text-slate-400 max-w-2xl leading-relaxed">
               Winters Operations builds clean websites and practical Python
-              automation for small businesses, backed by 20+ years of enterprise
-              network and infrastructure experience.
+              automation for small businesses, backed by 30+ years of enterprise
+              IT experience.
             </p>
           </div>
         </section>

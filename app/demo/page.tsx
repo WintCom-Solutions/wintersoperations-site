@@ -8,7 +8,7 @@ export const metadata = createPageMetadata({
   path: "/demo",
   title: "Demo",
   description:
-    "Interactive IT Ops troubleshooting console — see Winters Operations in action.",
+    "Interactive IT Ops troubleshooting console and SD-WAN topology demos — see Winters Operations in action.",
 });
 
 export default function DemoPage() {
@@ -24,34 +24,35 @@ export default function DemoPage() {
               See the work, not the pitch deck.
             </h1>
             <p className="mt-6 text-lg text-slate-400 max-w-2xl leading-relaxed">
-              Short demos of how Winters Operations approaches websites,
-              automation, and network work. Full cut first — silent highlight
-              below for a quicker scan.
+              Interactive demos of how Winters Operations approaches network
+              operations and automation. Simulated environments — no live
+              customer systems connected.
             </p>
           </div>
         </section>
 
         <section className="py-16 sm:py-20">
           <div className="max-w-6xl mx-auto px-6 space-y-16">
-            {/* IT Ops Console Demo */}
             <article className="scroll-mt-24">
               <div className="mb-8">
                 <h2 className="text-2xl font-semibold text-white tracking-tight mb-3">
                   IT Ops Troubleshooting Console
                 </h2>
                 <p className="text-slate-400 max-w-2xl text-lg">
-                  See how Winters Operations approaches real operational work. This interactive demo shows network diagnostics, platform integration, and automated optimization across Meraki, SolarWinds, and ServiceNow.
+                  A simulated ops console for network diagnostics, alert
+                  handling, and workflow patterns across Meraki, SolarWinds,
+                  and ServiceNow-style surfaces.
                 </p>
               </div>
 
               <div className="relative w-full overflow-hidden rounded-2xl border border-navy-700 bg-navy-900/60 shadow-lg mb-8">
-                <div className="aspect-video w-full bg-navy-950 flex items-center justify-center">
+                <div className="min-h-[220px] w-full bg-navy-950 flex items-center justify-center px-6 py-12">
                   <div className="text-center">
                     <p className="text-cyan-400 text-lg font-semibold mb-4">
-                      🚀 Interactive Console
+                      Interactive Console
                     </p>
                     <p className="text-slate-400 mb-6">
-                      Click below to launch the live troubleshooting demo
+                      Launch the simulated troubleshooting demo
                     </p>
                     <Link href="/itops-console" className="btn-primary">
                       Launch Console →
@@ -62,48 +63,60 @@ export default function DemoPage() {
 
               <div className="bg-navy-900/40 border border-cyan-500/20 rounded-xl p-6">
                 <h3 className="text-lg font-semibold text-white mb-4">
-                  What the console demonstrates:
+                  What this demo covers
                 </h3>
                 <ul className="space-y-3 text-slate-300">
                   <li className="flex gap-3">
-                    <span className="text-cyan-400 flex-shrink-0">✓</span>
-                    <span><strong>Network Diagnostics</strong> — Real-time connectivity checks, latency monitoring, and platform API performance</span>
+                    <span className="text-cyan-400 flex-shrink-0">→</span>
+                    <span>
+                      <strong>Network diagnostics</strong> — connectivity
+                      checks, latency readouts, and platform status patterns
+                    </span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-cyan-400 flex-shrink-0">✓</span>
-                    <span><strong>Multi-Platform Integration</strong> — Cisco Meraki, SolarWinds, and ServiceNow working together</span>
+                    <span className="text-cyan-400 flex-shrink-0">→</span>
+                    <span>
+                      <strong>Multi-platform surface</strong> — Meraki,
+                      SolarWinds, and ServiceNow-style workflows in one console
+                    </span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-cyan-400 flex-shrink-0">✓</span>
-                    <span><strong>Automated Optimization</strong> — Configuration updates and workflow automation to improve efficiency</span>
+                    <span className="text-cyan-400 flex-shrink-0">→</span>
+                    <span>
+                      <strong>Ops automation patterns</strong> — configuration
+                      and workflow steps that reduce manual toil
+                    </span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-cyan-400 flex-shrink-0">✓</span>
-                    <span><strong>Alert Management</strong> — Real-time issue detection, tracking, and resolution workflows</span>
+                    <span className="text-cyan-400 flex-shrink-0">→</span>
+                    <span>
+                      <strong>Alert handling</strong> — issue detection,
+                      tracking, and resolution workflow shapes
+                    </span>
                   </li>
                 </ul>
               </div>
             </article>
 
-            {/* Network Topology Demo */}
             <article className="scroll-mt-24">
               <div className="mb-8">
                 <h2 className="text-2xl font-semibold text-white tracking-tight mb-3">
                   Multi-Site SD-WAN Topology
                 </h2>
                 <p className="text-slate-400 max-w-2xl text-lg">
-                  See how we design and visualize distributed networks. This interactive topology shows a real-world multi-site SD-WAN deployment with latency, bandwidth, and health monitoring across all sites.
+                  An interactive topology view of a multi-site SD-WAN layout
+                  with link health, latency, and bandwidth readouts.
                 </p>
               </div>
 
               <div className="relative w-full overflow-hidden rounded-2xl border border-navy-700 bg-navy-900/60 shadow-lg mb-8">
-                <div className="aspect-video w-full bg-navy-950 flex items-center justify-center">
+                <div className="min-h-[220px] w-full bg-navy-950 flex items-center justify-center px-6 py-12">
                   <div className="text-center">
                     <p className="text-cyan-400 text-lg font-semibold mb-4">
-                      🌐 Network Visualization
+                      Network Visualization
                     </p>
                     <p className="text-slate-400 mb-6">
-                      Click below to explore the SD-WAN topology visualization
+                      Explore the SD-WAN topology visualization
                     </p>
                     <Link href="/network-topology" className="btn-primary">
                       View Topology →
@@ -114,24 +127,36 @@ export default function DemoPage() {
 
               <div className="bg-navy-900/40 border border-cyan-500/20 rounded-xl p-6">
                 <h3 className="text-lg font-semibold text-white mb-4">
-                  What the topology demonstrates:
+                  What this demo covers
                 </h3>
                 <ul className="space-y-3 text-slate-300">
                   <li className="flex gap-3">
-                    <span className="text-cyan-400 flex-shrink-0">✓</span>
-                    <span><strong>Multi-site Architecture</strong> — Hub-and-spoke with mesh redundancy across 7 locations</span>
+                    <span className="text-cyan-400 flex-shrink-0">→</span>
+                    <span>
+                      <strong>Multi-site architecture</strong> — hub-and-spoke
+                      with mesh redundancy across sample locations
+                    </span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-cyan-400 flex-shrink-0">✓</span>
-                    <span><strong>Real-time Metrics</strong> — Latency, bandwidth utilization, and health status for each link</span>
+                    <span className="text-cyan-400 flex-shrink-0">→</span>
+                    <span>
+                      <strong>Link metrics</strong> — latency, bandwidth, and
+                      health status for each path
+                    </span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-cyan-400 flex-shrink-0">✓</span>
-                    <span><strong>SD-WAN Design</strong> — Meraki-based network with failover and optimization</span>
+                    <span className="text-cyan-400 flex-shrink-0">→</span>
+                    <span>
+                      <strong>SD-WAN design patterns</strong> — Meraki-style
+                      topology with failover concepts
+                    </span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-cyan-400 flex-shrink-0">✓</span>
-                    <span><strong>Cloud Integration</strong> — AWS connectivity for disaster recovery and scalability</span>
+                    <span className="text-cyan-400 flex-shrink-0">→</span>
+                    <span>
+                      <strong>Cloud edge</strong> — AWS connectivity for
+                      disaster recovery and scale
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -145,7 +170,9 @@ export default function DemoPage() {
               Ready to reduce operational friction?
             </h2>
             <p className="text-slate-400 mb-8">
-              Winters Operations builds the infrastructure, automation, and web presence your team needs. Let&apos;s talk about what you&apos;re trying to fix.
+              Winters Operations builds the infrastructure, automation, and web
+              presence your team needs. Let&apos;s talk about what you&apos;re
+              trying to fix.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a href={`mailto:${contactEmail}`} className="btn-primary">
