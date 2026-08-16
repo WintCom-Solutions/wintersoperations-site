@@ -255,10 +255,10 @@ export default function ITOpsConsole() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[600px]">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-h-[600px]">
           {/* Left: Console Output */}
-          <div className="lg:col-span-2 flex flex-col">
-            <div className="flex-1 bg-navy-900/60 border border-cyan-500/20 rounded-xl overflow-hidden flex flex-col">
+          <div className="lg:col-span-2 flex flex-col min-h-0">
+            <div className="flex-1 bg-navy-900/60 border border-cyan-500/20 rounded-xl overflow-hidden flex flex-col min-h-0">
               {/* Console Header */}
               <div className="bg-navy-800/80 border-b border-cyan-500/10 px-4 py-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -323,9 +323,9 @@ export default function ITOpsConsole() {
           </div>
 
           {/* Right: Alert Panel */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 min-h-0">
             {/* Active Alerts Section */}
-            <div className="bg-navy-900/60 border border-red-500/20 rounded-xl overflow-hidden flex flex-col">
+            <div className="bg-navy-900/60 border border-red-500/20 rounded-xl overflow-hidden flex flex-col min-h-0">
               <div className="bg-red-500/10 border-b border-red-500/20 px-4 py-3">
                 <h3 className="text-sm font-semibold text-red-300 uppercase tracking-wider">
                   ⚠ Active Alerts
@@ -373,7 +373,7 @@ export default function ITOpsConsole() {
             </div>
 
             {/* Resolved Section */}
-            <div className="bg-navy-900/60 border border-green-500/20 rounded-xl overflow-hidden flex flex-col">
+            <div className="bg-navy-900/60 border border-green-500/20 rounded-xl overflow-hidden flex flex-col min-h-0">
               <div className="bg-green-500/10 border-b border-green-500/20 px-4 py-3">
                 <h3 className="text-sm font-semibold text-green-300 uppercase tracking-wider">
                   ✓ Resolved ({alerts.filter((a) => a.resolved).length})
