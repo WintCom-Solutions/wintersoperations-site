@@ -2,38 +2,19 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { siteUrl } from "@/lib/site";
-
-const siteTitle = "Winters Operations | Ops & AI Automation Consulting";
-const siteDescription =
-  "Winters Operations helps IT and operations teams reduce friction with practical consulting, Python automation, and focused AI workflows for tools like Cisco Meraki, SolarWinds, and ServiceNow.";
+import { homeDescription, homeTitle } from "@/lib/metadata";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: siteTitle,
+    default: homeTitle,
     template: "%s | Winters Operations",
   },
-  description: siteDescription,
+  description: homeDescription,
   applicationName: "Winters Operations",
   authors: [{ name: "Winters Operations" }],
   creator: "Winters Operations",
   publisher: "Winters Operations",
-  alternates: {
-    canonical: "/",
-  },
-  openGraph: {
-    type: "website",
-    url: "/",
-    siteName: "Winters Operations",
-    title: siteTitle,
-    description: siteDescription,
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: siteTitle,
-    description: siteDescription,
-  },
   robots: {
     index: true,
     follow: true,

@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { contactEmail } from "@/lib/site";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
+  path: "/about",
   title: "About",
   description:
     "Winters Operations is led by Karl Winters — 20+ years of enterprise network engineering, Meraki SD-WAN, and practical Python automation.",
-};
+});
 
 export default function AboutPage() {
   return (

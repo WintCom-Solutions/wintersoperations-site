@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { contactEmail } from "@/lib/site";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
+  path: "/demo",
   title: "Demo",
   description:
     "Interactive IT Ops troubleshooting console — see Winters Operations in action.",
-};
+});
 
 export default function DemoPage() {
   return (

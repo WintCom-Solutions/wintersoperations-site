@@ -1,16 +1,17 @@
-import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import ContactSection from "@/components/ContactSection";
 import ServiceIcon from "@/components/ServiceIcon";
 import Reveal from "@/components/Reveal";
 import { services, processSteps } from "@/lib/content";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
+  path: "/services",
   title: "Services",
   description:
     "Winters Operations builds websites and practical Python automation for small businesses, backed by enterprise network engineering experience.",
-};
+});
 
 const deliverables = [
   "Network assessment report with a practical remediation roadmap",

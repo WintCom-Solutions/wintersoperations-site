@@ -7,6 +7,15 @@ import ServiceIcon from "@/components/ServiceIcon";
 import TechMarquee from "@/components/TechMarquee";
 import Reveal from "@/components/Reveal";
 import { services } from "@/lib/content";
+import {
+  createPageMetadata,
+  homeDescription,
+} from "@/lib/metadata";
+
+export const metadata = createPageMetadata({
+  path: "/",
+  description: homeDescription,
+});
 
 export default function Home() {
   return (
