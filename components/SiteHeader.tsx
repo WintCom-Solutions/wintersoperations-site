@@ -9,16 +9,16 @@ export default function SiteHeader() {
 
   return (
     <header className="border-b border-navy-700/60 bg-navy-950/80 backdrop-blur sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="/" className="flex items-center gap-3">
+      <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+        <a href="/" className="flex items-center gap-3.5">
           <Image
             src="/logo.png"
             alt={siteName}
-            width={32}
-            height={32}
+            width={48}
+            height={48}
             className="rounded-lg"
           />
-          <span className="font-semibold tracking-tight text-lg">{siteName}</span>
+          <span className="font-semibold tracking-tight text-2xl">{siteName}</span>
         </a>
 
         <nav className="hidden sm:flex items-center gap-8 text-sm text-slate-400">
