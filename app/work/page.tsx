@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import ContactSection from "@/components/ContactSection";
 import Reveal from "@/components/Reveal";
 import { caseStudies } from "@/lib/content";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
+  path: "/work",
   title: "Work",
   description:
     "Case studies from Winters Operations engagements — network automation, SD-WAN rollouts, and small-business web design.",
-};
+});
 
 export default function WorkPage() {
   return (
