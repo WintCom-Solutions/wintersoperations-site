@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
+import { contactEmail } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Demo",
@@ -29,46 +31,12 @@ const demos = [
 export default function DemoPage() {
   return (
     <div className="min-h-screen flex flex-col bg-navy-950 text-slate-100">
-      <header className="border-b border-navy-700/60 bg-navy-950/80 backdrop-blur sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-3">
-            <Image
-              src="/logo.png"
-              alt="Winters Operations"
-              width={32}
-              height={32}
-              className="rounded-lg"
-            />
-            <span className="font-semibold tracking-tight text-lg">
-              Winters Operations
-            </span>
-          </a>
-          <nav className="hidden sm:flex items-center gap-8 text-sm text-slate-400">
-            <a href="/services" className="hover:text-cyan-400 transition">
-              Services
-            </a>
-            <a href="/demo" className="text-cyan-400">
-              Demo
-            </a>
-            <a href="/about" className="hover:text-cyan-400 transition">
-              About
-            </a>
-            <a
-              href="/#contact"
-              className="px-4 py-2 rounded-md bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/20 transition"
-            >
-              Contact
-            </a>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main className="flex-1">
         <section className="border-b border-navy-800">
           <div className="max-w-6xl mx-auto px-6 py-16 sm:py-20">
-            <p className="text-cyan-400 font-medium tracking-wide text-sm uppercase mb-4">
-              Demos
-            </p>
+            <p className="eyebrow mb-4">Demos</p>
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white max-w-3xl leading-tight">
               See the work, not the pitch deck.
             </h1>
@@ -120,20 +88,14 @@ export default function DemoPage() {
               Want this for your team?
             </h2>
             <p className="text-slate-400 mb-8">
-              Tell us what you’re trying to fix — website, automation, or
-              network — and we’ll respond promptly.
+              Tell us what you&apos;re trying to fix — website, automation, or
+              network — and we&apos;ll respond promptly.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href="mailto:solutions@wintersoperations.com"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-cyan-500 text-navy-950 font-semibold hover:bg-cyan-400 transition"
-              >
-                solutions@wintersoperations.com
+              <a href={`mailto:${contactEmail}`} className="btn-primary">
+                {contactEmail}
               </a>
-              <a
-                href="/services"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-slate-600 text-slate-200 hover:border-cyan-500/50 hover:text-cyan-300 transition"
-              >
+              <a href="/services" className="btn-ghost">
                 View services
               </a>
             </div>
@@ -141,12 +103,7 @@ export default function DemoPage() {
         </section>
       </main>
 
-      <footer className="border-t border-navy-800 py-8">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-          <div>© {new Date().getFullYear()} Winters Operations</div>
-          <div className="text-slate-600">Ops, web & automation consulting</div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
