@@ -79,8 +79,7 @@ export default function Home() {
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold text-white">Three clear service lines</h2>
               <p className="mt-3 text-slate-400 max-w-xl mx-auto">
-                Whether you need a website, automation that saves you time, or
-                enterprise network work, we meet you where you are.
+                Whether you need network solutions, a website or automation that saves you time, we meet you where you are.
               </p>
             </div>
 
