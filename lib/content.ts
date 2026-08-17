@@ -67,6 +67,8 @@ export const caseStudies = [
     summary:
       "Automated discovery and reporting across hundreds of Meraki devices; flagged stale credentials and config drift.",
     outcome: "Reduced manual audit time from days to minutes per cycle.",
+    detail:
+      "Python scripts pulled organization-wide inventory, compared against expected templates, and produced exception reports for network ops. Credential rotation and unused SSID cleanup followed.",
     tags: ["Meraki", "Python", "Security"],
   },
   {
@@ -76,6 +78,8 @@ export const caseStudies = [
     summary:
       "Designed and deployed hub-and-spoke topology with cellular/Starlink failover for remote yards.",
     outcome: "Consistent connectivity for previously offline locations.",
+    detail:
+      "Hub design, spoke templates, monitoring thresholds, and a practical failover runbook so local staff could recover without waiting for a truck roll.",
     tags: ["SD-WAN", "Starlink", "Infrastructure"],
   },
   {
@@ -85,7 +89,59 @@ export const caseStudies = [
     summary:
       "Custom static site with clear service pages, contact flow, and mobile-first performance.",
     outcome: "Launched in under two weeks; measurable inquiry increase.",
+    detail:
+      "Scope stayed tight: three core pages, clear CTAs, and a contact path that actually got answered. No CMS complexity the client would never maintain.",
     tags: ["Web Design", "Static"],
+  },
+] as const;
+
+export const guides = [
+  {
+    slug: "meraki-estate-hygiene",
+    title: "Meraki estate hygiene checklist",
+    description:
+      "A practical list for finding stale configs, unused SSIDs, and credential drift across a multi-site Meraki organization.",
+    category: "Automation",
+    readTime: "6 min",
+  },
+  {
+    slug: "sdwan-spoke-readiness",
+    title: "SD-WAN spoke readiness checklist",
+    description:
+      "What to verify before turning up a new spoke — power, uplink, IP plan, monitoring, and failover expectations.",
+    category: "Network",
+    readTime: "5 min",
+  },
+  {
+    slug: "small-business-site-scope",
+    title: "How to scope a small-business website",
+    description:
+      "A short framework for deciding pages, forms, and hosting so the site ships fast and stays maintainable.",
+    category: "Web Design",
+    readTime: "4 min",
+  },
+] as const;
+
+export const faqs = [
+  {
+    q: "Do you only work with large enterprises?",
+    a: "No. Enterprise experience is the foundation, but we also build clean websites and practical automation for small businesses that want results without full-time overhead.",
+  },
+  {
+    q: "Is the contact form private?",
+    a: "Messages go to Winters Operations for response only. We do not sell or share inquiry data.",
+  },
+  {
+    q: "Can you take over an existing Meraki or SD-WAN environment?",
+    a: "Yes. Assessments, cleanup, automation, and ongoing support are common engagement types.",
+  },
+  {
+    q: "Do you host the websites you build?",
+    a: "We deliver static sites that can run on Vercel, Netlify, or any static host. Hosting can be client-owned or managed as part of the engagement.",
+  },
+  {
+    q: "What does a typical engagement look like?",
+    a: "Clear scope, hands-on build, then handoff with documentation so your team can run what was delivered.",
   },
 ] as const;
 
