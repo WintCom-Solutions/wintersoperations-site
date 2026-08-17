@@ -7,6 +7,7 @@ export const contactEmail = "solutions@wintersoperations.com";
 export const nav = [
   { href: "/services", label: "Services" },
   { href: "/work", label: "Work" },
+  { href: "/guides", label: "Guides" },
   { href: "/demo", label: "Demo" },
   { href: "/about", label: "About" },
 ] as const;

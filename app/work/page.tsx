@@ -45,7 +45,10 @@ export default function WorkPage() {
                   </div>
                   <h2 className="text-2xl font-semibold text-white mb-1">{study.title}</h2>
                   <p className="eyebrow mb-4">{study.client}</p>
-                  <p className="text-slate-400 leading-relaxed mb-4">{study.summary}</p>
+                  <p className="text-slate-400 leading-relaxed mb-3">{study.summary}</p>
+                  {"detail" in study && study.detail ? (
+                    <p className="text-slate-400 leading-relaxed mb-4">{study.detail}</p>
+                  ) : null}
                   <p className="text-sm text-cyan-300 font-medium">{study.outcome}</p>
                 </article>
               </Reveal>
