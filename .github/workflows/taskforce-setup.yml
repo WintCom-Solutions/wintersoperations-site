@@ -15,6 +15,7 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       REPO: ${{ github.repository }}
+      HAS_REVIEWER_PAT: ${{ secrets.TASKFORCE_REVIEWER_PAT != '' }}
     steps:
       - name: Create pipeline labels
         run: |
@@ -25,27 +26,44 @@ jobs:
           create "stage:build"           "1d76db" "Ready for a builder agent (triggers dispatch)"
           create "stage:review"          "fbca04" "PR awaiting independent review (triggers dispatch)"
           create "stage:ready"           "0e8a16" "Independently approved; Karl merges"
+          create "stage:delivered"       "0e8a16" "Non-PR deliverable complete; Karl reviews/signs off"
           create "blocked"               "d93f0b" "Needs intervention"
           create "needs:karl"            "b60205" "High-risk decision reserved for Karl"
           create "type:auto-maintenance" "ededed" "Low-risk hourly auto-maintenance item"
           create "round:1"               "d4c5f9" "Auto-maintenance initial attempt"
           create "round:2"               "d4c5f9" "Auto-maintenance final retry before Karl"
           create "agent:claude-code"     "5319e7" "Executor: Claude Code"
-          create "agent:copilot"         "5319e7" "Executor: GitHub Copilot"
           create "agent:codex"           "5319e7" "Executor: Codex / ChatGPT"
           create "agent:grok"            "5319e7" "Executor: Grok"
           create "reviewer:claude-code"  "bfd4f2" "Reviewer: Claude Code"
+          create "reviewer:claude-code-reviewer" "bfd4f2" "Reviewer: Claude Code (EDR-007 second pass on claude-code builds)"
           create "reviewer:grok"         "bfd4f2" "Reviewer: Grok"
           create "reviewer:codex"        "bfd4f2" "Reviewer: Codex / ChatGPT"
-          create "reviewer:copilot"      "bfd4f2" "Reviewer: GitHub Copilot advisory"
+          create "locked"                "e11d21" "Active build/rework push in progress -- do not push (see AGENTS.md hard rule 7)"
       - name: Report secret readiness
         env:
           HAS_OAUTH: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
-          HAS_PAT: ${{ secrets.TASKFORCE_PAT != '' }}
-          HAS_REVIEWER_PAT: ${{ secrets.TASKFORCE_REVIEWER_PAT != '' }}
           HAS_XAI: ${{ secrets.XAI_API_KEY != '' }}
         run: |
           echo "CLAUDE_CODE_OAUTH_TOKEN set: $HAS_OAUTH"
-          echo "TASKFORCE_PAT set:           $HAS_PAT (hard requirement for build stage — see RUNBOOK.md)"
           echo "TASKFORCE_REVIEWER_PAT set:  $HAS_REVIEWER_PAT (hard requirement for auto-review — see RUNBOOK.md)"
           echo "XAI_API_KEY set:             $HAS_XAI (required for the Grok reviewer)"
+      - name: Verify reviewer PAT collaborator access
+        if: ${{ env.HAS_REVIEWER_PAT == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.TASKFORCE_REVIEWER_PAT }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          LOGIN=$(gh api user --jq .login)
+          echo "TASKFORCE_REVIEWER_PAT authenticates as: $LOGIN"
+          PERM=$(gh api "repos/$REPO/collaborators/$LOGIN/permission" --jq .permission 2>/dev/null || echo "none")
+          echo "$LOGIN's permission on $REPO: $PERM"
+          case "$PERM" in
+            admin|write)
+              echo "OK: sufficient to submit binding gh pr review --approve/--request-changes calls."
+              ;;
+            *)
+              echo "::warning::$LOGIN only has '$PERM' access on $REPO — this is likely insufficient to submit binding PR reviews. Add $LOGIN as a repo collaborator with at least Write access (Settings > Collaborators)."
+              ;;
+          esac

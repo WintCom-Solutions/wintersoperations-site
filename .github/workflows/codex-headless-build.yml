@@ -1,0 +1,282 @@
+name: Codex Headless Build
+
+# Tier A build/rework path for the existing Codex CLI integration.
+# Codex edits only the checked-out workspace. GitHub-side writes are performed
+# by the existing Builder GitHub App identity after Codex exits.
+
+on:
+  issues:
+    types: [labeled]
+  pull_request:
+    types: [labeled]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+# CODEX_AUTH_JSON may contain a refresh token. Serialize every Codex CLI run in
+# this repository so two runners never race the same ChatGPT-managed auth state.
+concurrency:
+  group: codex-auth
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: >-
+      github.event_name == 'issues' &&
+      contains(fromJSON('["agent:codex","stage:build"]'), github.event.label.name) &&
+      contains(github.event.issue.labels.*.name, 'ai-task') &&
+      contains(github.event.issue.labels.*.name, 'agent:codex') &&
+      contains(github.event.issue.labels.*.name, 'stage:build') &&
+      !contains(github.event.issue.labels.*.name, 'locked')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: 4679699
+          private-key: ${{ secrets.TASKFORCE_BUILDER_APP_PRIVATE_KEY }}
+
+      - name: Lock issue and prepare branch
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          BRANCH="taskforce/issue-$NUMBER"
+          gh issue edit "$NUMBER" --repo "$REPO" --add-label locked
+          gh issue comment "$NUMBER" --repo "$REPO" --body \
+            "🔒 \`locked\` by headless \`codex\` build, $(date -u +%Y-%m-%dT%H:%M:%SZ)."
+          gh auth setup-git
+          if git fetch origin "$BRANCH" 2>/dev/null; then
+            git checkout -B "$BRANCH" "origin/$BRANCH"
+          else
+            git checkout -b "$BRANCH"
+          fi
+          gh issue view "$NUMBER" --repo "$REPO" --json title,body,labels \
+            --jq '"# " + .title + "\n\n" + .body + "\n\nLabels: " + ([.labels[].name] | join(", "))' \
+            > /tmp/codex-task.md
+
+      - name: Prepare Codex ChatGPT auth
+        env:
+          CODEX_AUTH_JSON: ${{ secrets.CODEX_AUTH_JSON }}
+        run: |
+          set -euo pipefail
+          test -n "${CODEX_AUTH_JSON:-}" || { echo "CODEX_AUTH_JSON is not configured." >&2; exit 1; }
+          mkdir -p "$HOME/.codex"
+          chmod 700 "$HOME/.codex"
+          printf '%s' "$CODEX_AUTH_JSON" > "$HOME/.codex/auth.json"
+          chmod 600 "$HOME/.codex/auth.json"
+          jq -e '.auth_mode == "chatgpt" and ((.tokens.refresh_token // "") != "")' \
+            "$HOME/.codex/auth.json" >/dev/null
+
+      - name: Install Codex CLI
+        run: npm install -g @openai/codex
+
+      - name: Run Codex build
+        env:
+          NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          PROMPT="You are agent 'codex' in the AI Task Force. Read AGENTS.md and /tmp/codex-task.md. Implement issue #$NUMBER exactly as scoped. Edit only repository files needed for the task. Do not run gh, do not push, do not merge, do not change protected Task Force files, and do not handle secrets. Run relevant local validation/tests when practical. Your final response must contain a concise Summary and Validation section, including commands run and pass/fail results."
+          codex exec --sandbox workspace-write --json \
+            --output-last-message /tmp/codex-result.md "$PROMPT"
+
+      - name: Guard, commit, push, and open PR
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          test -s /tmp/codex-result.md || { echo "Codex produced no final report." >&2; exit 1; }
+          test -n "$(git status --porcelain)" || { echo "Codex produced no repository changes." >&2; exit 1; }
+
+          {
+            git diff --name-only
+            git diff --cached --name-only
+            git ls-files --others --exclude-standard
+          } | sort -u > /tmp/changed-files.txt
+          while IFS= read -r path; do
+            case "$path" in
+              .ai-task-force.toml|AI_TASK_FORCE.md|docs/AI_TASK_FORCE.md|docs/DECISIONS.md|AGENTS.md|CLAUDE.md|README.md|.github/workflows/*|.github/taskforce/agents.json|*.pem|*.key|.env|*/.env)
+                echo "Forbidden/protected file changed: $path" >&2
+                exit 1
+                ;;
+            esac
+          done < /tmp/changed-files.txt
+
+          gh auth setup-git
+          git config user.name "AI Task Force Builder"
+          git config user.email "ai-task-force-builder@users.noreply.github.com"
+          git add -A
+          git commit -m "Build issue #$NUMBER with headless Codex"
+          git push --set-upstream origin HEAD
+
+          BRANCH="taskforce/issue-$NUMBER"
+          PR_NUMBER=$(gh pr list --repo "$REPO" --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          if [ -z "$PR_NUMBER" ]; then
+            TITLE=$(gh issue view "$NUMBER" --repo "$REPO" --json title --jq .title)
+            {
+              echo "Closes #$NUMBER"
+              echo
+              echo "## Codex build report"
+              cat /tmp/codex-result.md
+              echo
+              echo "## Automation evidence"
+              echo "- Auth mode: ChatGPT-managed Codex auth via \`CODEX_AUTH_JSON\`"
+              echo "- GitHub writes: AI Task Force Builder GitHub App"
+              echo "- Codex sandbox: \`workspace-write\`"
+            } > /tmp/pr-body.md
+            gh pr create --repo "$REPO" --base main --head "$BRANCH" \
+              --title "$TITLE" --body-file /tmp/pr-body.md
+            PR_NUMBER=$(gh pr list --repo "$REPO" --head "$BRANCH" --state open --json number --jq '.[0].number')
+          fi
+          gh pr edit "$PR_NUMBER" --repo "$REPO" \
+            --add-label ai-task --add-label stage:review --add-label agent:codex
+          gh issue comment "$NUMBER" --repo "$REPO" --body \
+            "Done: headless Codex build pushed on \`$BRANCH\` and opened/updated PR #$PR_NUMBER. Next: independent review."
+
+      - name: Report build failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue edit "$NUMBER" --repo "$REPO" --add-label blocked || true
+          gh issue comment "$NUMBER" --repo "$REPO" --body \
+            "Headless \`codex\` build failed. Marked \`blocked\`; inspect this workflow run before retrying."
+
+      - name: Unlock issue
+        if: always()
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+        run: gh issue edit "$NUMBER" --repo "$REPO" --remove-label locked || true
+
+  rework:
+    if: >-
+      github.event_name == 'pull_request' &&
+      contains(fromJSON('["agent:codex","stage:build"]'), github.event.label.name) &&
+      contains(github.event.pull_request.labels.*.name, 'ai-task') &&
+      contains(github.event.pull_request.labels.*.name, 'agent:codex') &&
+      contains(github.event.pull_request.labels.*.name, 'stage:build') &&
+      !contains(github.event.pull_request.labels.*.name, 'locked')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: 4679699
+          private-key: ${{ secrets.TASKFORCE_BUILDER_APP_PRIVATE_KEY }}
+
+      - name: Lock PR and prepare branch
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          gh pr edit "$NUMBER" --repo "$REPO" --add-label locked
+          gh pr comment "$NUMBER" --repo "$REPO" --body \
+            "🔒 \`locked\` by headless \`codex\` rework, $(date -u +%Y-%m-%dT%H:%M:%SZ)."
+          BRANCH=$(gh pr view "$NUMBER" --repo "$REPO" --json headRefName --jq .headRefName)
+          gh auth setup-git
+          git fetch origin "$BRANCH"
+          git checkout -B "$BRANCH" "origin/$BRANCH"
+          gh pr view "$NUMBER" --repo "$REPO" --comments > /tmp/codex-task.md
+          gh api "repos/$REPO/pulls/$NUMBER/reviews" --jq '.[] | "REVIEW " + .state + " by " + .user.login + ":\n" + (.body // "") + "\n"' \
+            >> /tmp/codex-task.md
+
+      - name: Prepare Codex ChatGPT auth
+        env:
+          CODEX_AUTH_JSON: ${{ secrets.CODEX_AUTH_JSON }}
+        run: |
+          set -euo pipefail
+          test -n "${CODEX_AUTH_JSON:-}" || { echo "CODEX_AUTH_JSON is not configured." >&2; exit 1; }
+          mkdir -p "$HOME/.codex"
+          chmod 700 "$HOME/.codex"
+          printf '%s' "$CODEX_AUTH_JSON" > "$HOME/.codex/auth.json"
+          chmod 600 "$HOME/.codex/auth.json"
+          jq -e '.auth_mode == "chatgpt" and ((.tokens.refresh_token // "") != "")' \
+            "$HOME/.codex/auth.json" >/dev/null
+
+      - name: Install Codex CLI
+        run: npm install -g @openai/codex
+
+      - name: Run Codex rework
+        env:
+          NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          PROMPT="You are agent 'codex' in the AI Task Force. Read AGENTS.md and /tmp/codex-task.md. This is rework for PR #$NUMBER. Address only the concrete review findings already recorded on the PR. Do not add unrelated cleanup. Do not run gh, do not push, do not merge, do not change protected Task Force files, and do not handle secrets. Run relevant local validation/tests when practical. Your final response must contain a concise Summary and Validation section."
+          codex exec --sandbox workspace-write --json \
+            --output-last-message /tmp/codex-result.md "$PROMPT"
+
+      - name: Guard, commit, push, and return to review
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          test -s /tmp/codex-result.md || { echo "Codex produced no final report." >&2; exit 1; }
+          test -n "$(git status --porcelain)" || { echo "Codex produced no repository changes." >&2; exit 1; }
+
+          {
+            git diff --name-only
+            git diff --cached --name-only
+            git ls-files --others --exclude-standard
+          } | sort -u > /tmp/changed-files.txt
+          while IFS= read -r path; do
+            case "$path" in
+              .ai-task-force.toml|AI_TASK_FORCE.md|docs/AI_TASK_FORCE.md|docs/DECISIONS.md|AGENTS.md|CLAUDE.md|README.md|.github/workflows/*|.github/taskforce/agents.json|*.pem|*.key|.env|*/.env)
+                echo "Forbidden/protected file changed: $path" >&2
+                exit 1
+                ;;
+            esac
+          done < /tmp/changed-files.txt
+
+          gh auth setup-git
+          git config user.name "AI Task Force Builder"
+          git config user.email "ai-task-force-builder@users.noreply.github.com"
+          git add -A
+          git commit -m "Address review findings on PR #$NUMBER"
+          git push origin HEAD
+          gh pr comment "$NUMBER" --repo "$REPO" --body-file /tmp/codex-result.md
+          gh pr edit "$NUMBER" --repo "$REPO" --remove-label stage:build --add-label stage:review
+
+      - name: Report rework failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          gh pr edit "$NUMBER" --repo "$REPO" --add-label blocked || true
+          gh pr comment "$NUMBER" --repo "$REPO" --body \
+            "Headless \`codex\` rework failed. Marked \`blocked\`; inspect this workflow run before retrying."
+
+      - name: Unlock PR
+        if: always()
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.pull_request.number }}
+        run: gh pr edit "$NUMBER" --repo "$REPO" --remove-label locked || true

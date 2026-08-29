@@ -1,6 +1,12 @@
 name: Task Force Sweep
 
 on:
+  # The rescue net AGENTS.md and the RUNBOOK describe. Without this schedule
+  # the sweep only ever ran manually or when someone edited this file, so
+  # nothing rescued stalled items and nothing healed mislabeled ones.
+  # Minute 17 rather than 0 to stay off GitHub's busiest scheduling slot.
+  schedule:
+    - cron: "17 * * * *"
   workflow_dispatch:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -16,11 +22,20 @@ jobs:
   sweep:
     runs-on: ubuntu-latest
     env:
-      GH_TOKEN: ${{ secrets.TASKFORCE_PAT || secrets.GITHUB_TOKEN }}
       REPO: ${{ github.repository }}
       STALE_HOURS: "4"
     steps:
       - uses: actions/checkout@v4
+
+      - id: app-token
+        continue-on-error: true
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: 4679699
+          private-key: ${{ secrets.TASKFORCE_BUILDER_APP_PRIVATE_KEY }}
+
+      - name: Set GH_TOKEN from Builder App
+        run: echo "GH_TOKEN=${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}" >> "$GITHUB_ENV"
 
       - name: Heal unlabeled agent PRs
         run: |
@@ -65,7 +80,7 @@ jobs:
               --json number,title,labels,updatedAt |
             jq -r --arg cutoff "$CUTOFF" \
               '.[] | select(.updatedAt < $cutoff)
-                   | select([.labels[].name] | (index("blocked") or index("needs:karl") or index("stage:ready") or index("stage:plan")) | not)
+                   | select([.labels[].name] | (index("blocked") or index("needs:karl") or index("stage:ready") or index("stage:delivered") or index("stage:plan")) | not)
                    | select([.labels[].name] | (index("stage:build") or index("stage:review")))
                    | .number' |
             while read -r NUM; do

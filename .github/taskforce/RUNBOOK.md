@@ -12,7 +12,10 @@ repo for the full multi-agent background.
    labels and reports secret readiness.
 3. Configure secrets (Settings -> Secrets and variables -> Actions) as needed:
    - `CLAUDE_CODE_OAUTH_TOKEN` - subscription-based auth for Claude runs.
-   - `TASKFORCE_PAT` - fine-grained PAT for build-stage actions that need to open/push PRs.
+   - `TASKFORCE_BUILDER_APP_PRIVATE_KEY` - GitHub App private key for build-stage
+     actions that need to open/push PRs. Every build/rework job mints its own
+     short-lived installation token from this via `actions/create-github-app-token@v1`
+     (app-id `4679699`); no personal PAT is needed for the builder identity.
    - `TASKFORCE_REVIEWER_PAT` - separate identity for binding review verdicts. Must
      authenticate as a GitHub user or App identity different from the PR author.
    - `XAI_API_KEY` - required only if Grok review jobs are enabled.
