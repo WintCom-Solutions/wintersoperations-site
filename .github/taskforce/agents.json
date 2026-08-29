@@ -1,5 +1,5 @@
 {
-  "comment": "AI Task Force agent registry. The dispatcher picks the first enabled agent with the needed capability, skipping the PR's author. Order = priority. Adding a provider = adding an entry (and an invoke job in dispatch.yml if it needs a new mode). login_hints are matched against GitHub logins to detect self-approval. IMPORTANT: only list 'review' as a capability for agents that can post a binding GitHub review (approve/request-changes) via our own gh pr review call. GitHub's own Copilot code review and ChatGPT/Codex review bots are comment-only by design (confirmed via GitHub/OpenAI docs) and can never satisfy this pipeline's stage:ready gate — do not re-add 'review' to them without wiring a real gh pr review call under our own credentials, the same way invoke-grok does.",
+  "comment": "AI Task Force agent registry. For build/rework the dispatcher picks the first enabled agent with the needed capability, skipping the PR's author; order = priority. For review it fans out to EVERY enabled agent with the 'review' capability except the PR's executor (route.sh's reviewer_agents()). Adding a provider = adding an entry here plus an invoke job in dispatch.yml if it needs a new mode — and route.sh's HANDLED case must learn the new mode, or the dispatcher will route to it and silently do nothing. Every enabled reviewer posts a real GitHub review via our own 'gh pr review' call and can satisfy the stage:ready gate. They all post it through the one TASKFORCE_REVIEWER_PAT identity, so GitHub login cannot tell them apart — each reviewer job appends a '<!-- taskforce-reviewer: <name> -->' marker to its review body and route.sh reads that to enforce hard rule 1 (never approve your own work). login_hints are the fallback for reviews with no marker: humans, Karl, and native provider reviews, where the login really is the identity.",
   "agents": [
     {
       "name": "claude-code",
@@ -9,12 +9,12 @@
       "login_hints": ["claude"]
     },
     {
-      "name": "copilot",
-      "mode": "copilot-native",
-      "capabilities": ["build"],
-      "enabled": false,
-      "login_hints": ["copilot"],
-      "comment": "Copilot coding agent can build. Copilot code review is comment-only (GitHub docs) and can never post approve/request-changes, so it is not listed as a 'review' capability here — it would be picked and then stall the pipeline forever, as PR #73 did."
+      "name": "claude-code-reviewer",
+      "mode": "claude-action",
+      "capabilities": ["review"],
+      "enabled": true,
+      "login_hints": ["claude"],
+      "comment": "EDR-007 'simple version' (#188): reuses the same CLAUDE_CODE_OAUTH_TOKEN and dispatch.yml invoke-claude job as claude-code — no second Claude account or secret. Exists solely to close the one gap the plain claude-code entry can't: reviewer_agents() excludes an agent from reviewing its own build by name, so claude-code can never review a PR it built. reviewer_agents() special-cases this entry to appear only when the PR's executor is claude-code itself, so it never doubles up alongside claude-code on other providers' PRs. Because it shares the invoke-claude job, dispatch.yml picks the prompt's agent name from the reviewers list and this entry emits its OWN '<!-- taskforce-reviewer: claude-code-reviewer -->' marker — without that the marker would read 'claude-code', match the executor label, and route.sh would reject its verdicts as self-approval. This is the same underlying Claude account and model reviewing its own output in a fresh context, not a genuinely independent second opinion — see EDR-007 in docs/DECISIONS.md for the accepted tradeoff and the deferred alternative (a real second account)."
     },
     {
       "name": "grok",
@@ -22,16 +22,16 @@
       "capabilities": ["review"],
       "enabled": true,
       "login_hints": ["grok"],
-      "comment": "Binding reviewer: dispatch.yml's invoke-grok job sends the diff to the xAI API (grok_review.py) and posts the verdict itself via gh pr review, using TASKFORCE_REVIEWER_PAT so the identity differs from whichever identity opened the PR. Requires the XAI_API_KEY secret (console.x.ai). No build capability yet — that needs a full agentic loop (Grok Build), which currently requires a SuperGrok Heavy subscription and doesn't run headless the way this pipeline needs."
+      "comment": "Binding reviewer: dispatch.yml's invoke-grok job sends the diff to the xAI API (grok_review.py) and posts the verdict itself via gh pr review, using TASKFORCE_REVIEWER_PAT so the identity differs from whichever identity opened the PR. Requires the XAI_API_KEY secret (console.x.ai). Cheapest reviewer to keep alive: a plain API key, with no OAuth refresh token to expire the way CODEX_AUTH_JSON did in #170. No build capability yet — that needs a full agentic loop (Grok Build), which currently requires a SuperGrok Heavy subscription and doesn't run headless the way this pipeline needs."
     },
     {
       "name": "codex",
       "mode": "codex-cli",
-      "capabilities": ["review"],
+      "capabilities": ["build", "review"],
       "enabled": true,
       "launch_url": "https://chatgpt.com/codex",
       "login_hints": ["chatgpt", "codex", "openai"],
-      "comment": "Binding reviewer: dispatch.yml's invoke-codex job runs the real Codex CLI with ChatGPT-managed auth from CODEX_AUTH_JSON and posts the verdict itself via gh pr review, using TASKFORCE_REVIEWER_PAT so the identity differs from whichever identity opened the PR. Requires private/trusted CI, a global codex-auth concurrency lock, and periodic reseeding if auth refresh cannot be persisted."
+      "comment": "Tier A headless builder/reviewer. Build/rework runs in the separate .github/workflows/codex-headless-build.yml workflow (NOT a job in dispatch.yml) using Codex CLI with ChatGPT-managed auth from CODEX_AUTH_JSON, in a workspace-write sandbox, with GitHub branch/commit/push/PR operations owned by the Builder App token. Review runs in dispatch.yml's invoke-codex job and is posted via gh pr review using TASKFORCE_REVIEWER_PAT. Requires private/trusted CI, a global codex-auth concurrency lock, and periodic reseeding if auth refresh cannot be persisted."
     }
   ]
 }

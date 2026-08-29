@@ -33,6 +33,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--diff", required=True)
     p.add_argument("--issue", required=True)
+    p.add_argument("--pr-description", required=True)
     p.add_argument("--agents-md", required=True)
     p.add_argument("--out", required=True)
     p.add_argument("--model", default="grok-4.3")
@@ -47,6 +48,7 @@ def main():
 
     diff = open(args.diff).read()
     issue = open(args.issue).read()
+    pr_description = open(args.pr_description).read()
     agents_md = open(args.agents_md).read()
 
     # Keep the diff bounded; a huge diff burns tokens without adding signal
@@ -59,7 +61,10 @@ def main():
         "You did not author this PR. Follow the reviewer rules in AGENTS.md "
         "exactly: check correctness, validation evidence, and scope discipline "
         "(flag anything beyond the linked issue's scope, even if the code is "
-        "good). Respond with 'approve' only if the PR is correct, in scope, "
+        "good). AGENTS.md's evidence rule (hard rule 6) says validation "
+        "evidence belongs 'in the PR body or a comment' — check the PR "
+        "description below for it before concluding evidence is missing. "
+        "Respond with 'approve' only if the PR is correct, in scope, "
         "and has real validation evidence. Otherwise respond with "
         "'request_changes' and give concrete, actionable findings — comments "
         "alone do not count, you must pick one of the two states."
@@ -67,6 +72,8 @@ def main():
     user_prompt = (
         f"# AGENTS.md (reviewer rules)\n{agents_md}\n\n"
         f"# Linked issue\n{issue}\n\n"
+        f"# PR description (author's own summary; validation evidence is "
+        f"often here per hard rule 6)\n{pr_description}\n\n"
         f"# PR diff\n```diff\n{diff}\n```"
     )
 
