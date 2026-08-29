@@ -98,7 +98,7 @@ jobs:
           No visible progress for ${STALE_HOURS}h on this $KIND.
 
           ### Scope
-          Do not auto-retry until Karl or a maintainer removes `blocked`.
+          Do not auto-retry until Karl or a maintainer removes \`blocked\`.
 
           ### Acceptance
           Karl decides whether to retry, reassign, close, or re-scope.
