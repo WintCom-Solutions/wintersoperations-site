@@ -608,3 +608,121 @@ jobs:
             gh "$KIND" comment "$NUMBER" --repo "$REPO" --body \
               "Invocation of \`$AGENT\` failed for '$ACTION' and no other capable agent is enabled. Marked \`blocked\` for @karlwint."
           fi
+
+  # Wake the Grok Bot chat (routine: Task Force webhook handoff) with a
+  # dispatcher handoff. Empty secrets skip; a failed POST must not fail Dispatch.
+  notify-grokbot:
+    needs: route
+    if: always() && needs.route.result == 'success'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Ping Grok Bot webhook
+        env:
+          GROKBOT_HANDOFF_URL: ${{ secrets.GROKBOT_HANDOFF_URL }}
+          GROKBOT_HANDOFF_KEY: ${{ secrets.GROKBOT_HANDOFF_KEY }}
+          REPO: ${{ github.repository }}
+          EVENT: ${{ github.event_name }}
+          GH_ACTION: ${{ github.event.action }}
+          ACTOR: ${{ github.actor }}
+          ACTION: ${{ needs.route.outputs.action }}
+          AGENT: ${{ needs.route.outputs.agent }}
+          MODE: ${{ needs.route.outputs.mode }}
+          NUMBER: ${{ needs.route.outputs.number }}
+          EXECUTOR: ${{ needs.route.outputs.executor }}
+          REVIEWERS: ${{ needs.route.outputs.reviewers }}
+          HANDLED: ${{ needs.route.outputs.handled }}
+          READY_VIA: ${{ needs.route.outputs.ready_via }}
+          LABEL: ${{ github.event.label.name }}
+          COMMENT_AUTHOR: ${{ github.event.comment.user.login }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          REVIEW_STATE: ${{ github.event.review.state }}
+          REVIEW_AUTHOR: ${{ github.event.review.user.login }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          set -u
+          if [ -z "${GROKBOT_HANDOFF_URL:-}" ] || [ -z "${GROKBOT_HANDOFF_KEY:-}" ]; then
+            echo "GROKBOT_HANDOFF_URL or GROKBOT_HANDOFF_KEY empty; skipping webhook"
+            exit 0
+          fi
+          # Cheap gate before curl: leftover reviewer:grok on later events
+          # (comments, synchronize, other agents) used to POST every ~2 min.
+          if [ "${ACTOR:-}" = "MY-AI-TASK-FORCE" ] || [ "${ACTOR:-}" = "aitaskforce89" ]; then
+            echo "skip: actor ${ACTOR} is a self echo"
+            exit 0
+          fi
+          has_grok_slot=0
+          case "${EXECUTOR:-}" in grok|grok-bot) has_grok_slot=1 ;; esac
+          case "${AGENT:-}" in grok|grok-bot) has_grok_slot=1 ;; esac
+          if printf '%s' "${REVIEWERS:-}" | grep -qE '(^|[^A-Za-z0-9_-])grok(-bot)?([^A-Za-z0-9_-]|$)'; then
+            has_grok_slot=1
+          fi
+          ping=0
+          if [ "${GH_ACTION:-}" = "labeled" ] && { [ "${LABEL:-}" = "reviewer:grok" ] || [ "${LABEL:-}" = "reviewer:grok-bot" ]; }; then
+            ping=1
+          fi
+          if [ "${ACTION:-}" = "review" ] && [ "$has_grok_slot" = 1 ]; then
+            ping=1
+          fi
+          if [ "${HANDLED:-}" = "false" ] && [ "$has_grok_slot" = 1 ]; then
+            ping=1
+          fi
+          # PR opened / draft → ready: route is action=none handled=true with
+          # empty reviewers, so the grok-slot checks above miss this event.
+          if [ "${GH_ACTION:-}" = "opened" ] || [ "${GH_ACTION:-}" = "ready_for_review" ]; then
+            ping=1
+          fi
+          if [ "$ping" != 1 ]; then
+            echo "skip: not a grok/grok-bot handoff (action=${ACTION:-} handled=${HANDLED:-} gh_action=${GH_ACTION:-} label=${LABEL:-})"
+            exit 0
+          fi
+          HTML_URL="${PR_URL:-${ISSUE_URL:-}}"
+          BODY=$(printf '%s' "${COMMENT_BODY:-}" | head -c 4000)
+          jq -n \
+            --arg repo "$REPO" \
+            --arg event "$EVENT" \
+            --arg gh_action "${GH_ACTION:-}" \
+            --arg actor "$ACTOR" \
+            --arg action "${ACTION:-}" \
+            --arg agent "${AGENT:-}" \
+            --arg mode "${MODE:-}" \
+            --arg number "${NUMBER:-}" \
+            --arg executor "${EXECUTOR:-}" \
+            --arg reviewers "${REVIEWERS:-}" \
+            --arg handled "${HANDLED:-}" \
+            --arg ready_via "${READY_VIA:-}" \
+            --arg label "${LABEL:-}" \
+            --arg comment_author "${COMMENT_AUTHOR:-}" \
+            --arg comment_body "$BODY" \
+            --arg review_state "${REVIEW_STATE:-}" \
+            --arg review_author "${REVIEW_AUTHOR:-}" \
+            --arg html_url "$HTML_URL" \
+            '{
+              source: "taskforce-dispatch",
+              repo: $repo,
+              event: $event,
+              github_action: $gh_action,
+              actor: $actor,
+              action: $action,
+              agent: $agent,
+              mode: $mode,
+              number: $number,
+              executor: $executor,
+              reviewers: $reviewers,
+              handled: $handled,
+              ready_via: $ready_via,
+              label: $label,
+              comment_author: $comment_author,
+              comment_body: $comment_body,
+              review_state: $review_state,
+              review_author: $review_author,
+              html_url: $html_url
+            }' > /tmp/handoff.json
+          code=$(curl -sS -o /tmp/handoff.out -w '%{http_code}' --max-time 10 \
+            -X POST "$GROKBOT_HANDOFF_URL" \
+            -H "Authorization: Bearer ${GROKBOT_HANDOFF_KEY}" \
+            -H "Content-Type: application/json" \
+            --data-binary @/tmp/handoff.json || echo "000")
+          echo "webhook HTTP ${code}"
+          exit 0
