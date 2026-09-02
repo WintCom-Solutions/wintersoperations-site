@@ -1,14 +1,11 @@
-﻿name: stale-management
-
+name: stale-management
 on:
   schedule:
     - cron: '0 9 * * *'
   workflow_dispatch:
-
 permissions:
   issues: write
   pull-requests: write
-
 jobs:
   stale:
     runs-on: ubuntu-latest
@@ -19,12 +16,8 @@ jobs:
           days-before-issue-stale: 90
           days-before-issue-close: 14
           stale-issue-label: 'status:stale'
-          stale-issue-message: 'Inactive for 90 days. Closing due to inactivity; reopen if still relevant.'
           days-before-pr-stale: 60
           days-before-pr-close: 14
           stale-pr-label: 'status:stale'
-          stale-pr-message: 'Inactive for 60 days. Closing due to inactivity; reopen if you plan to continue.'
           ignore-pr-drafts: true
           remove-stale-when-updated: true
-          exempt-issue-labels: 'keep-open,roadmap,documentation,enhancement'
-          exempt-pr-labels: 'keep-open,work-in-progress,blocked'

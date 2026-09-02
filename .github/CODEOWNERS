@@ -1,2 +1,2 @@
-﻿# AI Task Force Standard Code Owners
+# Code Owners
 * @$(git config user.name)

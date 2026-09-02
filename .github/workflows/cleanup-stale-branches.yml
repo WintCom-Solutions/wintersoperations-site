@@ -1,13 +1,10 @@
-﻿name: cleanup-stale-branches
-
+name: cleanup-stale-branches
 on:
   schedule:
     - cron: '0 9 * * 1'
   workflow_dispatch:
-
 permissions:
   contents: write
-
 jobs:
   cleanup:
     runs-on: ubuntu-latest
@@ -15,24 +12,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Delete stale auto-generated branches
+      - name: Delete stale branches
         run: |
           git config user.email "noreply@github.com"
           git config user.name "GitHub Actions"
-
-          echo "Checking for stale branches..."
-          for branch in $(git branch -r --format='%(refname:short)' | grep -E '^origin/(claude|codex|experimental)/'); do
+          for branch in $(git branch -r --format='%(refname:short)' | grep -E '^origin/(claude|codex)/'); do
             branch_name=${branch#origin/}
-            last_commit=$(git log -1 --format=%ai $branch 2>/dev/null | cut -d' ' -f1)
-            if [ -z "$last_commit" ]; then
-              continue
-            fi
-            days_old=$(( ($(date +%s) - $(date -d "$last_commit" +%s)) / 86400 ))
-            if [ $days_old -gt 30 ]; then
-              echo "Deleting $branch_name (${days_old} days old)"
+            days_old=$(git log -1 --format=%cd --date=short $branch | xargs -I {} date -d {} +%s | xargs -I {} echo $((($(/bin/date +%s) - {}) / 86400)))
+            if [ "$days_old" -gt 30 ] 2>/dev/null; then
               git push origin --delete "$branch_name" || true
             fi
           done
-
           git fetch origin --prune
