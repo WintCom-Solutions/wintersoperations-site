@@ -5,14 +5,13 @@ name: Task Force Dispatch
 # for the roster.
 
 on:
+  # Coordinator #268: label-driven only. Comment fan-out and PR open/sync
+  # burned Actions minutes. Jobs no-op unless TASKFORCE_ACTIONS_MODE is lite/full.
   issues:
     types: [labeled]
   pull_request:
-    types: [labeled, opened, ready_for_review, synchronize]
-  pull_request_review:
-    types: [submitted]
-  issue_comment:
-    types: [created]
+    types: [labeled]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -32,6 +31,7 @@ permissions:
 
 jobs:
   route:
+    if: ${{ vars.TASKFORCE_ACTIONS_MODE == 'lite' || vars.TASKFORCE_ACTIONS_MODE == 'full' }}
     runs-on: ubuntu-latest
     outputs:
       action: ${{ steps.decide.outputs.action }}
@@ -135,11 +135,14 @@ jobs:
   invoke-claude:
     needs: route
     if: >-
+      vars.TASKFORCE_ACTIONS_MODE == 'full' &&
+      (
       (contains(fromJSON('["build","rework"]'), needs.route.outputs.action) && needs.route.outputs.agent == 'claude-code') ||
       (needs.route.outputs.action == 'review' && (
         contains(fromJSON(needs.route.outputs.reviewers || '[]'), 'claude-code') ||
         contains(fromJSON(needs.route.outputs.reviewers || '[]'), 'claude-code-reviewer')
       ))
+      )
     runs-on: ubuntu-latest
     timeout-minutes: 60
     # Build/rework push commits to taskforce/issue-<N>; two of those racing the
@@ -271,8 +274,11 @@ jobs:
   invoke-grok:
     needs: route
     if: >-
+      vars.TASKFORCE_ACTIONS_MODE == 'full' &&
+      (
       needs.route.outputs.action == 'review' &&
       contains(fromJSON(needs.route.outputs.reviewers || '[]'), 'grok')
+      )
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -342,8 +348,11 @@ jobs:
   invoke-codex:
     needs: route
     if: >-
+      vars.TASKFORCE_ACTIONS_MODE == 'full' &&
+      (
       needs.route.outputs.action == 'review' &&
       contains(fromJSON(needs.route.outputs.reviewers || '[]'), 'codex')
+      )
     runs-on: ubuntu-latest
     timeout-minutes: 60
     concurrency:
@@ -466,9 +475,12 @@ jobs:
 
   chat-relay:
     needs: route
+    # lite: page whoever was routed (no hosted invoke). full: chat_actions only.
     if: >-
-      needs.route.outputs.mode == 'chat' &&
-      contains(fromJSON('["build","review","rework"]'), needs.route.outputs.action)
+      needs.route.result == 'success' &&
+      needs.route.outputs.agent != '' &&
+      contains(fromJSON('["plan","build","review","rework"]'), needs.route.outputs.action) &&
+      (vars.TASKFORCE_ACTIONS_MODE == 'lite' || needs.route.outputs.mode == 'chat')
     runs-on: ubuntu-latest
     steps:
       - id: app-token
@@ -545,7 +557,7 @@ jobs:
   on-invoke-failure:
     needs: [route, invoke-claude, invoke-grok, invoke-codex]
     if: >-
-      always() && needs.route.outputs.agent != '' &&
+      always() && vars.TASKFORCE_ACTIONS_MODE == 'full' && needs.route.outputs.agent != '' &&
       (needs.invoke-claude.result == 'failure' || needs.invoke-grok.result == 'failure' ||
        needs.invoke-codex.result == 'failure')
     runs-on: ubuntu-latest
@@ -613,7 +625,21 @@ jobs:
   # dispatcher handoff. Empty secrets skip; a failed POST must not fail Dispatch.
   notify-grokbot:
     needs: route
-    if: always() && needs.route.result == 'success'
+    # Issue #268: do not start a second runner after every route.
+    # Skip unless this event is actually a grok/grok-bot handoff.
+    if: >-
+      needs.route.result == 'success' &&
+      (
+        github.event.label.name == 'reviewer:grok' ||
+        github.event.label.name == 'reviewer:grok-bot' ||
+        (needs.route.outputs.action == 'review' && contains(needs.route.outputs.reviewers, 'grok')) ||
+        (needs.route.outputs.handled == 'false' && (
+          needs.route.outputs.agent == 'grok' ||
+          needs.route.outputs.agent == 'grok-bot' ||
+          needs.route.outputs.executor == 'grok' ||
+          needs.route.outputs.executor == 'grok-bot'
+        ))
+      )
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
@@ -670,9 +696,6 @@ jobs:
           fi
           # PR opened / draft → ready: route is action=none handled=true with
           # empty reviewers, so the grok-slot checks above miss this event.
-          if [ "${GH_ACTION:-}" = "opened" ] || [ "${GH_ACTION:-}" = "ready_for_review" ]; then
-            ping=1
-          fi
           if [ "$ping" != 1 ]; then
             echo "skip: not a grok/grok-bot handoff (action=${ACTION:-} handled=${HANDLED:-} gh_action=${GH_ACTION:-} label=${LABEL:-})"
             exit 0

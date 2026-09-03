@@ -1,17 +1,9 @@
 name: Task Force Sweep
 
 on:
-  # The rescue net AGENTS.md and the RUNBOOK describe. Without this schedule
-  # the sweep only ever ran manually or when someone edited this file, so
-  # nothing rescued stalled items and nothing healed mislabeled ones.
-  # Minute 17 rather than 0 to stay off GitHub's busiest scheduling slot.
-  schedule:
-    - cron: "17 * * * *"
+  # Coordinator #268: hourly cron burned minutes. Manual only.
+  # Jobs no-op unless vars.TASKFORCE_ACTIONS_MODE is lite or full.
   workflow_dispatch:
-  pull_request:
-    types: [opened, synchronize, reopened]
-    paths:
-      - ".github/workflows/task-force-sweep-hourly-monitor.yml"
 
 permissions:
   issues: write
@@ -20,6 +12,7 @@ permissions:
 
 jobs:
   sweep:
+    if: ${{ vars.TASKFORCE_ACTIONS_MODE == 'lite' || vars.TASKFORCE_ACTIONS_MODE == 'full' }}
     runs-on: ubuntu-latest
     env:
       REPO: ${{ github.repository }}
