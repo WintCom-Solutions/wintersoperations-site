@@ -24,7 +24,7 @@ concurrency:
 jobs:
   build:
     if: >-
-      (vars.TASKFORCE_ACTIONS_MODE == 'lite' || vars.TASKFORCE_ACTIONS_MODE == 'full') &&
+      (vars.TASKFORCE_ACTIONS_MODE == 'full') &&
       github.event_name == 'issues' &&
       contains(fromJSON('["agent:codex","stage:build"]'), github.event.label.name) &&
       contains(github.event.issue.labels.*.name, 'ai-task') &&
@@ -167,7 +167,7 @@ jobs:
 
   rework:
     if: >-
-      (vars.TASKFORCE_ACTIONS_MODE == 'lite' || vars.TASKFORCE_ACTIONS_MODE == 'full') &&
+      (vars.TASKFORCE_ACTIONS_MODE == 'full') &&
       github.event_name == 'pull_request' &&
       contains(fromJSON('["agent:codex","stage:build"]'), github.event.label.name) &&
       contains(github.event.pull_request.labels.*.name, 'ai-task') &&

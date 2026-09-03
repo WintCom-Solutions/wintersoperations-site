@@ -135,11 +135,14 @@ jobs:
   invoke-claude:
     needs: route
     if: >-
+      vars.TASKFORCE_ACTIONS_MODE == 'full' &&
+      (
       (contains(fromJSON('["build","rework"]'), needs.route.outputs.action) && needs.route.outputs.agent == 'claude-code') ||
       (needs.route.outputs.action == 'review' && (
         contains(fromJSON(needs.route.outputs.reviewers || '[]'), 'claude-code') ||
         contains(fromJSON(needs.route.outputs.reviewers || '[]'), 'claude-code-reviewer')
       ))
+      )
     runs-on: ubuntu-latest
     timeout-minutes: 60
     # Build/rework push commits to taskforce/issue-<N>; two of those racing the
@@ -271,8 +274,11 @@ jobs:
   invoke-grok:
     needs: route
     if: >-
+      vars.TASKFORCE_ACTIONS_MODE == 'full' &&
+      (
       needs.route.outputs.action == 'review' &&
       contains(fromJSON(needs.route.outputs.reviewers || '[]'), 'grok')
+      )
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -342,8 +348,11 @@ jobs:
   invoke-codex:
     needs: route
     if: >-
+      vars.TASKFORCE_ACTIONS_MODE == 'full' &&
+      (
       needs.route.outputs.action == 'review' &&
       contains(fromJSON(needs.route.outputs.reviewers || '[]'), 'codex')
+      )
     runs-on: ubuntu-latest
     timeout-minutes: 60
     concurrency:
@@ -466,9 +475,12 @@ jobs:
 
   chat-relay:
     needs: route
+    # lite: page whoever was routed (no hosted invoke). full: chat_actions only.
     if: >-
-      needs.route.outputs.mode == 'chat' &&
-      contains(fromJSON('["build","review","rework"]'), needs.route.outputs.action)
+      needs.route.result == 'success' &&
+      needs.route.outputs.agent != '' &&
+      contains(fromJSON('["plan","build","review","rework"]'), needs.route.outputs.action) &&
+      (vars.TASKFORCE_ACTIONS_MODE == 'lite' || needs.route.outputs.mode == 'chat')
     runs-on: ubuntu-latest
     steps:
       - id: app-token
@@ -545,7 +557,7 @@ jobs:
   on-invoke-failure:
     needs: [route, invoke-claude, invoke-grok, invoke-codex]
     if: >-
-      always() && needs.route.outputs.agent != '' &&
+      always() && vars.TASKFORCE_ACTIONS_MODE == 'full' && needs.route.outputs.agent != '' &&
       (needs.invoke-claude.result == 'failure' || needs.invoke-grok.result == 'failure' ||
        needs.invoke-codex.result == 'failure')
     runs-on: ubuntu-latest
