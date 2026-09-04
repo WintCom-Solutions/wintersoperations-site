@@ -26,7 +26,7 @@ Three equal service lines:
 ## Tech Stack
 
 - Next.js 16 (App Router) + TypeScript
-- Tailwind CSS 3
+- Tailwind CSS 4
 - Static export (`output: 'export'`) — deployable to any static host
 
 ## Getting Started
