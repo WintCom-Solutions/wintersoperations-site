@@ -1,0 +1,1 @@
+$(cat /tmp/claude-0/-home-user/34d1347b-22cf-5108-9b56-5dc09ece5a60/scratchpad/2026-09-05-improvement-proposals.md)
