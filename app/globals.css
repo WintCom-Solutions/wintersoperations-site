@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../tailwind.config.ts";
 
 html {
   scroll-behavior: smooth;
@@ -34,7 +33,12 @@ textarea:focus:not(:focus-visible) {
   }
 
   .surface-interactive {
-    @apply surface transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-500/30 hover:shadow-glow;
+    @apply rounded-2xl border border-navy-700/80 bg-navy-900/40 transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-500/30 hover:shadow-glow;
+    background-image: linear-gradient(
+      135deg,
+      rgba(6, 182, 212, 0.04) 0%,
+      transparent 50%
+    );
   }
 
   .grid-field {
