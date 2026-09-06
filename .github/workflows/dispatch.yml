@@ -6,11 +6,19 @@ name: Task Force Dispatch
 
 on:
   # Coordinator #268: label-driven only. Comment fan-out and PR open/sync
-  # burned Actions minutes. Jobs no-op unless TASKFORCE_ACTIONS_MODE is lite/full.
+  # burned Actions minutes. Do not re-add those triggers.
+  # Coordinator #303 (AI_Task_Force-Private@05ecfb1): restore
+  # pull_request_review.submitted. That event fires only when a review is
+  # actually submitted (low volume) and is the finish-line that lets
+  # route.sh move stage:review -> stage:ready. Without it, approvals never
+  # advance the PR (Karl's changes-requested review on this satellite PR).
+  # Jobs no-op unless TASKFORCE_ACTIONS_MODE is lite/full.
   issues:
     types: [labeled]
   pull_request:
     types: [labeled]
+  pull_request_review:
+    types: [submitted]
   workflow_dispatch:
 
 permissions:
