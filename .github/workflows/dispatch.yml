@@ -50,7 +50,7 @@ jobs:
       # handles this action/mode; 'false' trips the `unhandled` job.
       handled: ${{ steps.decide.outputs.handled }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - id: app-token
         continue-on-error: true
         uses: actions/create-github-app-token@v3
@@ -154,7 +154,7 @@ jobs:
             || format('taskforce-branch-{0}', needs.route.outputs.number) }}
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - id: app-token
@@ -276,7 +276,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - id: app-token
         continue-on-error: true
         uses: actions/create-github-app-token@v3
@@ -350,7 +350,7 @@ jobs:
       group: codex-auth
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - id: prompt
@@ -550,7 +550,7 @@ jobs:
        needs.invoke-codex.result == 'failure')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - id: app-token
         continue-on-error: true
         uses: actions/create-github-app-token@v3
