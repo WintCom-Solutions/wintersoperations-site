@@ -306,7 +306,21 @@ export default function NetworkTopology() {
                   const radius = site.type === 'hq' ? 28 : site.type === 'cloud' ? 24 : 20;
 
                   return (
-                    <g key={site.id} onClick={() => setSelectedSite(site.id)}>
+                    <g
+                      key={site.id}
+                      onClick={() => setSelectedSite(site.id)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setSelectedSite(site.id);
+                        }
+                      }}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`${site.name}, status: ${site.status}${isSelected ? ', selected' : ''}`}
+                      aria-pressed={isSelected}
+                      style={{ cursor: 'pointer', outline: 'none' }}
+                    >
                       {/* Glow effect for selected */}
                       {isSelected && (
                         <circle
@@ -359,6 +373,11 @@ export default function NetworkTopology() {
                     to {
                       stroke-dashoffset: -10;
                     }
+                  }
+                  g[role="button"]:focus-visible circle {
+                    stroke: #06b6d4;
+                    stroke-width: 3;
+                    stroke-dasharray: 4 2;
                   }
                 `}</style>
               </svg>
