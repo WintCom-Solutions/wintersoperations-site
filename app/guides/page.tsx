@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import ContactSection from "@/components/ContactSection";
@@ -33,7 +34,7 @@ export default function GuidesPage() {
           <div className="max-w-5xl mx-auto px-6 grid gap-6">
             {guides.map((g, i) => (
               <Reveal key={g.slug} delay={i * 60}>
-                <a
+                <Link
                   href={`/guides/${g.slug}`}
                   className="surface-interactive block p-6 sm:p-8"
                 >
@@ -48,7 +49,7 @@ export default function GuidesPage() {
                   <span className="mt-4 inline-flex text-sm font-semibold text-cyan-400">
                     Read guide →
                   </span>
-                </a>
+                </Link>
               </Reveal>
             ))}
           </div>

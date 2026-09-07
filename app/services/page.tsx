@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import ContactSection from "@/components/ContactSection";
@@ -95,9 +96,9 @@ export default function ServicesPage() {
                 decision, a workflow, a script, a handoff, or a cleaner way to
                 operate.
               </p>
-              <a href="/work" className="mt-6 inline-flex text-sm font-semibold text-cyan-400 hover:text-cyan-300">
+              <Link href="/work" className="mt-6 inline-flex text-sm font-semibold text-cyan-400 hover:text-cyan-300">
                 See case studies →
-              </a>
+              </Link>
             </div>
             <div className="surface p-6">
               <ul className="space-y-4 text-slate-300">

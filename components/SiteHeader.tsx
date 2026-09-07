@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { nav, siteName } from "@/lib/site";
 
 export default function SiteHeader() {
@@ -10,7 +11,7 @@ export default function SiteHeader() {
   return (
     <header className="border-b border-navy-700/60 bg-navy-950/80 backdrop-blur sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-        <a href="/" className="flex items-center gap-3.5">
+        <Link href="/" className="flex items-center gap-3.5">
           <Image
             src="/logo.png"
             alt={siteName}
@@ -19,17 +20,17 @@ export default function SiteHeader() {
             className="rounded-lg"
           />
           <span className="font-semibold tracking-tight text-2xl">{siteName}</span>
-        </a>
+        </Link>
 
         <nav className="hidden sm:flex items-center gap-8 text-sm text-slate-400">
           {nav.map((item) => (
-            <a key={item.href} href={item.href} className="hover:text-cyan-400 transition">
+            <Link key={item.href} href={item.href} className="hover:text-cyan-400 transition">
               {item.label}
-            </a>
+            </Link>
           ))}
-          <a href="/#contact" className="btn-primary px-4 py-2 text-sm">
+          <Link href="/#contact" className="btn-primary px-4 py-2 text-sm">
             Contact
-          </a>
+          </Link>
         </nav>
 
         <button
@@ -53,13 +54,13 @@ export default function SiteHeader() {
         <div className="sm:hidden border-t border-navy-800 bg-navy-950/95">
           <nav className="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-4 text-sm text-slate-300">
             {nav.map((item) => (
-              <a key={item.href} href={item.href} onClick={() => setOpen(false)} className="hover:text-cyan-400 transition">
+              <Link key={item.href} href={item.href} onClick={() => setOpen(false)} className="hover:text-cyan-400 transition">
                 {item.label}
-              </a>
+              </Link>
             ))}
-            <a href="/#contact" onClick={() => setOpen(false)} className="btn-primary text-sm">
+            <Link href="/#contact" onClick={() => setOpen(false)} className="btn-primary text-sm">
               Contact
-            </a>
+            </Link>
           </nav>
         </div>
       )}
