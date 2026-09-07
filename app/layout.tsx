@@ -1,8 +1,20 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
-import { siteUrl } from "@/lib/site";
+import { siteUrl, contactEmail } from "@/lib/site";
 import { homeDescription, homeTitle } from "@/lib/metadata";
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Winters Operations",
+  url: siteUrl,
+  logo: `${siteUrl}/logo.png`,
+  image: `${siteUrl}/logo.png`,
+  description: homeDescription,
+  email: contactEmail,
+  areaServed: "US",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -41,6 +53,11 @@ export default function RootLayout({
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
           rel="stylesheet"
+        />
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
       </head>
       <body className="font-sans">
