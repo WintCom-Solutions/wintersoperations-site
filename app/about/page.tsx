@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { createPageMetadata } from "@/lib/metadata";
@@ -96,12 +97,12 @@ export default function AboutPage() {
               and we&apos;ll respond promptly.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a href="/#contact-form" className="btn-primary">
+              <Link href="/#contact-form" className="btn-primary">
                 Send a message
-              </a>
-              <a href="/services" className="btn-ghost">
+              </Link>
+              <Link href="/services" className="btn-ghost">
                 View services
-              </a>
+              </Link>
             </div>
           </div>
         </section>

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -50,8 +51,8 @@ export default function SiteScopeGuide() {
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">
-            <a href="/guides" className="btn-ghost">All guides</a>
-            <a href="/#contact" className="btn-primary">Get a site scoped</a>
+            <Link href="/guides" className="btn-ghost">All guides</Link>
+            <Link href="/#contact" className="btn-primary">Get a site scoped</Link>
           </div>
         </article>
         <ContactSection />

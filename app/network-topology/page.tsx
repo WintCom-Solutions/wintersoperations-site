@@ -1,5 +1,6 @@
 'use client';
 
+import Link from "next/link";
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -158,7 +159,7 @@ export default function NetworkTopology() {
       {/* Header */}
       <header className="border-b border-cyan-500/20 bg-navy-950/80 backdrop-blur sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-3.5">
+          <Link href="/" className="flex items-center gap-3.5">
             <Image
               src="/logo.png"
               alt="Winters Operations"
@@ -169,20 +170,20 @@ export default function NetworkTopology() {
             <span className="font-semibold tracking-tight text-2xl">
               Network Topology
             </span>
-          </a>
+          </Link>
           <nav className="hidden sm:flex items-center gap-8 text-sm text-slate-400">
-            <a href="/" className="hover:text-cyan-400 transition">
+            <Link href="/" className="hover:text-cyan-400 transition">
               Home
-            </a>
-            <a href="/services" className="hover:text-cyan-400 transition">
+            </Link>
+            <Link href="/services" className="hover:text-cyan-400 transition">
               Services
-            </a>
-            <a href="/demo" className="hover:text-cyan-400 transition">
+            </Link>
+            <Link href="/demo" className="hover:text-cyan-400 transition">
               Demos
-            </a>
-            <a href="/about" className="hover:text-cyan-400 transition">
+            </Link>
+            <Link href="/about" className="hover:text-cyan-400 transition">
               About
-            </a>
+            </Link>
           </nav>
         </div>
       </header>

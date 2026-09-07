@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import ContactSection from "@/components/ContactSection";
@@ -40,12 +41,12 @@ export default function Home() {
                 enterprise IT experience.
               </p>
               <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <a href="/services" className="btn-primary">
+                <Link href="/services" className="btn-primary">
                   See Services
-                </a>
-                <a href="/demo" className="btn-ghost">
+                </Link>
+                <Link href="/demo" className="btn-ghost">
                   See Demos
-                </a>
+                </Link>
               </div>
             </div>
             <NetworkTopology />
@@ -88,9 +89,9 @@ export default function Home() {
                         </li>
                       ))}
                     </ul>
-                    <a href="/services" className="mt-6 inline-flex text-sm font-semibold text-cyan-400 hover:text-cyan-300">
+                    <Link href="/services" className="mt-6 inline-flex text-sm font-semibold text-cyan-400 hover:text-cyan-300">
                       View service details →
-                    </a>
+                    </Link>
                   </div>
                 </Reveal>
               ))}
@@ -106,9 +107,9 @@ export default function Home() {
               large-scale Meraki SD-WAN, and practical Python automation for
               teams that need results without the full-time overhead.
             </p>
-            <a href="/about" className="inline-flex text-sm font-semibold text-cyan-400 hover:text-cyan-300">
+            <Link href="/about" className="inline-flex text-sm font-semibold text-cyan-400 hover:text-cyan-300">
               Read more about the practice →
-            </a>
+            </Link>
           </div>
         </section>
 
