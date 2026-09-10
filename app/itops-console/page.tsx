@@ -99,7 +99,7 @@ export default function ITOpsConsole() {
       device.model.toLowerCase().includes(normalizedQuery) ||
       device.site.toLowerCase().includes(normalizedQuery) ||
       device.siteAddress.toLowerCase().includes(normalizedQuery) ||
-      device.serialNumber.includes(normalizedQuery);
+      device.serialNumber.toLowerCase().includes(normalizedQuery);
 
     if (isMatch) {
       addOutput('[INFO] Searching inventory...', 'status');
