@@ -1,13 +1,27 @@
 name: Ninja Jump
 
 # Task Force Ninja posts presence when work starts.
-# Fires on ai-task items entering stage:build or stage:review.
+# Issue #268: no auto-comment on every stage label. Manual only.
+# Jobs no-op unless vars.TASKFORCE_ACTIONS_MODE is lite or full.
 
 on:
-  issues:
-    types: [labeled]
-  pull_request:
-    types: [labeled]
+  workflow_dispatch:
+    inputs:
+      number:
+        description: "Issue or PR number"
+        required: true
+      kind:
+        description: "issue or pr"
+        required: true
+        default: issue
+        type: choice
+        options:
+          - issue
+          - pr
+      label:
+        description: "Stage label to mention"
+        required: false
+        default: "stage:build"
 
 permissions:
   issues: write
@@ -16,9 +30,7 @@ permissions:
 jobs:
   jump:
     runs-on: ubuntu-latest
-    if: >-
-      github.event.label.name == 'stage:build' ||
-      github.event.label.name == 'stage:review'
+    if: ${{ vars.TASKFORCE_ACTIONS_MODE == 'lite' || vars.TASKFORCE_ACTIONS_MODE == 'full' }}
     steps:
       - id: app-token
         continue-on-error: true
@@ -30,29 +42,18 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
-          LABEL: ${{ github.event.label.name }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          EVENT_NAME: ${{ github.event_name }}
+          LABEL: ${{ inputs.label }}
+          NUMBER: ${{ inputs.number }}
+          KIND: ${{ inputs.kind }}
         run: |
           set -euo pipefail
 
-          if [ "$EVENT_NAME" = "issues" ]; then
-            KIND=issue
-            NUMBER="$ISSUE_NUMBER"
-          else
-            KIND=pr
-            NUMBER="$PR_NUMBER"
-          fi
-
-          # Only comment if this item is also labeled ai-task
           LABELS=$(gh "$KIND" view "$NUMBER" --repo "$REPO" --json labels --jq '.labels[].name')
           echo "$LABELS" | grep -qx 'ai-task' || {
             echo "Not an ai-task item — ninja stays home."
             exit 0
           }
 
-          # Avoid duplicate presence spam (check recent comments)
           if gh "$KIND" view "$NUMBER" --repo "$REPO" --comments --json comments \
             --jq '.comments[-15:] | .[].body' 2>/dev/null | grep -q 'Task Force Ninja.*jumped into'; then
             echo "Ninja already present — skip."
@@ -67,7 +68,6 @@ jobs:
           EOF
           )
 
-          # strip leading spaces from heredoc indent
           BODY=$(printf '%s\n' "$BODY" | sed 's/^[[:space:]]*//')
 
           gh "$KIND" comment "$NUMBER" --repo "$REPO" --body "$BODY"
