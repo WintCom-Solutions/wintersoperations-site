@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from "@vercel/analytics";
 import { useState } from "react";
 import { contactEmail, contactEndpoint, googleForm } from "@/lib/site";
 
@@ -42,26 +43,33 @@ export default function ContactForm() {
         body.set("message", message);
       }
 
-      await fetch(endpoint, {
+      const response = await fetch(endpoint, {
         method: "POST",
-        mode: "no-cors",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body,
       });
 
+      if (response.type === "opaque" || response.type === "opaqueredirect" || !response.ok) {
+        track("contact_form_error");
+        setStatus("error");
+        return;
+      }
+
+      track("contact_form_success");
       setStatus("sent");
       setName("");
       setEmail("");
       setMessage("");
       setConsent(false);
     } catch {
+      track("contact_form_error");
       setStatus("error");
     }
   }
 
   if (status === "sent") {
     return (
-      <p className="surface p-6 text-center text-slate-200">
+      <p className="surface p-6 text-center text-slate-200" role="status" aria-live="polite">
         Thanks — your message is on its way. We&apos;ll respond promptly.
       </p>
     );
@@ -132,7 +140,7 @@ export default function ContactForm() {
       </button>
 
       {status === "error" && (
-        <p className="text-sm text-red-400">
+        <p className="text-sm text-red-400" role="status" aria-live="polite">
           Something went wrong — email us directly at {contactEmail}.
         </p>
       )}

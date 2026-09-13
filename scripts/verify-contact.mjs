@@ -31,6 +31,10 @@ for (const value of [
   }
 }
 
+if (/mode:\s*["']no-cors["']/.test(contactForm)) {
+  throw new Error('ContactForm must not use fetch mode: "no-cors"');
+}
+
 const publicCtaFiles = [
   "components/ContactSection.tsx",
   "app/about/page.tsx",
