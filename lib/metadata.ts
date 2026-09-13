@@ -8,9 +8,9 @@ export const homeDescription =
   "Winters Operations helps IT and operations teams reduce friction with practical consulting, Python automation, and focused AI workflows for tools like Cisco Meraki, SolarWinds, and ServiceNow.";
 
 const socialImage = {
-  url: "/logo.png",
-  width: 256,
-  height: 256,
+  url: "/opengraph-image",
+  width: 1200,
+  height: 630,
   alt: siteName,
 };
 
@@ -43,7 +43,7 @@ export function createPageMetadata({
       images: [socialImage],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title: socialTitle,
       description,
       images: [socialImage],

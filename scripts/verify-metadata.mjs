@@ -65,12 +65,12 @@ for (const route of routes) {
 
   const openGraphImages = metadataValues(html, "property", "og:image");
   const twitterImages = metadataValues(html, "name", "twitter:image");
-  const expectedImage = `${siteUrl}/logo.png`;
+  const expectedImage = `${siteUrl}/opengraph-image`;
 
-  if (!openGraphImages.includes(expectedImage)) {
+  if (!openGraphImages.some((image) => image.startsWith(expectedImage))) {
     throw new Error(`${route}: missing og:image ${expectedImage}`);
   }
-  if (!twitterImages.includes(expectedImage)) {
+  if (!twitterImages.some((image) => image.startsWith(expectedImage))) {
     throw new Error(`${route}: missing twitter:image ${expectedImage}`);
   }
 
