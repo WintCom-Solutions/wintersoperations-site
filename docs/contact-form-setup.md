@@ -43,10 +43,14 @@ fill in the matching values in `lib/site.ts`.
 
 ## Notes
 
-- The submit request uses `mode: "no-cors"`, so the browser can't read the
-  response body; success is assumed once the request doesn't throw. Verify
-  submissions are arriving by checking the Sheet or the form provider's
-  dashboard after a test send.
+- The client only shows success when the form provider returns a readable
+  `ok` response. HTTP errors, blocked CORS responses, and unreadable opaque
+  responses show the error state with the direct email fallback.
 - Because the site is a static export (`output: 'export'`), there is no
   server-side route to relay the submission through — the client posts
-  directly to Google Forms or the configured endpoint.
+  directly to Google Forms or the configured endpoint. Do not add an
+  `app/api` proxy unless the site stops using static export.
+- Google Forms `formResponse` does not send CORS headers. A simple
+  `application/x-www-form-urlencoded` POST may still be delivered by the
+  browser, but the client cannot confirm it, so Google Forms submissions
+  surface as the error/email fallback instead of fake success.
