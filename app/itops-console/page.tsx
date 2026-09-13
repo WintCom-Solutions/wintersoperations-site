@@ -539,7 +539,7 @@ export default function ITOpsConsole() {
         {/* Info Section */}
         <div className="mt-8 bg-slate-900/40 border border-teal-500/20 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-white mb-3">
-            What You're Seeing
+            What You&apos;re Seeing
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-slate-300">
             <div>
