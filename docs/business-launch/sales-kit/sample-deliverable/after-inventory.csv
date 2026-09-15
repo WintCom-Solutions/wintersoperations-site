@@ -1,0 +1,23 @@
+device_id,device_name,device_type,location,ip_address,vlan,resolution_notes
+1,SW-CORE-01,Switch,MDF,10.0.0.1,10,No change - matched source row 1; source row 23 merged as duplicate
+2,SW-ACCESS-02,Switch,IDF-A,10.0.0.2,10,No change - matched source row 2; source row 24 merged as duplicate
+3,SW-ACCESS-03,Switch,IDF-B,10.0.0.3,10,IP resolved via supplied DHCP lease export cross-reference (blank in original device list)
+4,SW-ACCESS-04,Switch,IDF-C,10.0.0.4,10,No change
+5,AP-LOBBY-01,AP,Lobby,10.0.1.10,20,No change - matched source row 5; source row 25 merged as duplicate
+6,AP-OFFICE-02,AP,Office-East,10.0.1.11,20,No change
+7,AP-OFFICE-03,AP,Office-West,10.0.1.12,20,IP resolved via supplied DHCP lease export cross-reference (blank in original device list)
+8,AP-WAREHOUSE-04,AP,Warehouse,10.0.1.13,20,No change
+9,AP-BREAKROOM-05,AP,Break Room,10.0.1.14,20,No change - renamed from "AP-Break-Room-05" for naming-convention consistency
+10,FW-EDGE-01,Firewall,MDF,10.0.0.254,1,No change
+11,SRV-FILE-01,Server,MDF,10.0.2.10,30,No change
+12,SRV-BACKUP-02,Server,MDF,10.0.2.11,30,No change
+13,SRV-DC-03,Server,MDF,10.0.2.12,30,No change - domain controller role preserved from original notes
+14,PRN-FRONT-01,Printer,Front Office,10.0.3.5,40,No change
+15,PRN-WAREHOUSE-02,Printer,Warehouse,10.0.3.6,40,IP resolved via supplied DHCP lease export cross-reference (blank in original device list)
+16,UPS-RACK-01,UPS,MDF,10.0.0.9,1,No change
+17,CAM-ENTRANCE-01,Camera,Entrance,10.0.4.5,50,No change
+18,CAM-DOCK-02,Camera,Loading Dock,10.0.4.6,50,No change
+19,VOIP-GW-01,VoIP Gateway,MDF,10.0.5.1,60,No change
+20,NAS-MEDIA-01,NAS,MDF,10.0.2.20,30,FLAG - purpose/owner unclear in original export; confirm still in active use
+21,RTR-ISP-01,Router,MDF,10.0.0.253,1,FLAG - firmware version not present in original export; verify current version against vendor advisory before treating as compliant
+22,SW-CONFROOM-05,Switch,Conference Room,,10,FLAG - IP not resolved; no matching lease found in supplied DHCP export; confirm device is powered/connected
