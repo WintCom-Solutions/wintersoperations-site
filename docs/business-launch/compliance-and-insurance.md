@@ -2,7 +2,7 @@
 
 **Status:** Research deliverable only (docs). No purchases, registrations, binding applications, contracts, or external messages were made.  
 **Issue:** Closes #114 (work packages A–B of parent #113)  
-**Check date:** 2026-09-14  
+**Check date:** 2026-09-14 (citation sources re-verified 2026-09-15)  
 **Author seat:** agent:builder-bot (AI-TASK-FORCE-BUILDER-BOT)
 
 **Assumptions (mark clearly):**
@@ -47,9 +47,9 @@
 | Sales / use tax | MS DOR registration if selling taxable computer software / computer software services | Same (state-level) |
 | Contacts (public) | City of Hernando, 475 W. Commerce St., Hernando, MS 38632; Planning 662-429-9095 | DeSoto County Tax Collector, 365 Losher St. Suite 110, Hernando, MS 38632; 662-469-8030 |
 
-**Sources (checked 2026-09-14):**
+**Sources (checked 2026-09-15):**
 - City of Hernando — Business License: https://www.cityofhernando.org/departments/office-of-planning/business-license
-- Miss. Code § 27-17-9 (privilege license; municipal vs county): https://law.justia.com/codes/mississippi/title-27/chapter-17/general-provisions/section-27-17-9/
+- Miss. Code § 27-17-9 (privilege license; municipal vs county) — official code host: Mississippi Code Public Access (LexisNexis, designated the official publisher of the Mississippi Code per the MS Secretary of State): https://www.lexisnexis.com/hottopics/mscode/ (search "27-17-9"; this is a search portal, not a persistent per-section deep link — same access point published on the MS Secretary of State's site and on MWCC's site) — authority/gateway page: https://www.sos.ms.gov/publications-external-affairs/mississippi-law
 - DeSoto County Tax Collector directory: https://www.desotocountyms.gov/Directory/Home/DepartmentListing?DID=36
 - DeSoto County locations: https://www.desotocountyms.gov/297/Locations
 - DeSoto County Zoning Ordinance (unincorporated): https://www.desotocountyms.gov/DocumentCenter/View/10775/Desoto-County-Zoning-Ordinance--Current-signed-3172026
@@ -73,26 +73,26 @@ Legend: **BL** business/privilege license · **TL** trade/contractor license · 
 | Cabling / low-voltage as **prime** | Local BL | **MSBOC** specialty “Communication Systems, Low Voltage Electrical” when contract size requires licensure | Building/electrical permits as required by AHJ | Possible contractor’s tax / sales tax | WC if threshold; GL often required by MSBOC | High CI | MSBOC: energy-limited systems ≤91V (phone, data, CCTV, etc.; **alarms excluded** from this classification). Commercial contracts over **$50,000** generally require licensure (confirm current MSBOC thresholds). |
 | Cabling via **licensed subcontractor** | Local BL for Winters Ops | Sub holds TL | Sub/AHJ | Prime may still have tax nexus | Verify sub WC/GL | Hold-harmless + COI | Preferred path per subcontracting preference. |
 
-**MS sources (checked 2026-09-14):**
+**MS sources (checked 2026-09-15):**
 - MS SOS Business FAQs: https://www.sos.ms.gov/business-services/business-faqs
 - MS SOS Fee Schedule: https://www.sos.ms.gov/sites/default/files/business-services/FeeSchedule.pdf
 - MS SOS “Start Your Business” PDF: https://www.sos.ms.gov/content/documents/Business/Business%20Entities%20(Clean).pdf
-- Miss. Code § 27-65-23: https://law.justia.com/codes/mississippi/title-27/chapter-65/in-general/section-27-65-23/
-- MDOR computer software DPP notice (MTC copy of state notice): https://www.mtc.gov/wp-content/uploads/2023/07/72-23-12-Computer-Software-DPP-Notice-.pdf
-- MS Workers’ Comp — employers with **5+** regular employees (Miss. Code § 71-3-5): https://law.justia.com/codes/mississippi/2013/title-71/chapter-3/general-provisions/section-71-3-5 ; MWCC facts: https://www.mwcc.ms.gov/pdf/WCFacts2013.pdf
+- Miss. Code § 27-65-23 (taxable "miscellaneous businesses," incl. computer software services) — MDOR Business Tax FAQ (official agency guidance that discusses this statute and links to the official code): https://www.dor.ms.gov/business/business-tax-frequently-asked-questions ; full statutory text via official code host: https://www.lexisnexis.com/hottopics/mscode/ (search "27-65-23")
+- MDOR Notice 72-23-12, "Notice to Purchasers of Computer Software and/or Computer Software Services" (July 6, 2023) — official MDOR-hosted PDF, fetched and content-verified 2026-09-15 (the working URL reflects MDOR's own double-encoded file path — copy it exactly): https://www.dor.ms.gov/sites/default/files/notices-technical-bulletins/72-23-12%2520Computer%2520Software%2520DPP%2520Notice%2520.pdf
+- MS Workers’ Comp — employers with **5+** regular employees (Miss. Code § 71-3-5) — official code host: https://www.lexisnexis.com/hottopics/mscode/ (search "71-3-5"; this is the same public-access portal MWCC itself links to from mwcc.ms.gov) ; MWCC background facts sheet (dated 2013, supplementary context only — not the statutory anchor): https://www.mwcc.ms.gov/pdf/WCFacts2013.pdf
 - MSBOC Communication Systems / Low Voltage: https://www.msboc.us/ufaq/communication-systems-low-voltage-electrical/
 
 ### 3.2 Tennessee (customer state)
 
 | Activity | BL | TL | Tax | SI | CI / Rec | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| Remote services into TN | Out-of-state: no TN **municipal** business license if no TN physical location | Usually N/A for pure IT consulting | **TN business tax** if substantial nexus + engaged in taxable activity + ≥$10k gross receipts in a county; out-of-state exempt from municipal-level business tax | TN WC if employing in TN | Contract COI | Register with TN DOR for business tax when thresholds met. |
+| Remote services into TN | Out-of-state: no TN **municipal** business license if no TN physical location | Usually N/A for pure IT consulting | **TN business tax** if substantial nexus + engaged in taxable activity + ≥$100k gross receipts in a county/municipality (raised from $10k by Public Chapter 377 (2023), effective for tax years beginning on/after 2023-12-31 — Tenn. Code Ann. § 67-4-717); out-of-state exempt from municipal-level business tax | TN WC if employing in TN | Contract COI | Register with TN DOR for business tax when thresholds met. |
 | On-site configuration in TN | Same | Contractor license only if work is regulated construction | Sales/use may apply to taxable software install / certain services; consulting often nontaxable — confirm with TN DOR / CPA | Same | GL + E&O | Example in TN Business Tax nexus manual: large on-site IT team can create “business location.” |
 | Subcontracted cabling in TN | — | Sub must meet TN contractor rules if applicable | Project-dependent | Sub WC | Verify sub license + COI | Prefer customer-direct or licensed TN sub. |
 
-**TN sources (checked 2026-09-14):**
+**TN sources (checked 2026-09-15):**
+- TN DOR Business Tax Manual (June 2025) — official TN Dept. of Revenue guidance that quotes and explains Tenn. Code Ann. § 67-4-717 at length, including the 2023 filing-threshold increase (Public Chapter 377) from $10,000 to $100,000: https://www.tn.gov/content/dam/tn/revenue/documents/tax_manuals/june-2025/Business-Tax-Manual.pdf
 - TN DOR Business Tax nexus manual Ch. 2 (Mar 2021): https://www.tn.gov/content/dam/tn/revenue/documents/tax_manuals/business_tax/Chapter%202%20-%20Nexus%20-%20March%202021.pdf
-- Tenn. Code § 67-4-717: https://law.justia.com/codes/tennessee/title-67/chapter-4/part-7/section-67-4-717/
 - CTAS Business Tax overview: https://www.ctas.tennessee.edu/eli/business-tax
 - TN Sales & Use Tax Manual (June 2025): https://www.tn.gov/content/dam/tn/revenue/documents/tax_manuals/june-2025/Sales-Use-Tax-Manual.pdf
 
@@ -105,13 +105,14 @@ Legend: **BL** business/privilege license · **TL** trade/contractor license · 
 | Foreign LLC / entity | — | — | Franchise tax after registration | — | Rec if “doing business” in AR | Foreign LLC Certificate of Registration (FL-01): **$270 online / $300 paper**. Certificate of existence from home state often required (AR guidance: within ~30 days for some filings). |
 | Local BL | City/county may require | — | AR DFA sales/use if applicable | — | Check customer city | No universal statewide “business license.” |
 | IT consulting / remote | Usually local only | Not construction | Confirm taxable vs nontaxable services | WC if AR employees | E&O + cyber | |
-| Cabling / install | — | AR Contractors Licensing Board if project meets commercial/residential thresholds (commonly cited **$50,000+** commercial — verify current ACLB rules) | Possible | Sub WC | Prefer licensed AR sub | |
+| Cabling / install | — | AR Contractors Licensing Board — commercial license required when project cost (labor + materials) is **$50,000 or more**; confirmed verbatim in AR's current Commercial Contractors Licensing Law (see AR sources) | Possible | Sub WC | Prefer licensed AR sub | |
 
-**AR sources (checked 2026-09-14):**
+**AR sources (checked 2026-09-15):**
 - AR SOS Foreign LLC forms/fees: https://www.sos.arkansas.gov/business-commercial-services-bcs/forms-fees/llc/foreign-llc/
 - AR SOS Doing Business in Arkansas 2025: https://www.sos.arkansas.gov/uploads/bcs/Doing_Business_in_Arkansas_2025.pdf
-- ASBTDC Licenses/Permits/Taxes ebook: https://asbtdc.org/wp-content/uploads/2022/11/EBook-Licenses-Permits-Taxes.pdf
-- AR Contractors Licensing Board (via ASBTDC): https://aclb.arkansas.gov
+- Arkansas Contractors Licensing Law (Commercial), current text hosted by the AR Dept. of Labor and Licensing (ACLB's parent agency) — fetched and content-verified 2026-09-15; confirms the $50,000 commercial-project threshold verbatim (labor + materials, incl. anti-circumvention rule against splitting contracts below $50,000): https://labor.arkansas.gov/wp-content/uploads/Commercial-Contractors-Law-revised-04.2026.pdf
+- ACLB — Apply for Contractor License/Registration (official classifications and application page): https://labor.arkansas.gov/licensing/arkansas-contractors-licensing-board/apply-for-contractors-license-registration/
+- ASBTDC Licenses/Permits/Taxes ebook (secondary, practical overview only): https://asbtdc.org/wp-content/uploads/2022/11/EBook-Licenses-Permits-Taxes.pdf
 
 ---
 
@@ -195,7 +196,7 @@ MDES worker classification: https://mdes.ms.gov/employers/unemployment-tax/repor
 
 - [ ] TN DOR business tax registration if thresholds met  
 - [ ] AR foreign registration if “doing business”  
-- [ ] Track county-level TN receipts (≥$10k trigger awareness)
+- [ ] Track county-level TN receipts (≥$100k trigger awareness per county/municipality — Tenn. Code Ann. § 67-4-717; threshold raised from $10k to $100k in 2023)
 
 ### 6.3 Insurance applications (broker will need)
 
@@ -251,32 +252,34 @@ MDES worker classification: https://mdes.ms.gov/employers/unemployment-tax/repor
 
 ---
 
-## 9. Source index (all checked ~2026-09-14)
+## 9. Source index (all checked ~2026-09-15)
 
 1. https://www.cityofhernando.org/departments/office-of-planning/business-license  
-2. https://law.justia.com/codes/mississippi/title-27/chapter-17/general-provisions/section-27-17-9/  
+2. https://www.lexisnexis.com/hottopics/mscode/ (official MS Code host — search "27-17-9") ; gateway: https://www.sos.ms.gov/publications-external-affairs/mississippi-law  
 3. https://www.desotocountyms.gov/Directory/Home/DepartmentListing?DID=36  
 4. https://www.desotocountyms.gov/297/Locations  
 5. https://www.desotocountyms.gov/DocumentCenter/View/10775/Desoto-County-Zoning-Ordinance--Current-signed-3172026  
 6. https://www.sos.ms.gov/business-services/business-faqs  
 7. https://www.sos.ms.gov/sites/default/files/business-services/FeeSchedule.pdf  
 8. https://www.sos.ms.gov/content/documents/Business/Business%20Entities%20(Clean).pdf  
-9. https://law.justia.com/codes/mississippi/title-27/chapter-65/in-general/section-27-65-23/  
-10. https://www.mtc.gov/wp-content/uploads/2023/07/72-23-12-Computer-Software-DPP-Notice-.pdf  
-11. https://www.mwcc.ms.gov/pdf/WCFacts2013.pdf  
-12. https://law.justia.com/codes/mississippi/2013/title-71/chapter-3/general-provisions/section-71-3-5  
+9. https://www.dor.ms.gov/business/business-tax-frequently-asked-questions (MDOR guidance on § 27-65-23) ; full text via https://www.lexisnexis.com/hottopics/mscode/ (search "27-65-23")  
+10. https://www.dor.ms.gov/sites/default/files/notices-technical-bulletins/72-23-12%2520Computer%2520Software%2520DPP%2520Notice%2520.pdf (official MDOR notice 72-23-12)  
+11. https://www.mwcc.ms.gov/pdf/WCFacts2013.pdf (background only, dated 2013)  
+12. https://www.lexisnexis.com/hottopics/mscode/ (official MS Code host — search "71-3-5")  
 13. https://www.msboc.us/ufaq/communication-systems-low-voltage-electrical/  
 14. https://mdes.ms.gov/employers/unemployment-tax/reporting-and-filing/worker-classification/  
 15. https://www.tn.gov/content/dam/tn/revenue/documents/tax_manuals/business_tax/Chapter%202%20-%20Nexus%20-%20March%202021.pdf  
-16. https://law.justia.com/codes/tennessee/title-67/chapter-4/part-7/section-67-4-717/  
+16. https://www.tn.gov/content/dam/tn/revenue/documents/tax_manuals/june-2025/Business-Tax-Manual.pdf (official TN DOR guidance on Tenn. Code Ann. § 67-4-717)  
 17. https://www.ctas.tennessee.edu/eli/business-tax  
 18. https://www.tn.gov/content/dam/tn/revenue/documents/tax_manuals/june-2025/Sales-Use-Tax-Manual.pdf  
 19. https://www.sos.arkansas.gov/business-commercial-services-bcs/forms-fees/llc/foreign-llc/  
 20. https://www.sos.arkansas.gov/uploads/bcs/Doing_Business_in_Arkansas_2025.pdf  
-21. https://asbtdc.org/wp-content/uploads/2022/11/EBook-Licenses-Permits-Taxes.pdf  
-22. https://content.naic.org/consumer/small-business.htm  
-23. https://www.ftc.gov/business-guidance/small-businesses/cybersecurity/cyber-insurance  
-24. https://www.uschamber.com/co/run/human-resources/small-business-insurance  
+21. https://labor.arkansas.gov/wp-content/uploads/Commercial-Contractors-Law-revised-04.2026.pdf (official AR Contractors Licensing Law, commercial)  
+22. https://labor.arkansas.gov/licensing/arkansas-contractors-licensing-board/apply-for-contractors-license-registration/ (official ACLB application page)  
+23. https://asbtdc.org/wp-content/uploads/2022/11/EBook-Licenses-Permits-Taxes.pdf (secondary)  
+24. https://content.naic.org/consumer/small-business.htm  
+25. https://www.ftc.gov/business-guidance/small-businesses/cybersecurity/cyber-insurance  
+26. https://www.uschamber.com/co/run/human-resources/small-business-insurance  
 
 ---
 
