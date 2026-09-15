@@ -1,0 +1,7 @@
+job_id,client_name,offer,invoice_date,invoiced_usd,collected_usd,collected_date,status,time_spent_hours,direct_costs_usd,notes
+[EXAMPLE - delete before use],[Client],Network Documentation Cleanup,2026-09-01,75.00,0.00,,Invoiced - not yet collected,2.3,0.00,Template example row only - invoiced_usd and collected_usd are tracked separately; do not count invoiced_usd as revenue until collected_usd is filled in
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,

@@ -1,0 +1,26 @@
+raw_row_id,device_name_as_exported,device_type,location,ip_address,vlan,notes
+1,Core-SW-01,Switch,MDF,10.0.0.1,10,
+2,Access-SW-02,Switch,IDF-A,10.0.0.2,10,
+3,Access-SW-03,Switch,IDF-B,,10,IP not listed in original export
+4,Access-SW-04,Switch,IDF-C,10.0.0.4,10,
+5,AP-Lobby-01,AP,Lobby,10.0.1.10,20,
+6,AP-Office-02,AP,Office-East,10.0.1.11,20,
+7,AP-Office-03,AP,Office-West,,20,IP not listed in original export
+8,AP-Warehouse-04,AP,Warehouse,10.0.1.13,20,
+9,FW-Edge-01,Firewall,MDF,10.0.0.254,1,
+10,SRV-File-01,Server,MDF,10.0.2.10,30,
+11,SRV-Backup-02,Server,MDF,10.0.2.11,30,
+12,SRV-DC-03,Server,MDF,10.0.2.12,30,Domain controller
+13,PRN-Front-01,Printer,Front Office,10.0.3.5,40,
+14,PRN-Warehouse-02,Printer,Warehouse,,40,IP not listed in original export
+15,UPS-Rack-01,UPS,MDF,10.0.0.9,1,
+16,Cam-Entrance-01,Camera,Entrance,10.0.4.5,50,
+17,Cam-Dock-02,Camera,Loading Dock,10.0.4.6,50,
+18,VoIP-Gateway-01,VoIP Gateway,MDF,10.0.5.1,60,
+19,NAS-Media-01,NAS,MDF,10.0.2.20,30,Purpose/owner unclear in export
+20,Router-ISP-01,Router,MDF,10.0.0.253,1,Firmware version not listed
+21,Switch-Conf-Room-05,Switch,Conference Room,,10,IP not listed in original export
+22,AP-Break-Room-05,AP,Break Room,10.0.1.14,20,
+23,core sw 1 ,Switch,MDF,,10,Duplicate of row 1 - inconsistent casing/spacing - no IP given on this line
+24,ACCESS-SW-02,Switch,IDF-A,10.0.0.2,10,Duplicate of row 2 - inconsistent casing
+25,ap-lobby-1,AP,Lobby,,20,Duplicate of row 5 - inconsistent numbering (1 vs 01) - no IP given on this line
