@@ -1,0 +1,62 @@
+name: Dependabot auto-merge
+
+# Fixes a real gap found 2026-09-21: type:auto-maintenance dependency-bump
+# PRs were sitting on needs:karl/blocked indefinitely with green CI, because
+# nothing ever advanced them -- the hourly Task Force Sweep that would have
+# touched them is workflow_dispatch-only (disabled for Actions-minutes cost,
+# see task-force-sweep-hourly-monitor.yml), and it never merged anything
+# anyway, only relabeled.
+#
+# This is event-driven, not polling: it only runs when Dependabot itself
+# opens or updates a PR, so it doesn't add to the Actions-minutes pressure
+# that took the hourly sweep offline.
+#
+# Scope, deliberately narrow: patch and minor version bumps only, and only
+# once the PR's own CI has gone green. Major bumps are never auto-merged --
+# they're exactly the case that turned out to have real breaking changes
+# (see #107/#110 same night this workflow was added) and need a human or
+# an agent to actually look at them, per AGENTS.md's auto-maintenance rule
+# ("low-risk, reversible work" only -- a major bump is neither by default).
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Wait for this PR's own CI to finish
+        if: steps.metadata.outputs.update-type == 'version-update:semver-patch' || steps.metadata.outputs.update-type == 'version-update:semver-minor'
+        uses: fountainhead/action-wait-for-check@v1.2.0
+        id: ci-status
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          checkName: build
+          ref: ${{ github.event.pull_request.head.sha }}
+          timeoutSeconds: 1200
+          intervalSeconds: 20
+
+      - name: Auto-merge patch/minor bumps once green
+        if: (steps.metadata.outputs.update-type == 'version-update:semver-patch' || steps.metadata.outputs.update-type == 'version-update:semver-minor') && steps.ci-status.outputs.conclusion == 'success'
+        run: |
+          gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Leave major bumps alone
+        if: steps.metadata.outputs.update-type == 'version-update:semver-major'
+        run: |
+          echo "Major version bump -- not auto-merging. Needs human/agent review (needs:karl label stays)."
