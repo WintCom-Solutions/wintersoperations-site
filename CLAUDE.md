@@ -1,9 +1,11 @@
 # AI Task Force — Claude Code Instructions
 
-This repository is governed by **[AGENTS.md](AGENTS.md)** — read it and
-follow it exactly. It covers the pipeline, the label state machine, the hard
-rules (never approve your own work, stick to requested scope, high-risk work
-waits for Karl), and how to execute build and review tasks.
+Read **[docs/AI_TASK_FORCE.md](docs/AI_TASK_FORCE.md)** first — it is the
+canonical, provider-neutral protocol, and per its own header, it wins if
+anything else in this repo (including `AGENTS.md`) ever conflicts with it.
+
+Then read **[AGENTS.md](AGENTS.md)** for this repo's operational detail:
+label mapping, hard rules, and how to execute build/review tasks.
 
 There is no dashboard, database, or separate registration step. GitHub issues
 and PRs are the only source of truth; labels drive dispatch.
