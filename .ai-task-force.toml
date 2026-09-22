@@ -14,6 +14,7 @@ blocked = "blocked"
 [client]
 # Read these on every sync, not just onboarding.
 instructions = [
+  "docs/AI_TASK_FORCE.md",
   "AGENTS.md",
 ]
 instructions_policy = "every-sync"

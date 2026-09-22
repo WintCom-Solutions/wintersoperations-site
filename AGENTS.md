@@ -6,7 +6,7 @@ state machine, pull requests carry the work, reviews carry the findings.
 There is no separate dashboard, database, or registration step.
 
 This repo (`wintersoperations-site`) is an **opted-in member** of the task
-force — same rules as the coordinator repo, `karlwint/AI_Task_Force-Private`.
+force — same rules as the coordinator repo, `WintCom-Solutions/AI_Task_Force-Private`.
 See `.ai-task-force.toml` for the opt-in marker Task Force Ninja checks for.
 
 ## Readiness check (run this first, report the result)
@@ -134,7 +134,7 @@ Status: <ready|rework|escalated>
 ## Task Force Ninja (cross-repo presence)
 
 The force has a face: **Task Force Ninja**. He lives in the coordinator repo
-(`karlwint/AI_Task_Force-Private`, under `ninja/`) and jumps into any
+(`WintCom-Solutions/AI_Task_Force-Private`, under `ninja/`) and jumps into any
 opted-in repo — this one included, via the root `.ai-task-force.toml` here.
 
 - Persona / voice: `ninja/PERSONA.md` in the coordinator repo
@@ -155,7 +155,7 @@ conversation by creating the issue:
 - **Tier C**: output a prefilled URL for Karl to click:
 
 ```
-https://github.com/karlwint/wintersoperations-site/issues/new?title=<url-encoded title>&body=<url-encoded body>&labels=ai-task,stage:build
+https://github.com/WintCom-Solutions/wintersoperations-site/issues/new?title=<url-encoded title>&body=<url-encoded body>&labels=ai-task,stage:build
 ```
 
 That URL is a complete, valid contribution — a chat-only AI kicks off real
