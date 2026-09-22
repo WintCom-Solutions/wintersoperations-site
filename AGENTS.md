@@ -1,6 +1,11 @@
 # AI Task Force — Agent Rules
 
-You are joining Karl's AI Task Force. This one file is everything you need.
+`docs/AI_TASK_FORCE.md` is authoritative for labels, hard rules, and the
+handoff format — it wins if anything here ever conflicts with it. This file
+covers only repo-specific operational detail: readiness tiers, this repo's
+review loop, Task Force Ninja, starting work from chat, and how to execute
+build/review tasks here.
+
 GitHub is the only source of truth: issues are the task queue, labels are the
 state machine, pull requests carry the work, reviews carry the findings.
 There is no separate dashboard, database, or registration step.
@@ -45,22 +50,9 @@ heartbeats.
 
 ## Labels
 
-| Label | Meaning |
-|---|---|
-| `ai-task` | Opt-in marker. Only items with this label are in the pipeline. |
-| `stage:plan` | Being discussed/designed. The dispatcher ignores it. |
-| `stage:build` | Ready for a builder. Applying this label triggers dispatch. |
-| `stage:review` | PR awaiting independent review. Triggers reviewer dispatch. |
-| `stage:ready` | Independently approved. Karl merges. |
-| `blocked` | Needs intervention; the sweep or a human must act. |
-| `needs:karl` | High-risk decision reserved for Karl. |
-| `type:auto-maintenance` | Low-risk fix the hourly sweep/dispatcher may advance without Karl. |
-| `round:1` | Initial auto-maintenance build attempt. |
-| `round:2` | One review-feedback/rework attempt; another failure escalates to Karl. |
-| `agent:<name>` | Who is executing. Set by the dispatcher or as a manual pin. |
-| `reviewer:<name>` | Who was asked to review. Set by the dispatcher. |
-
-One `stage:*` label per item. Auto-maintenance items must have exactly one `round:*` label.
+See `docs/AI_TASK_FORCE.md` for the canonical label set (`stage:*`, `ai-task`,
+`needs:karl`, `agent:<name>`, `reviewer:<name>`, `round:*`, etc.) and label
+hygiene rules.
 
 ## Auto-maintenance
 
@@ -73,63 +65,17 @@ Auto-maintenance gets two total rounds:
 2. `round:2` - same executor addresses review/CI feedback once.
 3. Any further changes-requested result stops the loop: apply `blocked` + `needs:karl`, leave the item for Karl, and do not re-dispatch another AI.
 
-Every auto-maintenance issue or PR comment that transfers work must use this header so routing and humans can recognize it:
-
-```md
-## AI Task Force Handoff
-Owner: <agent-name>
-Round: <1/2 or 2/2>
-Type: auto-maintenance
-Status: <ready|rework|escalated>
-
-### Task
-<short exact task>
-
-### Scope
-<allowed files or allowed change type>
-
-### Acceptance
-<how to know it is done>
-
-### Escalate If
-<conditions that send it to Karl>
-```
+Every auto-maintenance issue or PR comment that transfers work must use the
+canonical `## AI Task Force Handoff` header — see `docs/AI_TASK_FORCE.md`
+for the exact format.
 
 ## Hard rules
 
-1. **Never approve your own work.** If you authored the commits, you may not
-   approve the PR. The dispatcher never assigns you to review your own PR and
-   ignores self-approvals; branch protection backs this up. Karl can override
-   only by explicitly saying so on that PR.
-2. **Stick to the requested scope.** Implement exactly what the issue asks.
-   No extra features, refactors, or "while I was here" changes unless a
-   review finding requires them.
-3. **High-risk work waits for Karl.** Force-pushes, secret handling,
-   production actions, destructive operations, or unclear scope: apply
-   `needs:karl` and stop.
-4. **Never push directly to a repo's default branch.** Not for scaffolding,
-   not for "just setup," not because a task felt small, not because no PR
-   existed yet to attach to. Every change, in every opted-in repo, goes:
-   branch → commit → PR → independent review → Karl merges. This applies to
-   every agent identity and every opted-in repo (root `.ai-task-force.toml`),
-   not just the coordinator repo. If you're about to push new commits of
-   your own to whatever the repo's default branch is called (e.g. running
-   `git push origin main`): stop.
-5. **Never merge anything without Karl's explicit, per-item permission.**
-   Not a PR, not a branch, not your own work, not another agent's.
-   `stage:ready` means "independently approved and waiting on Karl," not
-   "cleared to merge." Reaching `stage:ready` is not permission. An
-   approving review is not permission. Green CI is not permission. Silence
-   is not permission. Only Karl merging it himself, or Karl explicitly
-   saying "merge this" on that specific issue/PR, is permission.
-6. **Evidence in the PR.** State what you validated (tests run, commands,
-   output) in the PR body or a comment. If validation failed, say so plainly.
-7. **One writer per branch.** Don't push to a branch another agent is
-   actively working unless the labels hand it to you.
-8. **Headers and labels are routing controls.** If the comment header,
-   `ai-task`, `stage:*`, `agent:*`, `reviewer:*`, `type:*`, or `round:*`
-   labels are wrong, fix those first. Work that cannot be routed correctly
-   should be `blocked` + `needs:karl`, not improvised.
+See `docs/AI_TASK_FORCE.md` for the canonical hard rules (never approve your
+own work, stick to scope, high-risk work waits for Karl, never push to the
+default branch, never merge without Karl's explicit permission, evidence in
+the PR, one writer per branch, headers/labels are routing controls). They
+apply here unchanged.
 
 ## Task Force Ninja (cross-repo presence)
 
@@ -186,7 +132,8 @@ work with one click from Karl.
 ## Handoff notes
 
 Labels and PR state carry role, status, and commit identity — don't repeat
-them. When handing off, one short comment is enough:
+them. When handing off, one short comment is enough (canonical format in
+`docs/AI_TASK_FORCE.md`):
 
 ```
 Done: <what/evidence>. Next: <what the next agent or Karl should do>.
