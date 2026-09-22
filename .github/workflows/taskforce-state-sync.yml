@@ -1,0 +1,40 @@
+name: AI Task Force state-store sync
+
+# Computes structured pipeline state from current stage:*/blocked/needs:karl
+# labels and writes it to a dedicated `type:state-store` issue (see
+# scripts/taskforce_state.py and
+# docs/proposals/2026-09-22-taskforce-comms-off-github.md, Option 2).
+# Labels remain the input and are unchanged by this workflow — this only
+# adds a validated, queryable structured view on top of them and surfaces
+# label-hygiene conflicts (multiple/zero stage:* labels) immediately
+# instead of leaving them silently stuck.
+
+on:
+  schedule:
+    - cron: "27 12 * * *"
+  workflow_dispatch: {}
+  issues:
+    types: [labeled, unlabeled]
+  pull_request:
+    types: [labeled, unlabeled]
+
+permissions:
+  issues: write
+  pull-requests: read
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sync state-store
+        # Never a merge gate: this job must not be able to turn a PR's
+        # checks red over anything happening in this workflow (permissions,
+        # rate limits, a transient API error). The script itself already
+        # catches and logs those non-fatally; continue-on-error is the
+        # second, workflow-level guarantee of the same thing.
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/taskforce_state.py sync --repo ${{ github.repository }} --apply
