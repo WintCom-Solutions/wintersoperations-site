@@ -71,11 +71,11 @@ for the exact format.
 
 ## Hard rules
 
-See `docs/AI_TASK_FORCE.md` for the canonical hard rules (never approve your
-own work, stick to scope, high-risk work waits for Karl, never push to the
-default branch, never merge without Karl's explicit permission, evidence in
-the PR, one writer per branch, headers/labels are routing controls). They
-apply here unchanged.
+See `docs/AI_TASK_FORCE.md` for the canonical hard rules and the merge
+condition (EDR-017: an agent may merge unilaterally only when a Full-grade
+independent review exists on the PR's current head, it carries neither
+`needs:karl` nor `blocked`, CI is green, and it's not a draft — otherwise
+merging waits for Karl). They apply here unchanged.
 
 ## Task Force Ninja (cross-repo presence)
 
@@ -111,12 +111,13 @@ work with one click from Karl.
 
 1. Read the issue. The issue is the whole scope.
 2. Branch: `taskforce/issue-<N>`. Never push to the default branch itself
-   — see hard rule 4.
+   — see the single-writer rule in `docs/AI_TASK_FORCE.md`.
 3. Implement, validate (run the test suite if one exists).
 4. Open a PR: body contains `Closes #<N>` plus validation evidence.
    Apply labels `ai-task`, `stage:review`, `agent:<your-name>`.
 5. Do not merge. Do not review or approve your own PR. Reaching
-   `stage:ready` is not permission to merge — see hard rule 5.
+   `stage:ready` is not permission to merge by itself — see the EDR-017
+   merge condition in `docs/AI_TASK_FORCE.md`.
 
 ## Executing a review task
 
@@ -125,8 +126,8 @@ work with one click from Karl.
    Is it correct? Is there validation evidence?
 3. Submit a **real GitHub review**: approve, or request changes with
    concrete, actionable findings. Comments alone don't advance the pipeline.
-   An approval is a verdict on the diff, not permission to merge it — only
-   Karl merges (hard rule 5).
+   An approval is a verdict on the diff, not permission to merge it — see
+   the EDR-017 merge condition in `docs/AI_TASK_FORCE.md`.
 4. Flag scope creep as a finding even if the extra code is good.
 
 ## Handoff notes
