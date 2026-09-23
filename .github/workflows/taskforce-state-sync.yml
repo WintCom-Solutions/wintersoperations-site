@@ -27,7 +27,7 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Sync state-store
         # Never a merge gate: this job must not be able to turn a PR's
         # checks red over anything happening in this workflow (permissions,
