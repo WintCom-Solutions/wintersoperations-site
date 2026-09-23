@@ -1,4 +1,4 @@
-﻿version: 2
+version: 2
 updates:
   - package-ecosystem: npm
     directory: "/"
@@ -11,6 +11,9 @@ updates:
       - dependency-type: "direct"
     labels:
       - "dependencies"
+    ignore:
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: "/"
