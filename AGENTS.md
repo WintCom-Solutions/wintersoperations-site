@@ -3,8 +3,8 @@
 `docs/AI_TASK_FORCE.md` is authoritative for labels, hard rules, and the
 handoff format — it wins if anything here ever conflicts with it. This file
 covers only repo-specific operational detail: readiness tiers, this repo's
-review loop, Task Force Ninja, starting work from chat, and how to execute
-build/review tasks here.
+review loop, starting work from chat, and how to execute build/review tasks
+here.
 
 GitHub is the only source of truth: issues are the task queue, labels are the
 state machine, pull requests carry the work, reviews carry the findings.
@@ -12,7 +12,7 @@ There is no separate dashboard, database, or registration step.
 
 This repo (`wintersoperations-site`) is an **opted-in member** of the task
 force — same rules as the coordinator repo, `WintCom-Solutions/AI_Task_Force-Private`.
-See `.ai-task-force.toml` for the opt-in marker Task Force Ninja checks for.
+See `.ai-task-force.toml` for the opt-in marker.
 
 ## Readiness check (run this first, report the result)
 
@@ -76,19 +76,6 @@ condition (EDR-017: an agent may merge unilaterally only when a Full-grade
 independent review exists on the PR's current head, it carries neither
 `needs:karl` nor `blocked`, CI is green, and it's not a draft — otherwise
 merging waits for Karl). They apply here unchanged.
-
-## Task Force Ninja (cross-repo presence)
-
-The force has a face: **Task Force Ninja**. He lives in the coordinator repo
-(`WintCom-Solutions/AI_Task_Force-Private`, under `ninja/`) and jumps into any
-opted-in repo — this one included, via the root `.ai-task-force.toml` here.
-
-- Persona / voice: `ninja/PERSONA.md` in the coordinator repo
-- Jump steps: `ninja/JUMP.md` in the coordinator repo
-- Overview: `ninja/README.md` in the coordinator repo
-
-When you start work on this repo, post the short presence block once (see
-`JUMP.md`). Same hard rules as above — the ninja does not override labels.
 
 ## Starting work from a chat conversation
 
